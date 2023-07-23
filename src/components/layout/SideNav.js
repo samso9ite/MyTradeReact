@@ -1,4 +1,5 @@
 import React from 'react'
+import { NavLink } from 'react-router-dom';
 
 const SideNav = (props) => {
     return ( 
@@ -9,54 +10,54 @@ const SideNav = (props) => {
                         <center>  <img alt="MyTrade" className="rounded-full mb-3 text-center" src="dist/images/profile-2.jpg" width="50%" /></center>
                         <p className="mb-2">Ajayi Samson </p>
                         <p>samso9ite@gmail.com</p>
-                    </li>
+                    </li> 
                     
                     <li>
-                        <a href="" className="side-menu side-menu--active">
+                        <NavLink to="/" className={({isActive}) => isActive ?  "side-menu side-menu--active" : "side-menu"} end>
                             <div className="side-menu__icon"> <i data-lucide="home"></i> </div>
                             <div className="side-menu__title">
                                 Dashboard 
                                 <div className="side-menu__sub-icon transform rotate-180">  </div>
                             </div>
-                        </a>
+                        </NavLink>
                     </li>
 
                     <li className="mt-3">
-                        <a href="transactions.html" className="side-menu ">
+                        <NavLink to="/transactions" className={({isActive}) => isActive ? "side-menu side-menu--active" : "side-menu"}>
                             <div className="side-menu__icon"> <i data-lucide="home"></i> </div>
                             <div className="side-menu__title">
                                 All Transactions 
                                 <div className="side-menu__sub-icon transform rotate-180">  </div>
                             </div>
-                        </a>
+                        </NavLink>
                     </li>
                     <li className="mt-3">
-                        <a href="rates.html" className="side-menu ">
+                        <NavLink to="/rate" className={({isActive}) => isActive ?  "side-menu side-menu--active" : "side-menu" }>
                             <div className="side-menu__icon"> <i data-lucide="home"></i> </div>
                             <div className="side-menu__title">
                                 Rates 
                                 <div className="side-menu__sub-icon transform rotate-180">  </div>
                             </div>
-                        </a>
+                        </NavLink>
                     </li>
                     <li className="mt-3">
-                        <a href="redeem.html" className="side-menu">
+                        <NavLink to="/redeem" className={({isActive}) => isActive ?  "side-menu side-menu--active" : "side-menu"}>
                             <div className="side-menu__icon"> <i data-lucide="home"></i> </div>
                             <div className="side-menu__title">
                                 Redeem Cards 
                                 <div className="side-menu__sub-icon transform rotate-180">  </div>
                             </div>
-                        </a>
+                        </NavLink>
                     </li>
 
                     <li className="mt-3">
-                        <a href="profile.html" className="side-menu">
+                        <NavLink to="/settings" className={({isActive}) => isActive ? "side-menu side-menu--active" : "side-menu"}>
                             <div className="side-menu__icon"> <i data-lucide="home"></i> </div>
                             <div className="side-menu__title">
                                 Settings
                                 <div className="side-menu__sub-icon transform rotate-180">  </div>
                             </div>
-                        </a>
+                        </NavLink>
                     </li>
 
                     <li className="mt-3">
