@@ -1,4 +1,5 @@
 import {RouterProvider, createBrowserRouter} from 'react-router-dom'
+import AuthenticationPage, {action as authAction} from './pages/Authentication'
 import Dashboard from './pages/Dashboard';
 import RatePage from './pages/Rate';
 import RedeemPage from './pages/Redeem';
@@ -16,8 +17,13 @@ const router =  createBrowserRouter([
       {path:'transactions',  element:<Transactions/>},
       {path:'rate', element:<RatePage />},
       {path:'redeem', element: <RedeemPage />},
-      {path:'settings', element: <Settings />}
+      {path:'settings', element: <Settings />},
     ]
+  },
+  {
+    path: 'auth/',
+    element: <AuthenticationPage />,
+    action: authAction
   }
 ])
 function App() {
