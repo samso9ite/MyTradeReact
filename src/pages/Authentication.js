@@ -1,9 +1,25 @@
-import { json } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { json, redirect, useActionData, useNavigate } from "react-router-dom";
 import Api from "../Api";
 import AuthForm from "../components/Forms/AuthForm";
+import { useDispatch } from "react-redux";
+import { authActions } from "../store/auth-slice";
 
 
 const Authentication = () => {
+    const dispatch = useDispatch()
+    const data = useActionData()
+    const navigate = useNavigate()
+    // Dispatch an action that stores user details and token in store
+    useEffect(() => {
+        if(data && data.status){
+            dispatch(authActions.storeUserDetails({
+                userDetails: data.data
+            }))
+            navigate('/')
+        }    
+    }, [data])
+
     return ( 
         <>
         <body className="login">
@@ -20,7 +36,9 @@ const Authentication = () => {
                             <div className="-intro-x mt-5 text-lg text-white text-opacity-70 dark:text-slate-400">Manage all your e-commerce accounts in one place</div>
                         </div>
                     </div>
-                   <AuthForm />         
+                    <div className="h-screen xl:h-auto flex py-5 xl:py-0 my-10 xl:my-0" style={{marginTop:"20%"}}>
+                        <AuthForm />   
+                   </div>      
                 </div>
             </div>
             </body>
@@ -32,9 +50,7 @@ export default Authentication;
 
 export async function action({request}){
     let searchParams = new URL(request.url).searchParams;
-      console.log(searchParams);
     const mode = searchParams = searchParams.get('mode') || 'login';
-    console.log(mode);
     // Throw error if the mode matches neither login or register 
     if(mode !== 'login' && mode !== 'register'){
         throw json({message: "Unsupported Mode"}, {status: 422})
@@ -42,7 +58,6 @@ export async function action({request}){
 
     // Get user data from form data
     const data = await request.formData()
-    console.log(data);
     let authData = {}
     if (mode === 'login'){
         authData = {
@@ -58,18 +73,13 @@ export async function action({request}){
             phone: data.get('phone')
         }
     }
-    console.log(authData);
-
-    // Send request to login
-    const response = await Api.axios_instance.post(Api.baseUrl+'user/'+mode, authData)
-    if(response.status === 422 || response.status === 401){
-        return response
-    }  
-
-    if(!response.ok){
-        throw json({message:'Couldn\'t Authenticate User'}, {status: '500'})
-    }
-
-    const resData = resData.json()
-    console.log(resData);
-}
+    
+    // Sending request and returning response
+    return Api.axios_instance.post(Api.baseUrl+'user/'+mode, authData)
+    .then(res => {
+        return res.data
+    }).catch((err) => {
+        return err.response.data
+    })
+ 
+}   
