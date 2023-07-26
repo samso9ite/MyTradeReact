@@ -5,7 +5,7 @@ import RatePage from './pages/Rate';
 import RedeemPage from './pages/Redeem';
 import RootLayout from './pages/RootLayout';
 import Settings from './pages/Settings';
-import Transactions from './pages/Transactions';
+import Transactions, {loader as transactionsLoader} from './pages/Transactions';
 
 
 const router =  createBrowserRouter([
@@ -14,7 +14,7 @@ const router =  createBrowserRouter([
     element: <RootLayout/>,
     children: [
       {index: true, element:<Dashboard /> },
-      {path:'transactions',  element:<Transactions/>},
+      {path:'transactions',  element:<Transactions/>, loader:transactionsLoader},
       {path:'rate', element:<RatePage />},
       {path:'redeem', element: <RedeemPage />},
       {path:'settings', element: <Settings />},

@@ -1,6 +1,24 @@
 import MainLayout from '../components/layout/MainLayout'
+import { useSelector, useDispatch } from 'react-redux';
+import { transactionsAction } from '../store/transactions-slice';
+import Transaction from '../components/Transaction';
+import { useEffect, useState } from 'react';
+import Api from '../Api';
 
     const Dashboard = () => {
+    // Get user details from the store 
+    const[transactions, setTransactions] = useState([])
+    let userDetails = useSelector(state => state.auth.userDetails.userDetails)
+    // Getting recent transactions 
+    useEffect(() => {
+        Api.axios_instance.get(Api.baseUrl+'card_transaction/all')
+        .then(res => {
+            setTransactions(res.data.data)
+        })
+        .catch(err => {
+            console.log(err);
+        })
+    }, [])
         return ( 
             <>
             <MainLayout >
@@ -21,7 +39,7 @@ import MainLayout from '../components/layout/MainLayout'
                                                     <div className="flex">
                                                         <i data-lucide="credit-card" className="report-box__icon text-pending"></i> 
                                                     </div>
-                                                    <div className="text-3xl font-medium leading-8 mt-6">₦4000</div>
+                                                    <div className="text-3xl font-medium leading-8 mt-6">₦{userDetails.availableAmount}</div>
                                                     <div className="text-base text-slate-500 mt-1">Available Balance</div>
                                                 </div>
                                             </div>
@@ -32,7 +50,7 @@ import MainLayout from '../components/layout/MainLayout'
                                                     <div className="flex">
                                                         <i data-lucide="credit-card" className="report-box__icon text-pending"></i> 
                                                     </div>
-                                                    <div className="text-3xl font-medium leading-8 mt-6">₦3000</div>
+                                                    <div className="text-3xl font-medium leading-8 mt-6">₦{userDetails.pendingAmount}</div>
                                                     <div className="text-base text-slate-500 mt-1">Pending Balance</div>
                                                 </div>
                                             </div>
@@ -43,8 +61,8 @@ import MainLayout from '../components/layout/MainLayout'
                                                     <div className="flex">
                                                         <i data-lucide="credit-card" className="report-box__icon text-pending"></i> 
                                                      </div>
-                                                    <div className="text-3xl font-medium leading-8 mt-6">₦2149</div>
-                                                    <div className="text-base text-slate-500 mt-1">Total Income</div>
+                                                    <div className="text-3xl font-medium leading-8 mt-6">{userDetails.card_transactions.length}</div>
+                                                    <div className="text-base text-slate-500 mt-1">Total Transactions</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -177,42 +195,7 @@ import MainLayout from '../components/layout/MainLayout'
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr className="intro-x">
-                                                    <td className="w-40">
-                                                       <p>Bitoin</p>
-                                                    </td>
-                                                    <td>
-                                                        <p>4000</p>
-                                                    </td>
-                                                    <td className="text-center">₦4000</td>
-                                                    <td className="w-40">
-                                                        <div className="flex items-center justify-center text-danger"> <i data-lucide="check-square" className="w-4 h-4 mr-2"></i> Failed </div>
-                                                    </td>
-                                                    <td className="table-report__action w-56">
-                                                       <p>June 2 2023 1:50pm</p>
-                                                    </td>
-                                                    <td className="table-report__action w-56">
-                                                        <p>June 2 2023 1:50pm</p>
-                                                     </td>      
-                                                </tr>
-                                                <tr className="intro-x">
-                                                    <td className="w-40">
-                                                       <p>Bitoin</p>
-                                                    </td>
-                                                    <td>
-                                                        <p>4000</p>
-                                                    </td>
-                                                    <td className="text-center">₦4000</td>
-                                                    <td className="w-40">
-                                                        <div className="flex items-center justify-center text-danger"> <i data-lucide="check-square" className="w-4 h-4 mr-2"></i> Failed </div>
-                                                    </td>
-                                                    <td className="table-report__action w-56">
-                                                       <p>June 2 2023 1:50pm</p>
-                                                    </td>
-                                                    <td className="table-report__action w-56">
-                                                        <p>June 2 2023 1:50pm</p>
-                                                     </td>      
-                                                </tr>
+                                              <Transaction transactions={transactions} />
                                             </tbody>
                                         </table>
                                     </div>
@@ -224,7 +207,6 @@ import MainLayout from '../components/layout/MainLayout'
                     </div>
                 </div>
             </MainLayout>
-          
             </>
          );
     }

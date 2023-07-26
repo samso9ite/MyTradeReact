@@ -1,7 +1,17 @@
+import { Suspense, useEffect } from "react";
+import { Await, useLoaderData, defer } from "react-router-dom";
 import MainLayout from "../components/layout/MainLayout";
 import Transaction from "../components/Transaction";
+import Api from "../Api";
+import { useDispatch } from "react-redux";
+import { transactionsAction } from "../store/transactions-slice";
 
 const Transactions = () => {
+    const dispatch = useDispatch()
+    const {transactions} = useLoaderData();
+    useEffect(() => {
+        dispatch(transactionsAction.storeTransactions(transactions))
+    }, [transactions])
     return ( 
         <>
         <MainLayout>
@@ -19,7 +29,27 @@ const Transactions = () => {
                             </div>
                         </div>
                     </div>
-                    <Transaction />
+                      <div className="intro-y col-span-12 overflow-auto lg:overflow-visible">
+                <table className="table table-report -mt-2">
+                    <thead>
+                        <tr>
+                            <th className="whitespace-nowrap">Card</th>
+                            <th className="whitespace-nowrap">Value</th>
+                            <th className="text-center whitespace-nowrap">Amount</th>
+                            <th className="text-center whitespace-nowrap">Status</th>
+                            <th className="text-center whitespace-nowrap">Date Performed</th>
+                            <th className="text-center whitespace-nowrap">Date Completed</th>
+                        </tr>
+                    </thead> 
+                 <tbody>
+                    <Suspense fallback={<p style={{textAlign: 'center'}}>Loading...</p>}>
+                        <Await resolve={transactions}>
+                            {(loadedTransactions) =>  <Transaction transactions={loadedTransactions} />}
+                        </Await>
+                    </Suspense>
+                     </tbody>
+                </table> 
+            </div>
                     
                         <div className="intro-y col-span-12 flex flex-wrap sm:flex-row sm:flex-nowrap items-center">
                             <nav className="w-full sm:w-auto sm:mr-auto">
@@ -58,3 +88,19 @@ const Transactions = () => {
 }
  
 export default Transactions;
+
+async function loadTransactions(){
+    return await Api.axios_instance.get(Api.baseUrl+'card_transaction/all')
+     .then(res => {
+        return res.data.data
+     })
+     .catch(err => {
+         console.log(err);
+     })
+ }
+ 
+ export function loader(){
+    return defer({
+        transactions:loadTransactions()
+    })
+ }

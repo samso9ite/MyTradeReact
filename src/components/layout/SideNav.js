@@ -1,15 +1,19 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom';
+import {useSelector} from 'react-redux'
 
 const SideNav = (props) => {
+    // Get user details from the store 
+    let userDetails = useSelector(state => state.auth.userDetails.userDetails)
+
     return ( 
         <>
             <nav className="side-nav">
                 <ul>
                     <li className="text-center mb-10" style={{color:"white", fontSize:"15px"}}>
                         <center>  <img alt="MyTrade" className="rounded-full mb-3 text-center" src="dist/images/profile-2.jpg" width="50%" /></center>
-                        <p className="mb-2">Ajayi Samson </p>
-                        <p>samso9ite@gmail.com</p>
+                        <p className="mb-2">{userDetails.username}</p>
+                        <p>{userDetails.email}</p>
                     </li> 
                     
                     <li>
