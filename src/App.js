@@ -5,6 +5,7 @@ import RatePage from './pages/Rate';
 import RedeemPage from './pages/Redeem';
 import RootLayout from './pages/RootLayout';
 import Settings from './pages/Settings';
+import ErrorPage from './pages/ErrorPage';
 import Transactions, {loader as transactionsLoader} from './pages/Transactions';
 
 
@@ -12,6 +13,7 @@ const router =  createBrowserRouter([
   {
     path: '/',
     element: <RootLayout/>,
+    errorElement: <ErrorPage />,
     children: [
       {index: true, element:<Dashboard /> },
       {path:'transactions',  element:<Transactions/>, loader:transactionsLoader},

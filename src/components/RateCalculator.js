@@ -30,7 +30,6 @@ const RateCalculator = () => {
                     <h3 style={{fontSize: "20px", fontWeight: "400"}}> Payout: ₦30000</h3>
                 </div>
             </div>
-            
         </>
      );
 }
