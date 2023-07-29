@@ -6,7 +6,7 @@ axios_instance.defaults.headers.post['Content-Type'] = 'application/json; charse
 axios_instance.defaults.headers.post['Accept'] = 'application/json;';
 axios_instance.interceptors.request.use(async function (config) {
 let token = await sessionStorage.getItem('token')
-console.log(token);
+// console.log(token);
  config.headers.Authorization = `Bearer ${token}`
   return config;
 });

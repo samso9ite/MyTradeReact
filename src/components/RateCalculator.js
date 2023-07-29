@@ -1,5 +1,6 @@
-import { useCallback, useContext, useState } from "react";
+import {useContext, useState } from "react";
 import AssetContext, { AssetContextProvider } from "../store/context/asset-context";
+import rawCountries from '../util/countries.json'
 
 
 const RateCalculator = () => {
@@ -8,7 +9,8 @@ const RateCalculator = () => {
     const [rateSelected, setRateSelected] = useState([])
     const [assetSelected, setAssetSelected] = useState([])
     const [rateValue, setRateValue] = useState(0)
- 
+  
+  
     // Mapping through Asset for select option
     const getAssetHandler =  () => {
         return assetCtx.asset?.map((asset) => {
@@ -17,12 +19,29 @@ const RateCalculator = () => {
             }
         )
     } 
+
+    // Find Country Currency Handler
+    const findCountryCurrency = (country) => {
+        const countryCurrency = rawCountries.find(c => c.name === country)
+        return countryCurrency.currency
+    }
+
     // This set a new value when a new digital asset is selected
+    const countries = []
     const assetChangeHandler = (event) => {
+       
         setRateValue(0)
         const selected = JSON.parse(event.target.value)
         setAssetSelected(selected)
         setCardRate(selected.rates)
+        cardRate.forEach(rate => {
+            const currency = findCountryCurrency(rate.country)
+            rate.currency = currency;
+            countries.push({ country: rate.country, currency });
+            console.log(countries);
+            
+        })
+        
     }
     // Map through a list of rates for a selected digital asset
     const rateListHandler = () => {
@@ -38,6 +57,7 @@ const RateCalculator = () => {
         console.log(rateSelected);
     }
 
+  
     return ( 
         <AssetContextProvider>
             <div className="intro-y col-span-12 lg:col-span-6">     
@@ -54,8 +74,12 @@ const RateCalculator = () => {
                     <div className="mt-5">
                         <label for="crud-form-2" className="form-label">Card Type</label>
                         <select className="form-select form-select-lg sm:mt-2 sm:mr-2" aria-label=".form-select-lg example" value={JSON.stringify(rateSelected)} onChange={rateChangeHandler}>
-                          {rateListHandler()}
+                            {rateListHandler()}
                         </select>
+                    </div>
+                    <div className="mt-5">
+                        <label for="crud-form-1" className="form-label">Select Country</label>
+                        <input id="crud-form-1" type="number" className="form-control w-full" placeholder="Card Value" />
                     </div>      
                     <div className="mt-5">
                         <label for="crud-form-1" className="form-label">What's the value of the card</label>
