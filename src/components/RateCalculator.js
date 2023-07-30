@@ -7,9 +7,11 @@ const RateCalculator = () => {
     const assetCtx = useContext(AssetContext)
     const [cardRate, setCardRate] = useState([])
     const [rateSelected, setRateSelected] = useState([])
+    const [countrySelected, setCountrySelected] = useState([])
     const [assetSelected, setAssetSelected] = useState([])
     const [rateValue, setRateValue] = useState(0)
-  
+    const [cardTypes, setCardTypes] = useState([])
+    const [countries, setCountries] = useState([])
   
     // Mapping through Asset for select option
     const getAssetHandler =  () => {
@@ -27,26 +29,40 @@ const RateCalculator = () => {
     }
 
     // This set a new value when a new digital asset is selected
-    const countries = []
     const assetChangeHandler = (event) => {
-       
         setRateValue(0)
         const selected = JSON.parse(event.target.value)
         setAssetSelected(selected)
+        console.log(assetSelected);
         setCardRate(selected.rates)
-        cardRate.forEach(rate => {
+        setCardTypes([])
+        setCountries([])
+        let cardArray = []
+        let countryArr = []
+        selected.rates.forEach(rate => {
             const currency = findCountryCurrency(rate.country)
-            rate.currency = currency;
-            countries.push({ country: rate.country, currency });
-            console.log(countries);
-            
+            rate.currency = currency;       
+            if (!cardArray.includes(rate.cardType)) {
+                cardArray.push(rate.cardType)
+            }
+            countryArr.push({ country: rate.country, currency });
         })
-        
+        setCardTypes(prevState => [...prevState, ...cardArray])
+        setCountries(prevState => [...prevState, ...countryArr])
     }
+    console.log(countries);
+    console.log(cardTypes);
+
     // Map through a list of rates for a selected digital asset
-    const rateListHandler = () => {
+    const cardTypesHandler = () => {
+        return cardTypes?.map((cardType) => {
+            return <option  value={cardType}>{cardType}</option>
+        })
+    } 
+    // Map through a list of rates for a selected digital asset
+    const countryListHandler = () => {
         return cardRate?.map((rate) => {
-            return <option key={rate._id} value={JSON.stringify(rate)}>{rate.cardType}</option>
+            return <option key={rate._id} value={JSON.stringify(rate)}>{rate.country}</option>
         })
     } 
     // Set a new value when rate is changed
@@ -54,9 +70,9 @@ const RateCalculator = () => {
         const selected = JSON.parse(event.target.value)
         setRateSelected(selected)
         setRateValue(selected.rate)
-        console.log(rateSelected);
     }
 
+    console.log(assetSelected);
   
     return ( 
         <AssetContextProvider>
@@ -73,13 +89,16 @@ const RateCalculator = () => {
                     </div>
                     <div className="mt-5">
                         <label for="crud-form-2" className="form-label">Card Type</label>
-                        <select className="form-select form-select-lg sm:mt-2 sm:mr-2" aria-label=".form-select-lg example" value={JSON.stringify(rateSelected)} onChange={rateChangeHandler}>
-                            {rateListHandler()}
+                        <select className="form-select form-select-lg sm:mt-2 sm:mr-2" aria-label=".form-select-lg example" value={JSON.stringify(rateSelected)}>
+                            {cardTypesHandler()}
                         </select>
                     </div>
                     <div className="mt-5">
                         <label for="crud-form-1" className="form-label">Select Country</label>
-                        <input id="crud-form-1" type="number" className="form-control w-full" placeholder="Card Value" />
+                        {/* <input id="crud-form-1" type="number" className="form-control w-full" placeholder="Card Value" /> */}
+                        <select className="form-select form-select-lg sm:mt-2 sm:mr-2" aria-label=".form-select-lg example" value={JSON.stringify(countrySelected)} onChange={rateChangeHandler}>
+                            {countryListHandler()}
+                        </select>
                     </div>      
                     <div className="mt-5">
                         <label for="crud-form-1" className="form-label">What's the value of the card</label>
