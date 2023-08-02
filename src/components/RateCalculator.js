@@ -12,6 +12,7 @@ const RateCalculator = () => {
     const [rateValue, setRateValue] = useState(0)
     const [cardTypes, setCardTypes] = useState([])
     const [countries, setCountries] = useState([])
+    const [selectedCardType, setSelectedCardType] = useState([])
   
     // Mapping through Asset for select option
     const getAssetHandler =  () => {
@@ -27,6 +28,14 @@ const RateCalculator = () => {
         const countryCurrency = rawCountries.find(c => c.name === country)
         return countryCurrency.currency
     }
+    // Removing country duplicates
+    const getDistinctCountries = (countryArr) => {
+        console.log(countryArr);
+        const uniqueCountries = countryArr.filter((thing, index, self) => index ===
+            self.findIndex(t=>t.country === thing.country && t.currency === thing.currency)
+        )
+        return uniqueCountries
+    } 
 
     // This set a new value when a new digital asset is selected
     const assetChangeHandler = (event) => {
@@ -37,7 +46,7 @@ const RateCalculator = () => {
         setAssetSelected(selectedObject)
         setCardRate(selectedObject.rates)
         setCardTypes([])
-        setCountries([])
+       
         let cardArray = []
         let countryArr = []
         selectedObject.rates.forEach(rate => {
@@ -48,7 +57,9 @@ const RateCalculator = () => {
             }
             countryArr.push({ country: rate.country, currency });
         })
+        countryArr = getDistinctCountries(countryArr)
         setCardTypes(prevState => [...prevState, ...cardArray])
+        setCountries([])        
         setCountries(prevState => [...prevState, ...countryArr])
     }
   
@@ -58,18 +69,19 @@ const RateCalculator = () => {
             return <option  value={cardType}>{cardType}</option>
         })
     } 
+
+    // Set cardType on user select
+    const selectCardTypeHandler = (event) => {
+        setSelectedCardType(event.target.value)
+    }
+  
     // Map through a list of rates for a selected digital asset
     const countryListHandler = () => {
-        return cardRate?.map((rate) => {
-            return <option key={rate._id} value={JSON.stringify(rate)}>{rate.country}</option>
+        return countries?.map((country) => {
+            return <option value={country.country}>{country.country}-{country.currency}</option>
         })
     } 
-    // Set a new value when rate is changed
-    const rateChangeHandler = (event) => {
-        const selected = JSON.parse(event.target.value)
-        setRateSelected(selected)
-        setRateValue(selected.rate)
-    }
+
     
     return ( 
         <AssetContextProvider>
@@ -87,14 +99,14 @@ const RateCalculator = () => {
                     </div>
                     <div className="mt-5">
                         <label for="crud-form-2" className="form-label">Card Type</label>
-                        <select className="form-select form-select-lg sm:mt-2 sm:mr-2" aria-label=".form-select-lg example" value={rateSelected}>
+                        <select className="form-select form-select-lg sm:mt-2 sm:mr-2" aria-label=".form-select-lg example" value={selectedCardType} onChange={selectCardTypeHandler}>
                             <option value="">-- Choose card type -- </option>
                             {cardTypesHandler()}
                         </select>
                     </div>
                     <div className="mt-5">
                         <label for="crud-form-1" className="form-label">Select Country</label>
-                        <select className="form-select form-select-lg sm:mt-2 sm:mr-2" aria-label=".form-select-lg example" value={countrySelected} onChange={rateChangeHandler}>
+                          <select className="form-select form-select-lg sm:mt-2 sm:mr-2" aria-label=".form-select-lg example" value={countrySelected}>
                         <option value="">-- Select Country -- </option>
                             {countryListHandler()}
                         </select>
