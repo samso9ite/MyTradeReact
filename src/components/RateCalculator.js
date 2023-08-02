@@ -1,6 +1,7 @@
 import {useContext, useState } from "react";
 import AssetContext, { AssetContextProvider } from "../store/context/asset-context";
 import rawCountries from '../util/countries.json'
+import CurrencyFormatter from './CurrencyFormatter'
 
 
 const RateCalculator = () => {
@@ -13,6 +14,9 @@ const RateCalculator = () => {
     const [cardTypes, setCardTypes] = useState([])
     const [countries, setCountries] = useState([])
     const [selectedCardType, setSelectedCardType] = useState([])
+    const [cardValue, setCardValue] = useState('')
+    const [payout, setPayout] = useState(0)
+    // const [isAvailable, setIsAvailable] = useState(false)
   
     // Mapping through Asset for select option
     const getAssetHandler =  () => {
@@ -45,8 +49,11 @@ const RateCalculator = () => {
         const selectedObject = assetCtx.asset.find((option) => option._id === selected);
         setAssetSelected(selectedObject)
         setCardRate(selectedObject.rates)
+        console.log(selectedObject.rates);
         setCardTypes([])
-       
+        setCountrySelected([])
+        setSelectedCardType([])
+        setCardValue('')
         let cardArray = []
         let countryArr = []
         selectedObject.rates.forEach(rate => {
@@ -74,15 +81,48 @@ const RateCalculator = () => {
     const selectCardTypeHandler = (event) => {
         setSelectedCardType(event.target.value)
     }
-  
     // Map through a list of rates for a selected digital asset
     const countryListHandler = () => {
         return countries?.map((country) => {
             return <option value={country.country}>{country.country}-{country.currency}</option>
         })
     } 
+    // Set country on selected country
+    const countryChangeHandler = (event) => {
+        setCountrySelected(event.target.value)
+    }
 
-    
+    /** The section calculates the rate of the value */     
+    const between = (x, range) => {
+        const [min, max] = range.split('-').map(val => parseInt(val))
+        return x >= min && x <= max
+    }
+
+    const isRateAvailable = (amount) => {
+        let isAvailable = false
+        cardRate.forEach(rate => {
+            const isBetween = between(amount, rate.denomination);
+            if(isBetween){
+                setRateValue(rate.rate)
+            }else{
+                setRateValue(0)
+            }
+        })
+    }
+
+    const getRateHandler = (event) => {
+        setCardValue(event.target.value)
+        isRateAvailable(event.target.value)
+    }
+    // This calculates the payout amount
+    const getAmountHandler = () => {
+        let payoutCalc = cardValue * rateValue
+        console.log(payoutCalc);
+        return payoutCalc
+    }
+    /** End of rate calculation functions */
+
+ 
     return ( 
         <AssetContextProvider>
             <div className="intro-y col-span-12 lg:col-span-6">     
@@ -106,18 +146,18 @@ const RateCalculator = () => {
                     </div>
                     <div className="mt-5">
                         <label for="crud-form-1" className="form-label">Select Country</label>
-                          <select className="form-select form-select-lg sm:mt-2 sm:mr-2" aria-label=".form-select-lg example" value={countrySelected}>
+                          <select className="form-select form-select-lg sm:mt-2 sm:mr-2" aria-label=".form-select-lg example" value={countrySelected} onChange={countryChangeHandler}>
                         <option value="">-- Select Country -- </option>
                             {countryListHandler()}
                         </select>
                     </div>      
                     <div className="mt-5">
                         <label for="crud-form-1" className="form-label">What's the value of the card</label>
-                        <input id="crud-form-1" type="number" className="form-control w-full" placeholder="Card Value" />
+                        <input id="crud-form-1" type="number" className="form-control w-full" placeholder="Card Value" value={cardValue} onChange={getRateHandler}/>
                     </div>
                     <br />
-                    <h3 style={{fontSize: "20px", fontWeight: "400"}}> Rate: ₦{rateValue}</h3><br/>
-                    <h3 style={{fontSize: "20px", fontWeight: "400"}}> Payout: ₦30000</h3>
+                    <h3 style={{fontSize: "20px", fontWeight: "400"}}> Rate: <CurrencyFormatter value={rateValue} currencycode="NGN" /> </h3><br/>
+                    <h3 style={{fontSize: "20px", fontWeight: "400"}}> Payout: <CurrencyFormatter value={getAmountHandler()}  currencycode="NGN" /></h3>
                 </div>
             </div>
         </AssetContextProvider>     
