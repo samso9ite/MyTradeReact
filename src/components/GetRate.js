@@ -1,16 +1,19 @@
-import {useContext, useState } from "react";
+import {useContext, useEffect, useState } from "react";
 import AssetContext from "../store/context/asset-context";
 import SlideOver from "./Helpers/SlideOver";
 import ReactDOM from 'react-dom'
+import CurrencyFormatter from './CurrencyFormatter'
 
 const GetRate = () => {
     const assetCtx = useContext(AssetContext)
     const [cardRate, setCardRate] = useState([])
     const [assetSelected, setAssetSelected] = useState({})
     const [rateValue, setRateValue] = useState(0)
-    const [selectedCardType, setSelectedCardType] = useState([])
     const [cardValue, setCardValue] = useState('')
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const [selectedRate, setSelectedRate] = useState('')
+    const [amount, setAmount] = useState(0)
+    const [calcAmount, setCalcAmount] = useState(0)
    
     // Mapping through Asset for select option
     const getAssetHandler = () => {
@@ -29,41 +32,66 @@ const GetRate = () => {
         // Find the selected object from the options array
         const selectedObject = assetCtx.asset.find((option) => option._id === selected);
         setAssetSelected(selectedObject)
+        console.log(assetSelected);
         setCardRate(selectedObject.rates)
-        setSelectedCardType([])
         setCardValue('')
     }
   
     // Map through a list of rates for a selected digital asset
     const cardTypesHandler = () => {
-        console.log(cardRate);
         return cardRate?.map((cardType) => {
             return <option  value={cardType._id}>{cardType.country} - {cardType.cardType} - {cardType.denomination} </option>
         })
     } 
 
     // Set cardType on user select
-    const selectCardTypeHandler = (event) => {
-        setSelectedCardType(event.target.value)
+    const selectRateHandler = (event) => {
+        const selected = event.target.value
+       
+        const selectedObject = cardRate.find((option) => option._id === selected)
+        console.log(selectedObject);
+        setSelectedRate(selectedObject)
+    }
+
+    // This set the usd amount value
+    const setAmountHandler = (event) => {
+        console.log(event.target.value);    
+       setAmount(event.target.value) 
     }
 
     // This calculates the payout amount
-    const getAmountHandler = () => {
-        let payoutCalc = cardValue * rateValue
-        return payoutCalc
-    }
+    useEffect(() => {
+        setCalcAmount(amount * selectedRate.rate)
+    }, [amount])
+
+    // const getAmountHandler = () => {
+    //     let payoutCalc = amount * selectedRate.rate
+    //     console.log(payoutCalc);
+    //     return payoutCalc
+    // }
     /** End of rate calculation functions */
 
     const toggleModal = () => {
+        console.log("this ran");
         setIsModalOpen(!isModalOpen)
     }
-    console.log(isModalOpen);
-    const SlideOverRoot = document.getElementById('slide-over__root')
 
+    const USDAmount = () => {
+        return   <div className="mt-5">
+                    <input type="number" className="form-control w-full" placeholder="Amount in USD" value={amount} onChange={setAmountHandler}/>
+                    <h3 style={{fontSize: "20px", fontWeight: "500"}}> <CurrencyFormatter value={calcAmount} currencycode="NGN" /> </h3>
+                    <p>Amount calculated based on rate</p>
+                </div>
+    }
+
+    const toggleModalButton = () => {
+        console.log("Toggling this");
+    }
+    const SlideOverRoot = document.getElementById('slide-over__root')
+    
     return ( 
         <>
             <div className="intro-y col-span-12 lg:col-span-6">   
-
            
                 <div className="intro-y box p-5">
                     <h3 style={{fontSize: "25px", fontWeight: "600"}}>Get Rate</h3><br/>
@@ -78,11 +106,12 @@ const GetRate = () => {
                     </div>
                     <div className="mt-5">
                         <label for="crud-form-2" className="form-label">Select Rate & Type</label>
-                        <select className="form-select form-select-lg sm:mt-2 sm:mr-2" aria-label=".form-select-lg example" value={selectedCardType} onChange={selectCardTypeHandler}>
+                        <select className="form-select form-select-lg sm:mt-2 sm:mr-2" aria-label=".form-select-lg example" value={selectedRate._id} onChange={selectRateHandler}>
                             <option value="">-- Choose card type -- </option>
                             {cardTypesHandler()}
                         </select>
-                    </div>      
+                    </div>
+                    {/* <input type="number" c  lassName="form-control w-full" placeholder="Amount in USD" value={amount} onChange={setAmountHandler}/>       */}
                     <div className="text-center mt-5">
                         <a
                             href="javascript:;"
@@ -93,9 +122,34 @@ const GetRate = () => {
                             > View Details 
                         </a>
                     </div>
-                    {isModalOpen && ReactDOM.createPortal(<SlideOver/>, 
+                    {isModalOpen && ReactDOM.createPortal(
+                    <SlideOver>
+                        <div style={{paddingBottom:"30px"}}>
+                            <center> <img src={assetSelected.image} width={"200px"} /></center>
+                        </div>
+                        <h2 className="mb-2" style={{fontSize:'20px'}}><strong>Details</strong></h2>
+                        <hr />
+                        <div>
+                            <p className="mb-3 mt-3" style={{fontSize:"20px"}}>Asset:     <span style={{float:'right'}}>  {assetSelected.name}</span></p>
+                            <hr />
+                            <p className="mb-3 mt-3" style={{fontSize:"20px"}}> Card Type: <span style={{float:'right'}}>  {selectedRate.cardType} </span> </p>
+                            <hr />
+                            <p className="mb-3 mt-3" style={{fontSize:"20px"}}>  Country: <span style={{float:'right'}}>  {selectedRate.country} </span></p>
+                            <hr />
+                            <p className="mb-3 mt-3" style={{fontSize:"20px"}}> Denomination: <span style={{float:'right'}}> {selectedRate.denomination} </span></p>
+                            <hr />              
+                        </div>
+
+                        <div style={{paddingTop:'35px'}}>
+                            <h3 style={{fontSize: "20px", fontWeight: "500"}}> Rate: <CurrencyFormatter value={selectedRate.rate} currencycode="NGN" /> / USD </h3>
+                            <USDAmount />
+                        </div>
+                        <div class="modal-footer w-full absolute bottom-0">  <button type="button" class="btn btn-outline-primary w-20 mr-1" onClick={toggleModalButton}> Close </button></div>
+                    </SlideOver>        
+                    , 
                         SlideOverRoot
-                    ) }
+                        )   
+                    }
                 </div>
             </div>
         </>
