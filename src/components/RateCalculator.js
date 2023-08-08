@@ -4,10 +4,9 @@ import rawCountries from '../util/countries.json'
 import CurrencyFormatter from './CurrencyFormatter'
 
 
-const RateCalculator = () => {
+const RateCalculator = (props) => {
     const assetCtx = useContext(AssetContext)
     const [cardRate, setCardRate] = useState([])
-    const [rateSelected, setRateSelected] = useState({})
     const [countrySelected, setCountrySelected] = useState({})
     const [assetSelected, setAssetSelected] = useState({})
     const [rateValue, setRateValue] = useState(0)
@@ -15,11 +14,9 @@ const RateCalculator = () => {
     const [countries, setCountries] = useState([])
     const [selectedCardType, setSelectedCardType] = useState([])
     const [cardValue, setCardValue] = useState('')
-    const [payout, setPayout] = useState(0)
-    // const [isAvailable, setIsAvailable] = useState(false)
-  
+   
     // Mapping through Asset for select option
-    const getAssetHandler =  () => {
+    const getAssetHandler = () => {
         return assetCtx.asset?.map((asset) => {
             if(asset.status === 'Available'){
              return  <option key={asset._id} value={asset._id}>{asset.name}</option>}
@@ -44,6 +41,7 @@ const RateCalculator = () => {
     const assetChangeHandler = (event) => {
         setRateValue(0)
         const selected = event.target.value
+
         // Find the selected object from the options array
         const selectedObject = assetCtx.asset.find((option) => option._id === selected);
         setAssetSelected(selectedObject)
@@ -118,7 +116,6 @@ const RateCalculator = () => {
         return payoutCalc
     }
     /** End of rate calculation functions */
-
  
     return ( 
         <AssetContextProvider>

@@ -16,6 +16,7 @@ const Authentication = () => {
             dispatch(authActions.storeUserDetails({
                 userDetails: data.data
             }))
+            // Navigate to dashboard after storing retrieved userdetails in store
             navigate('/')
         }    
     }, [data])
@@ -33,7 +34,9 @@ const Authentication = () => {
                                 <br />
                                 sign up to your account.
                             </div>
-                            <div className="-intro-x mt-5 text-lg text-white text-opacity-70 dark:text-slate-400">Manage all your e-commerce accounts in one place</div>
+                            <div className="-intro-x mt-5 text-lg text-white text-opacity-70 dark:text-slate-400">
+                                Manage all your e-commerce accounts in one place
+                            </div>
                         </div>
                     </div>
                     <div className="h-screen xl:h-auto flex py-5 xl:py-0 my-10 xl:my-0" style={{marginTop:"20%"}}>

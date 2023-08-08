@@ -9,9 +9,11 @@ import { transactionsAction } from "../store/transactions-slice";
 const Transactions = () => {
     const dispatch = useDispatch()
     const {transactions} = useLoaderData();
+
     useEffect(() => {
         dispatch(transactionsAction.storeTransactions(transactions))
     }, [transactions])
+    
     return ( 
         <>
         <MainLayout>
