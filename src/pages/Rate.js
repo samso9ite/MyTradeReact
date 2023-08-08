@@ -1,4 +1,4 @@
-import GetRate from "../components/layout/GetRate";
+import GetRate from "../components/GetRate";
 import MainLayout from "../components/layout/MainLayout";
 import RateCalculator from "../components/RateCalculator";
 import AssetContext, { AssetContextProvider } from "../store/context/asset-context";

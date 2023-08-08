@@ -34,7 +34,6 @@ const RateCalculator = () => {
     }
     // Removing country duplicates
     const getDistinctCountries = (countryArr) => {
-        console.log(countryArr);
         const uniqueCountries = countryArr.filter((thing, index, self) => index ===
             self.findIndex(t=>t.country === thing.country && t.currency === thing.currency)
         )
@@ -49,7 +48,6 @@ const RateCalculator = () => {
         const selectedObject = assetCtx.asset.find((option) => option._id === selected);
         setAssetSelected(selectedObject)
         setCardRate(selectedObject.rates)
-        console.log(selectedObject.rates);
         setCardTypes([])
         setCountrySelected([])
         setSelectedCardType([])
@@ -117,7 +115,6 @@ const RateCalculator = () => {
     // This calculates the payout amount
     const getAmountHandler = () => {
         let payoutCalc = cardValue * rateValue
-        console.log(payoutCalc);
         return payoutCalc
     }
     /** End of rate calculation functions */
