@@ -4,11 +4,17 @@ import ChangePassword from "../components/ChangePassword";
 import MainLayout from "../components/layout/MainLayout";
 import ProfileNav from "../components/layout/ProfileNav";
 import Profile from "../components/Profile";
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { userInfoActions } from "../store/user-details";
 
 
 const Settings = () => {
     const  {component_name} = useParams()
+    const dispatch = useDispatch()
+    useEffect(() => {
+        dispatch(userInfoActions.storeAccountInfo())
+    }, [])
   
     return ( <>
         <MainLayout>
@@ -27,7 +33,7 @@ const Settings = () => {
                     </div>
                 </div>
                 <style>
-                
+
                 </style>
            
         </MainLayout>
