@@ -95,7 +95,6 @@ const RateCalculator = (props) => {
     }
 
     const isRateAvailable = (amount) => {
-        let isAvailable = false
         cardRate.forEach(rate => {
             const isBetween = between(amount, rate.denomination);
             if(isBetween){

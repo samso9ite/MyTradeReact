@@ -19,7 +19,7 @@ const router =  createBrowserRouter([
       {path:'transactions',  element:<Transactions/>, loader:transactionsLoader},
       {path:'rate', element:<RatePage />},
       {path:'redeem', element: <RedeemPage />},
-      {path:'settings', element: <Settings />},
+      {path:'settings/:component_name', element: <Settings />},
     ]
   },
   {
