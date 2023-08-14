@@ -80,7 +80,10 @@ export async function action({request}){
     // Sending request and returning response
     return Api.axios_instance.post(Api.baseUrl+'user/'+mode, authData)
     .then(res => {
+        console.log(res.data);
+        sessionStorage.setItem('token', res.data.token)
         return res.data
+
     }).catch((err) => {
         return err.response.data
     })

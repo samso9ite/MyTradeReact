@@ -78,103 +78,75 @@ import Api from '../Api';
                                     </div>
                                 </div>
 
-                                <div className="col-span-2 xl:col-span-1">
+                                <div className="col-span-2 xl:col-span-2">
                                     <div className="intro-y">
                                         <div className="box px-4 py-4 mb-3  items-center zoom-in">
-                                                <img alt="MyTrade" src="dist/images/coin/bitcoin.svg" />
+                                            <center>
+                                                <img alt="MyTrade" src="dist/images/coin/bitcoin.svg" width="30%"/>
                                                 <div className="font-medium">Bitcoin</div>
+                                            </center>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div className="col-span-2 xl:col-span-1">
+                                <div className="col-span-2 xl:col-span-2">
                                     <div className="intro-y">
                                         <div className="box px-4 py-4 mb-3  items-center zoom-in">
-                                                <img alt="MyTrade" src="dist/images/coin/bitcoin.svg" />
-                                                <div className="font-medium">Bitcoin</div>
+                                            <center>
+                                                <img alt="MyTrade" src="dist/images/coin/eth.svg" width="30%"/>
+                                                <div className="font-medium">Ethereum</div>
+                                            </center>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="col-span-2 xl:col-span-1">
+
+                                <div className="col-span-2 xl:col-span-2">
                                     <div className="intro-y">
                                         <div className="box px-4 py-4 mb-3  items-center zoom-in">
-                                                <img alt="MyTrade" src="dist/images/coin/bitcoin.svg" />
-                                                <div className="font-medium">Bitcoin</div>
+                                            <center>
+                                                <img alt="MyTrade" src="dist/images/coin/binance.svg" width="30%"/>
+                                                <div className="font-medium">Binance</div>
+                                            </center>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="col-span-2 xl:col-span-1">
+
+
+                                <div className="col-span-2 xl:col-span-2">
                                     <div className="intro-y">
                                         <div className="box px-4 py-4 mb-3  items-center zoom-in">
-                                                <img alt="MyTrade" src="dist/images/coin/bitcoin.svg" />
-                                                <div className="font-medium">Bitcoin</div>
+                                            <center>
+                                                <img alt="MyTrade" src="dist/images/coin/giftcard.svg" width="30%"/>
+                                                <div className="font-medium">Giftcards</div>
+                                            </center>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="col-span-2 xl:col-span-1">
+
+                                <div className="col-span-2 xl:col-span-2">
                                     <div className="intro-y">
                                         <div className="box px-4 py-4 mb-3  items-center zoom-in">
-                                                <img alt="MyTrade" src="dist/images/coin/bitcoin.svg" />
-                                                <div className="font-medium">Bitcoin</div>
+                                            <center>
+                                                <img alt="MyTrade" src="dist/images/coin/airtime.svg" width="30%"/>
+                                                <div className="font-medium">Airtime</div>
+                                            </center>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="col-span-2 xl:col-span-1">
+
+                                <div className="col-span-2 xl:col-span-2">
                                     <div className="intro-y">
                                         <div className="box px-4 py-4 mb-3  items-center zoom-in">
-                                                <img alt="MyTrade" src="dist/images/coin/bitcoin.svg" />
-                                                <div className="font-medium">Bitcoin</div>
+                                            <center>
+                                                <img alt="MyTrade" src="dist/images/coin/data.svg" width="30%"/>
+                                                <div className="font-medium">Data</div>
+                                            </center>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="col-span-2 xl:col-span-1">
-                                    <div className="intro-y">
-                                        <div className="box px-4 py-4 mb-3  items-center zoom-in">
-                                                <img alt="MyTrade" src="dist/images/coin/bitcoin.svg" />
-                                                <div className="font-medium">Bitcoin</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-span-2 xl:col-span-1">
-                                    <div className="intro-y">
-                                        <div className="box px-4 py-4 mb-3  items-center zoom-in">
-                                                <img alt="MyTrade" src="dist/images/coin/bitcoin.svg" />
-                                                <div className="font-medium">Bitcoin</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-span-2 xl:col-span-1">
-                                    <div className="intro-y">
-                                        <div className="box px-4 py-4 mb-3  items-center zoom-in">
-                                                <img alt="MyTrade" src="dist/images/coin/bitcoin.svg" />
-                                                <div className="font-medium">Bitcoin</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-span-2 xl:col-span-1">
-                                    <div className="intro-y">
-                                        <div className="box px-4 py-4 mb-3  items-center zoom-in">
-                                                <img alt="MyTrade" src="dist/images/coin/bitcoin.svg" />
-                                                <div className="font-medium">Bitcoin</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-span-2 xl:col-span-1">
-                                    <div className="intro-y">
-                                        <div className="box px-4 py-4 mb-3  items-center zoom-in">
-                                                <img alt="MyTrade" src="dist/images/coin/bitcoin.svg" />
-                                                <div className="font-medium">Bitcoin</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-span-2 xl:col-span-1">
-                                    <div className="intro-y">
-                                        <div className="box px-4 py-4 mb-3  items-center zoom-in">
-                                                <img alt="MyTrade" src="dist/images/coin/bitcoin.svg" />
-                                                <div className="font-medium">Bitcoin</div>
-                                        </div>
-                                    </div>
-                                </div>
+
+                             
+                               
                                 <div className="col-span-12 mt-6">
                                     <div className="intro-y block sm:flex items-center h-10">
                                         <h2 className="text-lg font-medium truncate mr-5">

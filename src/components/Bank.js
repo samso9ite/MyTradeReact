@@ -1,4 +1,7 @@
+import {useSelector} from 'react-redux'
+
 const Banks = () => {
+   
     return ( <>
         <div class="col-span-12 lg:col-span-8 2xl:col-span-9">
             <div class="intro-y box lg:mt-5">
