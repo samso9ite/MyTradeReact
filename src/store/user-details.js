@@ -1,19 +1,14 @@
 import {createSlice} from "@reduxjs/toolkit"
-import Api from "../Api"
 
-const userDetailsSlice = createSlice({
+const userDetailSlice = createSlice({
     name: 'accountInfo',
-    initialState: {accountInfo:{}},
-    reducers: {storeAccountInfo(state, actions){
-       Api.axios_instance.get(Api.baseUrl+'/user/get_info')
-                            .then(res => {
-                                // console.log(res);
-                                state.accountInfo = res.data.data    
-                                console.log(state.accountInfo);
-                            })
+    initialState: {accountDetails: null},
+    reducers: {
+        storeAccountInfo(state, actions){
+        state.accountDetails = actions.payload
     }
 }
 })
 
-export const userInfoActions = userDetailsSlice.actions
-export default userDetailsSlice;
+export const userInfoActions = userDetailSlice.actions
+export default userDetailSlice;

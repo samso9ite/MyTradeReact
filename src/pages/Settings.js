@@ -7,14 +7,22 @@ import Profile from "../components/Profile";
 import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { userInfoActions } from "../store/user-details";
+import Api from "../Api";
 
 
-const Settings = () => {
+const Settings =  () => {
     const  {component_name} = useParams()
     const dispatch = useDispatch()
-    useEffect(() => {
-        dispatch(userInfoActions.storeAccountInfo())
-    }, [])
+    const userData = async () => {
+         await Api.axios_instance.get(Api.baseUrl+'/user/get_info')
+         .then(res => {
+            dispatch(userInfoActions.storeAccountInfo(
+                 res.data.data
+             ))
+         })
+    }
+    
+    userData()
   
     return ( <>
         <MainLayout>
