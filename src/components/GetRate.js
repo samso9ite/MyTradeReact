@@ -32,7 +32,6 @@
             // Find the selected object from the options array
             const selectedObject = assetCtx.asset.find((option) => option._id === selected);
             setAssetSelected(selectedObject)
-            console.log(assetSelected);
             setCardRate(selectedObject.rates)
             setCardValue('')
         }
@@ -47,16 +46,13 @@
         // Set cardType on user select
         const selectRateHandler = (event) => {
             const selected = event.target.value
-        
             const selectedObject = cardRate.find((option) => option._id === selected)
-            console.log(selectedObject);
             setSelectedRate(selectedObject)
         }
 
         // This set the usd amount value
         const setAmountHandler = (event) => {
-            console.log(event.target.value);    
-        setAmount(event.target.value) 
+            setAmount(event.target.value) 
         }
 
         // This calculates the payout amount
@@ -66,13 +62,11 @@
 
         const getAmountHandler = () => {
             let payoutCalc = amount * selectedRate.rate
-            console.log(payoutCalc);
             return payoutCalc
         }
         /** End of rate calculation functions */
 
         const toggleModal = () => {
-            console.log("this ran");
             setIsModalOpen(!isModalOpen)
         }
 
@@ -94,7 +88,6 @@
         return ( 
             <>
                 <div className="intro-y col-span-12 lg:col-span-6">   
-            
                     <div className="intro-y box p-5">
                         <h3 style={{fontSize: "25px", fontWeight: "600"}}>Get Rate</h3><br/>
                         <h4 style={{fontSize: "20px"}}>Search and get the rate of any asset/card</h4><br/><br/>
@@ -134,11 +127,11 @@
                     <h2 className="mb-2" style={{fontSize:'20px'}}><strong>Details</strong></h2>
                     <hr />
                     <div>
-                        <p className="mb-3 mt-3" style={{fontSize:"20px"}}>Asset:     <span style={{float:'right'}}>  {assetSelected.name}</span></p>
+                        <p className="mb-3 mt-3" style={{fontSize:"20px"}}> Asset:     <span style={{float:'right'}}>  {assetSelected.name}</span></p>
                         <hr />
                         <p className="mb-3 mt-3" style={{fontSize:"20px"}}> Card Type: <span style={{float:'right'}}>  {selectedRate.cardType} </span> </p>
                         <hr />
-                        <p className="mb-3 mt-3" style={{fontSize:"20px"}}>  Country: <span style={{float:'right'}}>  {selectedRate.country} </span></p>
+                        <p className="mb-3 mt-3" style={{fontSize:"20px"}}> Country: <span style={{float:'right'}}>  {selectedRate.country} </span></p>
                         <hr />
                         <p className="mb-3 mt-3" style={{fontSize:"20px"}}> Denomination: <span style={{float:'right'}}> {selectedRate.denomination} </span></p>
                         <hr />              
@@ -147,7 +140,7 @@
                     <div style={{paddingTop:'35px'}}>
                         <h3 style={{fontSize: "20px", fontWeight: "500"}}> Rate: <CurrencyFormatter value={selectedRate.rate} currencycode="NGN" /> / USD </h3>
                                 {/* <USDAmount /> */}
-                                <div className="mt-5">
+                            <div className="mt-5">
                             <input type="number" className="form-control w-full" placeholder="Amount in USD" value={amount} onChange={setAmountHandler}/>
                             <h3 style={{fontSize: "20px", fontWeight: "500"}}> <CurrencyFormatter value={calcAmount} currencycode="NGN" /> </h3>
                             <p>Amount calculated based on rate</p>
