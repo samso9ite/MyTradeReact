@@ -6,7 +6,7 @@ import ProfileNav from "../components/layout/ProfileNav";
 import Profile from "../components/Profile";
 import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { userInfoActions } from "../store/user-details";
+import { fetchDetails, userInfoActions } from "../store/user-details";
 import Api from "../Api";
 
 
@@ -14,12 +14,13 @@ const Settings =  () => {
     const  {component_name} = useParams()
     const dispatch = useDispatch()
     const userData = async () => {
-         await Api.axios_instance.get(Api.baseUrl+'/user/get_info')
-         .then(res => {
-            dispatch(userInfoActions.storeAccountInfo(
-                 res.data.data
-             ))
-         })
+        //  await Api.axios_instance.get(Api.baseUrl+'/user/get_info')
+        //  .then(res => {
+        //     dispatch(userInfoActions.storeAccountInfo(
+        //          res.data.data
+        //      ))
+        //  })
+        dispatch(fetchDetails())
     }
     
     userData()

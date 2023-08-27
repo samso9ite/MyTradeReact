@@ -1,4 +1,4 @@
-import {useSelector} from 'react-redux'
+import {useSelector, useDispatch} from 'react-redux'
 import ReactDOM from 'react-dom'
 import SlideOver from './Helpers/SlideOver'
 import { useEffect, useState } from 'react'
@@ -8,11 +8,12 @@ import SlidingPane from "react-sliding-pane";
 import "react-sliding-pane/dist/react-sliding-pane.css";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { fetchDetails } from '../store/user-details'
 
 
 const Banks = (props) => {
     const details = useSelector(state => state.accountInfo.accountDetails)
-
+    const dispatch = useDispatch()
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [accountNumber, setAccountNumber] = useState('')
     const [bankName, setBankName] = useState('')
@@ -72,6 +73,7 @@ const Banks = (props) => {
                 closeOnClick: true,
                 theme: "light",
                 });
+            dispatch(fetchDetails())
         }).catch(err => {
             console.log(err);
         }).finally(
@@ -124,19 +126,23 @@ const Banks = (props) => {
                      </center>
                 </SlidingPane>
                 <div class="p-5">
-                    <div class="grid grid-cols-12 gap-6">
+                    
+                    <div class="grid grid-cols-12 gap-2" >
+                        {details.accountInfo?.map((account) => 
                             <div class="col-span-12 lg:col-span-6 2xl:col-span-6  box p-8 relative overflow-hidden bg-primary intro-y" style={{backgroundImage:'url("../../dist/images/cardBG.png")',  backgroundSize: 'cover',
                                 backgroundPosition: 'center',
                                 backgroundRepeat: 'no-repeat'
                                 }}
                             >
-                            <div class="leading-[2.15rem] w-full sm:w-72 text-white text-xl -mt-3">{details.accountInfo[0].name}</div>
-                            <div class="w-full sm:w-72 leading-relaxed text-white/70 text-xl     mt-3 mb-3"><strong>{details.accountInfo[0].bank_name}</strong></div>
-                            <div class="leading-[2.15rem] w-full sm:w-72 text-white text-xl -mt-3 mb-5">{details.accountInfo[0].number}</div>
-                            <button class="btn box flex items-center text-slate-600 dark:text-slate-300"   onClick={() => setState({ isPaneOpen: true })}>  Edit 
+                            <div class="leading-[2.15rem] w-full sm:w-72 text-white text-xl -mt-3">{account.name}</div>
+                            <div class="w-full sm:w-72 leading-relaxed text-white/70 text-xl     mt-3 mb-3"><strong>{account.bank_name}</strong></div>
+                            <div class="leading-[2.15rem] w-full sm:w-72 text-white text-xl -mt-3 mb-5">{account.number}</div>
+                            <button class="btn btn-danger box flex items-center text-slate-600 dark:text-slate-300" style={{backgroundColor:'red', color:'white'}}  onClick={() => setState({ isPaneOpen: true })}>  Delete 
                             </button>
-                          </div>   
+                            </div>  
+                        )} 
                     </div>
+                   
                     
                 </div>
             </div>
