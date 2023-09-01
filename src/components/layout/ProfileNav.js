@@ -12,7 +12,7 @@ const ProfileNav = (props) => {
                 <div class="intro-y box mt-5">
                     <div class="relative flex items-center p-5">
                         <div class="w-12 h-12 image-fit">
-                            <img alt="Profile Image" class="rounded-full" src="dist/images/profile-4.jpg" />
+                            <img alt="Profile Image" class="rounded-full" src={process.env.PUBLIC_URL + '/dist/images/avatar.png'} />
                         </div>
                         <div class="ml-4 mr-auto">
                             <div class="font-medium text-base">{userDetails.username}</div>

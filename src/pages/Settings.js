@@ -13,18 +13,14 @@ import Api from "../Api";
 const Settings =  () => {
     const  {component_name} = useParams()
     const dispatch = useDispatch()
-    const userData = async () => {
-        //  await Api.axios_instance.get(Api.baseUrl+'/user/get_info')
-        //  .then(res => {
-        //     dispatch(userInfoActions.storeAccountInfo(
-        //          res.data.data
-        //      ))
-        //  })
+    // const userData = async () => {
+    //     dispatch(fetchDetails())
+    // }
+    
+    // userData()
+    useEffect (() => {
         dispatch(fetchDetails())
-    }
-    
-    userData()
-    
+    }, [])
     return ( <>
         <MainLayout>
         <div className="content">

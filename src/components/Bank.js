@@ -1,6 +1,4 @@
 import {useSelector, useDispatch} from 'react-redux'
-import ReactDOM from 'react-dom'
-import SlideOver from './Helpers/SlideOver'
 import { useEffect, useState } from 'react'
 import Api from '../Api'
 import axios, { Axios } from 'axios'
@@ -12,11 +10,9 @@ import { fetchDetails } from '../store/user-details'
 
 
 const Banks = (props) => {
-    const details = useSelector(state => state.accountInfo.accountDetails)
-    const dispatch = useDispatch()
-    const [isModalOpen, setIsModalOpen] = useState(false)
+    let details = useSelector(state => state.accountInfo.accountDetails)
+    details = details.data.accountInfo
     const [accountNumber, setAccountNumber] = useState('')
-    const [bankName, setBankName] = useState('')
     const [accountName, setAccountName] = useState('')
     const [banks, setBanks] = useState([])
     const [bankCode, setBankCode] = useState('')
@@ -65,7 +61,6 @@ const Banks = (props) => {
         }
         Api.axios_instance.post(Api.baseUrl+('user/account/add'), formData)
         .then(res => {
-            console.log(res.data);
             toast.success(' Bank Added Successfully', {
                 position: "top-right",
                 autoClose: 5000,
@@ -73,13 +68,27 @@ const Banks = (props) => {
                 closeOnClick: true,
                 theme: "light",
                 });
-            dispatch(fetchDetails())
         }).catch(err => {
             console.log(err);
         }).finally(
             () => {setLoading(false)}
         )
     } 
+    const deleteBankHandler = (id) => {
+        Api.axios_instance.delete(Api.baseUrl+'/user/account/delete/'+id)
+        .then(
+            toast.success('Bank Deleted Successfully', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                theme: "light",
+                }
+            )
+        ).catch(err => {
+            console.log(err);
+        })
+    }
 
     return ( 
     <>
@@ -94,8 +103,8 @@ const Banks = (props) => {
                     className="some-custom-class"
                     overlayClassName="some-custom-overlay-class"
                     isOpen={state.isPaneOpen}
-                    title="Hey, it is optional pane title.  I can be React component too."
-                    subtitle="Optional subtitle."
+                    title="Create a new bank account"
+                    width='35%'
                     onRequestClose={() => {
                     setState({ isPaneOpen: false });
                     }}
@@ -126,29 +135,25 @@ const Banks = (props) => {
                      </center>
                 </SlidingPane>
                 <div class="p-5">
-                    
                     <div class="grid grid-cols-12 gap-2" >
-                        {details.accountInfo?.map((account) => 
+                        {details?.map((account) => 
                             <div class="col-span-12 lg:col-span-6 2xl:col-span-6  box p-8 relative overflow-hidden bg-primary intro-y" style={{backgroundImage:'url("../../dist/images/cardBG.png")',  backgroundSize: 'cover',
                                 backgroundPosition: 'center',
                                 backgroundRepeat: 'no-repeat'
                                 }}
                             >
                             <div class="leading-[2.15rem] w-full sm:w-72 text-white text-xl -mt-3">{account.name}</div>
-                            <div class="w-full sm:w-72 leading-relaxed text-white/70 text-xl     mt-3 mb-3"><strong>{account.bank_name}</strong></div>
+                            <div class="w-full sm:w-72 leading-relaxed text-white/70 text-xl mt-3 mb-3"><strong>{account.bank_name}</strong></div>
                             <div class="leading-[2.15rem] w-full sm:w-72 text-white text-xl -mt-3 mb-5">{account.number}</div>
-                            <button class="btn btn-danger box flex items-center text-slate-600 dark:text-slate-300" style={{backgroundColor:'red', color:'white'}}  onClick={() => setState({ isPaneOpen: true })}>  Delete 
+                            <button class="btn btn-danger box flex items-center text-slate-600 dark:text-slate-300" style={{backgroundColor:'red', color:'white'}} onClick={() => deleteBankHandler(account._id)}>  Delete 
                             </button>
                             </div>  
                         )} 
                     </div>
-                   
-                    
+                    <center> <button class="btn btn-outline-primary  inline-block mr-1 mb-2 mt-10"  onClick={() => setState({ isPaneOpen: true })}>Add New Bank Details <i data-lucide="plus-circle" class="w-5 h-5"></i></button></center>
                 </div>
             </div>
         </div>
-
-    
 
     </> );
 }

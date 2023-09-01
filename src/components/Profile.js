@@ -9,18 +9,16 @@ const Profile = () => {
                     </h2>
                 </div>
                 <div class="p-5">
-                    <div class="grid grid-cols-12 gap-6">
+                    <div class="grid grid-cols-2 gap-6">
+                        <h1 class="font-medium text-base mr-auto m-3" style={{fontSize:'20px'}}>Name: Ajayi Samson Aduragbemi</h1>
+                        <h1 class="font-medium text-base mr-auto m-3" style={{fontSize:'20px'}}>Username: Ajayi Samson Aduragbemi</h1>
+                        <h1 class="font-medium text-base mr-auto m-3" style={{fontSize:'20px'}}>Email: Ajayi Samson Aduragbemi</h1>
+                        <h1 class="font-medium text-base mr-auto m-3" style={{fontSize:'20px'}}>Phone: Ajayi Samson Aduragbemi</h1>
+                        
+                        <img alt="Profile Image" class="rounded-full"  style={{width: '100px'}} src={process.env.PUBLIC_URL + '/dist/images/avatar.png'} />
                      </div>
-                     <form data-single="true" action="/file-upload" class="dropzone">
-                            <div class="fallback"> <input name="file" type="file" /> </div>
-                            <div class="dz-message" data-dz-message>
-                                <div class="text-lg font-medium">Upload Image</div>
-                                {/* <div class="text-slate-500"> This is just a demo dropzone. Selected files are <span class="font-medium">not</span> actually uploaded. </div> */}
-                            </div>
-                             
-                        </form>
-                        <input type="text" className="form-control w-full" placeholder="" value="Ajayi Samson" disabled/> 
-                        <input type="email" className="form-control w-full" placeholder="" value="samso9ite@gmail " disabled/> 
+                  
+                      
                      </div>
                     </div>
       </div>      

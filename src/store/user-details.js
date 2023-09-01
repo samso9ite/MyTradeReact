@@ -3,7 +3,11 @@ import Api from "../Api"
 
 export const fetchDetails = createAsyncThunk("accntDetails/fetchAccntDetails", async () => {
     const response = await Api.axios_instance.get(Api.baseUrl+'/user/get_info')
-    console.log(response.data);
+    return response?.data
+})
+
+export const deleteBank = createAsyncThunk("deleteAccnt/deleteAccntDetails", async() => {
+    const response =  await Api.axios_instance.delete(Api.baseUrl+'/user/account/delete/')
     return response?.data
 })
 const userDetailSlice = createSlice({
@@ -13,6 +17,7 @@ const userDetailSlice = createSlice({
     extraReducers: (builder) =>{
         builder.addCase(fetchDetails.fulfilled, (state, action) => {
             state.accountDetails=action.payload
+            console.log(state.accountDetails);
         })
     }
 }
