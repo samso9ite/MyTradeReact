@@ -4,7 +4,7 @@ const MobileNav = () => {
         <div className="mobile-menu md:hidden">
             <div className="mobile-menu-bar">
                 <a href="" className="flex mr-auto">
-                    <img alt="MyTrade" className="w-6" src="dist/images/logo.svg" />
+                    <img alt="MyTrade" className="w-6"  src={process.env.PUBLIC_URL+'/dist/images/logo.svg'} />
                 </a>
                 <a href="" className="mobile-menu-toggler"> <i data-lucide="bar-chart-2" className="w-8 h-8 text-white transform -rotate-90"></i> </a>
             </div>

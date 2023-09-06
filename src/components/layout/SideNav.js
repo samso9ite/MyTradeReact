@@ -6,12 +6,18 @@ const SideNav = (props) => {
     // Get user details from the store 
     let userDetails = useSelector(state => state.auth.userDetails.userDetails)
 
+    const logoutHandler = () => {
+        sessionStorage.clear()
+        localStorage.clear()
+        window.location.replace('/auth')
+    }
+
     return ( 
         <>
             <nav className="side-nav">
                 <ul>
                     <li className="text-center mb-10" style={{color:"white", fontSize:"15px"}}>
-                        <center>  <img alt="MyTrade" className="rounded-full mb-3 text-center" src="dist/images/profile-2.jpg" width="50%" /></center>
+                        <center>  <img alt="MyTrade" className="rounded-full mb-3 text-center" src={process.env.PUBLIC_URL+'/dist/images/avatar.png'} width="30%" /></center>
                         <p className="mb-2">{userDetails.username}</p>
                         <p>{userDetails.email}</p>
                     </li> 
@@ -65,7 +71,7 @@ const SideNav = (props) => {
                     </li>
 
                     <li className="mt-3">
-                        <a href="profile.html" className="side-menu">
+                        <a className="side-menu" onClick={logoutHandler} style={{cursor:'pointer'}}>
                             <div className="side-menu__icon"> <i data-lucide="home"></i> </div>
                             <div className="side-menu__title">
                                 Logout

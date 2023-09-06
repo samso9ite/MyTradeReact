@@ -3,6 +3,8 @@
     import SlideOver from "./Helpers/SlideOver";
     import ReactDOM from 'react-dom'
     import CurrencyFormatter from './CurrencyFormatter'
+    import SlidingPane from "react-sliding-pane";
+    import "react-sliding-pane/dist/react-sliding-pane.css";
 
     const GetRate = () => {
         const assetCtx = useContext(AssetContext)
@@ -10,10 +12,14 @@
         const [assetSelected, setAssetSelected] = useState({})
         const [rateValue, setRateValue] = useState(0)
         const [cardValue, setCardValue] = useState('')
-        const [isModalOpen, setIsModalOpen] = useState(false)
         const [selectedRate, setSelectedRate] = useState('')
         const [amount, setAmount] = useState(0)
         const [calcAmount, setCalcAmount] = useState(0)
+
+        const [state, setState] = useState({
+            isPaneOpen: false,
+            isPaneOpenLeft: false,
+          });
     
         // Mapping through Asset for select option
         const getAssetHandler = () => {
@@ -66,10 +72,6 @@
         }
         /** End of rate calculation functions */
 
-        const toggleModal = () => {
-            setIsModalOpen(!isModalOpen)
-        }
-
         const USDAmount = () => {
             const triggerAction = () => {
                 console.log("Action triggered");
@@ -79,12 +81,6 @@
                     </>
             )     
         }
-
-        const toggleModalButton = () => {
-            console.log("Toggling this");   
-        }
-        const SlideOverRoot = document.getElementById('slide-over__root')
-        
         return ( 
             <>
                 <div className="intro-y col-span-12 lg:col-span-6">   
@@ -106,21 +102,18 @@
                                 {cardTypesHandler()}
                             </select>
                         </div>
-                        {/* <input type="number" c  lassName="form-control w-full" placeholder="Amount in USD" value={amount} onChange={setAmountHandler}/>  */}
                         <div className="text-center mt-5">
-                            <a
-                                href="javascript:;"
-                                data-tw-toggle="modal"
-                                data-tw-target="#medium-slide-over-size-preview"
-                                className="btn btn-primary mr-1 mb-2"
-                                onClick={toggleModal}
-                                > View Details 
-                            </a>
+                        <center> <button class="btn btn-outline-primary  inline-block mr-1 mb-2 mt-10"  onClick={() => setState({ isPaneOpen: true })}>View Details <i data-lucide="plus-circle" class="w-5 h-5"></i></button></center>
                         </div>  
                     </div>
                 </div>
-                {isModalOpen && ReactDOM.createPortal(
-                <SlideOver> 
+                <SlidingPane 
+                  isOpen={state.isPaneOpen}
+                  title="Rate Details"
+                  width='35%'
+                  onRequestClose={() => {
+                  setState({ isPaneOpen: false });
+                  }}> 
                     <div style={{paddingBottom:"30px"}}>
                         <center> <img src={assetSelected.image} width={"200px"} /></center>
                     </div>
@@ -139,20 +132,13 @@
 
                     <div style={{paddingTop:'35px'}}>
                         <h3 style={{fontSize: "20px", fontWeight: "500"}}> Rate: <CurrencyFormatter value={selectedRate.rate} currencycode="NGN" /> / USD </h3>
-                                {/* <USDAmount /> */}
-                            <div className="mt-5">
-                            <input type="number" className="form-control w-full" placeholder="Amount in USD" value={amount} onChange={setAmountHandler}/>
-                            <h3 style={{fontSize: "20px", fontWeight: "500"}}> <CurrencyFormatter value={calcAmount} currencycode="NGN" /> </h3>
+                             <div className="mt-5">
+                            <input type="number" className="form-control w-full" placeholder="Amount in USD" value={amount} onChange={setAmountHandler}/><br />
+                            <h3 style={{fontSize: "20px", fontWeight: "500"}} class="mt-5"> <CurrencyFormatter value={calcAmount} currencycode="NGN" /> </h3>
                             <p>Amount calculated based on rate</p>
                         </div>
-                    {/* <button  type="button"   onClick={triggerAction}>Trigger Action</button> */}
                     </div>
-                    <div class="modal-footer w-full absolute bottom-0">  <button type="button" class="btn btn-outline-primary w-20 mr-1" onClick={toggleModalButton}> Close </button></div>
-                </SlideOver>        
-                , 
-                    SlideOverRoot
-                    )   
-                }
+                </SlidingPane>        
                  
             </>
         );

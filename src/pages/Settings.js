@@ -7,8 +7,6 @@ import Profile from "../components/Profile";
 import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { fetchDetails, userInfoActions } from "../store/user-details";
-import Api from "../Api";
-
 
 const Settings =  () => {
     const  {component_name} = useParams()
@@ -21,10 +19,10 @@ const Settings =  () => {
     return ( <>
         <MainLayout>
         <div className="content">
-                    <div className="intro-y flex items-center mt-8">
-                        <h2 className="text-lg font-medium mr-auto">
+                    <div className="intro-y flex items-center mt-8 text-uppercase">
+                        {/* <h2 className="text-lg font-medium mr-auto text-uppercase">
                             {component_name}
-                        </h2>
+                        </h2> */}
                     </div>
                     <div className="grid grid-cols-12 gap-6">
                        <ProfileNav activeTab={component_name}/>

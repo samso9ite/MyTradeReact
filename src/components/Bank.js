@@ -72,9 +72,6 @@ const Banks = (props) => {
                 theme: "light",
             });
             setDetails([...details, formData])
-            // details.push(formData)
-            console.log(details);
-
         }).catch(err => {
             console.log(err);
         }).finally(
@@ -107,8 +104,8 @@ const Banks = (props) => {
                     </h2>
                 </div>
                 <SlidingPane
-                    className="some-custom-class"
-                    overlayClassName="some-custom-overlay-class"
+                    // className="some-custom-class"
+                    // overlayClassName="some-custom-overlay-class"
                     isOpen={state.isPaneOpen}
                     title="Create a new bank account"
                     width='35%'
