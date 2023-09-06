@@ -10,9 +10,10 @@ import { fetchDetails } from '../store/user-details'
 
 
 const Banks = (props) => {
-    let details = useSelector(state => state.accountInfo.accountDetails)
-    details = details.data.accountInfo
+    let storeDetails = useSelector(state => state.accountInfo.accountDetails)
+    storeDetails = storeDetails.data.accountInfo
     const [accountNumber, setAccountNumber] = useState('')
+    const [details, setDetails] = useState([])
     const [accountName, setAccountName] = useState('')
     const [banks, setBanks] = useState([])
     const [bankCode, setBankCode] = useState('')
@@ -31,6 +32,8 @@ const Banks = (props) => {
             .catch(error => {
                 console.log(error.data);
         })
+        setDetails(storeDetails)
+        console.log(details);
     }, [])
     const bankHandler = (event) => {
        setBankCode(event.target.value)
@@ -67,7 +70,11 @@ const Banks = (props) => {
                 hideProgressBar: false,
                 closeOnClick: true,
                 theme: "light",
-                });
+            });
+            setDetails([...details, formData])
+            // details.push(formData)
+            console.log(details);
+
         }).catch(err => {
             console.log(err);
         }).finally(
@@ -154,7 +161,7 @@ const Banks = (props) => {
                 </div>
             </div>
         </div>
-
+        <ToastContainer />
     </> );
 }
  

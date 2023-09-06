@@ -13,14 +13,11 @@ import Api from "../Api";
 const Settings =  () => {
     const  {component_name} = useParams()
     const dispatch = useDispatch()
-    // const userData = async () => {
-    //     dispatch(fetchDetails())
-    // }
-    
-    // userData()
+
     useEffect (() => {
         dispatch(fetchDetails())
     }, [])
+    
     return ( <>
         <MainLayout>
         <div className="content">
@@ -30,7 +27,7 @@ const Settings =  () => {
                         </h2>
                     </div>
                     <div className="grid grid-cols-12 gap-6">
-                       <ProfileNav />
+                       <ProfileNav activeTab={component_name}/>
                         {component_name === 'password' && <ChangePassword />}
                         {component_name === 'banks' && <Banks  />}
                         {component_name === 'profile' && <Profile />}

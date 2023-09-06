@@ -3,14 +3,17 @@ import { useSelector, useDispatch } from 'react-redux';
 import { transactionsAction } from '../store/transactions-slice';
 import Transaction from '../components/Transaction';
 import { useEffect, useState } from 'react';
+import { fetchDetails } from "../store/user-details";
 import Api from '../Api';
 
     const Dashboard = () => {
     // Get user details from the store 
     const[transactions, setTransactions] = useState([])
     let userDetails = useSelector(state => state.auth.userDetails.userDetails)
+    const dispatch = useDispatch()
     // Getting recent transactions 
     useEffect(() => {
+        dispatch(fetchDetails())
         Api.axios_instance.get(Api.baseUrl+'card_transaction/all')
         .then(res => {
             setTransactions(res.data.data)
