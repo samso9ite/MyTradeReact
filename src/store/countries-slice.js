@@ -8,7 +8,6 @@ const countriesSlice = createSlice({
        storeCountries(state){ Api.axios_instance.get('../dist/json/countries.json')
         .then(res => {
             state.countries = res.data
-            console.log(res);
         })
     }}
 })

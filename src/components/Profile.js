@@ -38,7 +38,7 @@ const Profile = () => {
         formData.append('image', JSON.stringify(imageUrl))
         Api.axios_instance.post(Api.baseUrl+'/user/image/add', formData)
         .then(res => {
-            toast.success('Bank Added Successfully', {
+            toast.success('Account Updated Successfully', {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,

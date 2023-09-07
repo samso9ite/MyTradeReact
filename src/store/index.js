@@ -7,21 +7,14 @@ import storage from 'redux-persist/lib/storage';
 import {persistReducer, persistStore} from 'redux-persist';
 import thunk from 'redux-thunk';
 import { combineReducers } from 'redux';
-
-// const store = configureStore({
-//     reducer: {
-//         auth: authSlice.reducer, 
-//         transactions: transactionsSlice.reducer,
-//         countries: countriesSlice.reducer,
-//         accountInfo: userDetailSlice.reducer
-//     }
-// })
+import tradeSlice from './trade-slice';
 
 const reducers = combineReducers({
     auth: authSlice.reducer, 
     transactions: transactionsSlice.reducer,
     countries: countriesSlice.reducer,
-    accountInfo: userDetailSlice.reducer
+    accountInfo: userDetailSlice.reducer,
+    trade: tradeSlice.reducer
 })
 
 const persistConfig = {
@@ -35,7 +28,5 @@ export const store = configureStore({
     reducer:persistedReducer,
     middleware: [thunk]
 })
-
-// export const persistor = persistStore(store)
 
 export default store

@@ -18,22 +18,19 @@ const Settings =  () => {
     
     return ( <>
         <MainLayout>
-        <div className="content">
-                    <div className="intro-y flex items-center mt-8 text-uppercase">
-                        {/* <h2 className="text-lg font-medium mr-auto text-uppercase">
-                            {component_name}
-                        </h2> */}
-                    </div>
-                    <div className="grid grid-cols-12 gap-6">
-                       <ProfileNav activeTab={component_name}/>
-                        {component_name === 'password' && <ChangePassword />}
-                        {component_name === 'banks' && <Banks  />}
-                        {component_name === 'profile' && <Profile />}
-                    </div>
+            <div className="content">
+                <div className="intro-y flex items-center mt-8 text-uppercase">
+                    {/* <h2 className="text-lg font-medium mr-auto text-uppercase">
+                        {component_name}
+                    </h2> */}
                 </div>
-                <style>
-
-                </style>
+                <div className="grid grid-cols-12 gap-6">
+                    <ProfileNav activeTab={component_name}/>
+                    {component_name === 'password' && <ChangePassword />}
+                    {component_name === 'banks' && <Banks  />}
+                    {component_name === 'profile' && <Profile />}
+                </div>
+            </div>
            
         </MainLayout>
     </> );

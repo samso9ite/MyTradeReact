@@ -12,7 +12,7 @@ const RatePage = () => {
                 <div class="content">
                     <div class="intro-y flex items-center mt-8">
                         <h2 class="text-lg font-medium mr-auto">
-                            Rates {assetCtx.asset}
+                            Rate
                         </h2>
                     </div>
                     <div class="grid grid-cols-12 gap-6 mt-5">

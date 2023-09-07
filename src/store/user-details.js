@@ -17,7 +17,6 @@ const userDetailSlice = createSlice({
     extraReducers: (builder) =>{
         builder.addCase(fetchDetails.fulfilled, (state, action) => {
             state.accountDetails=action.payload
-            console.log(state.accountDetails);
         })
     }
 }

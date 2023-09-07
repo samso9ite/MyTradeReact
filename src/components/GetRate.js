@@ -1,7 +1,5 @@
     import {useContext, useEffect, useState } from "react";
     import AssetContext from "../store/context/asset-context";
-    import SlideOver from "./Helpers/SlideOver";
-    import ReactDOM from 'react-dom'
     import CurrencyFormatter from './CurrencyFormatter'
     import SlidingPane from "react-sliding-pane";
     import "react-sliding-pane/dist/react-sliding-pane.css";
@@ -72,15 +70,6 @@
         }
         /** End of rate calculation functions */
 
-        const USDAmount = () => {
-            const triggerAction = () => {
-                console.log("Action triggered");
-            }
-            return(
-            <>
-                    </>
-            )     
-        }
         return ( 
             <>
                 <div className="intro-y col-span-12 lg:col-span-6">   
