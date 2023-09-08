@@ -12,12 +12,10 @@ const RedeemPage = () => {
             <MainLayout >
                 <AssetContextProvider>
                     <div className="content"> 
-                    <center>
                         <div className="grid grid-cols-12 gap-6">   
                             {component_name === 'cards' && <Cards />}
                             {component_name === 'set-trade' && <SetTradeAmount />}
                         </div>
-                    </center>
                    </div>
                 </AssetContextProvider>
             </MainLayout>
