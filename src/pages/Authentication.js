@@ -68,12 +68,13 @@ export async function action({request}){
             password: data.get('password')
         }
     } else if(mode === 'register'){ 
+        console.log(authData);
         authData = {
             username: data.get('username'),
             fullname: data.get('fullname'),            
             email: data.get('email'),
             password: data.get('password'),
-            phone: data.get('phone')
+            phone: data.get('phone_number')
         }
     }
     
