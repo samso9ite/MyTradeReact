@@ -2,11 +2,15 @@ import { useContext, useEffect, useState } from "react";
 import AssetContext from "../../store/context/asset-context"; 
 import { useParams } from "react-router-dom";
 import rawCountries from '../../util/countries.json'
+import CurrencyFormatter  from "../CurrencyFormatter";
 
 const SetTradeAmount = () => {
 const assetCtx = useContext(AssetContext)
 const [card, setCard] = useState('')
 const {id} = useParams()
+const [cardRate, setCardRate] = useState([])
+const [selectedCardType, setSelectedCardType] = useState([])
+const [selectedCurrency, setSelectedCurrency] = useState([])
 const [rateValue, setRateValue] = useState(0)
 const [cardTypes, setCardTypes] = useState([])
 const [countries, setCountries] = useState([])
@@ -24,21 +28,24 @@ const getUniqueCountries = (countryArr) => {
 useEffect(() => {
     let assetDetail = assetCtx.asset.find((asset) => asset._id === id)
     setCard(assetDetail)
+    setCardRate(assetDetail.rates)
     let cardArr = []
     let countryArr = []
+    setCardTypes([])
+    setCardValue('')
     assetDetail.rates.forEach(rate => {
         const currency = findCountryCurrency(rate.country)
         rate.currency = currency;
         if(!cardArr.includes(rate.cardType)){
-            console.log('RAte.Country');
             cardArr.push(rate.cardType)
         }
         countryArr.push({country:rate.country, currency})
     });
     countryArr = getUniqueCountries(countryArr)
     setCardTypes(prevState => [...prevState, ...cardArr])
+    setCountries([])        
     setCountries(prevState => [...prevState, ...countryArr])
-    }, [])
+}, [])
 
 // Find Country Currency Handler
 const findCountryCurrency = (country) => {
@@ -60,6 +67,40 @@ const countryListHandler = () => {
     })
 } 
 
+const selectCardTypeHandler = (event) => {
+    setSelectedCardType(event.target.value)
+}
+const selectCurrencyHandler = (event) => {
+    setSelectedCurrency(event.target.value)
+}
+/** The section calculates the rate of the value */     
+const between = (x, range) => {
+    const [min, max] = range.split('-').map(val => parseInt(val))
+    return x >= min && x <= max
+}
+const isRateAvailable = (amount) => {
+    cardRate.forEach(rate => {
+        const isBetween = between(amount, rate.denomination);
+        if(isBetween){
+            setRateValue(rate.rate)
+        }else{
+            setRateValue(0)
+        }
+    })
+}
+
+const getRateHandler = (event) => {
+    setCardValue(event.target.value)
+    isRateAvailable(event.target.value)
+}
+
+ // This calculates the payout amount
+ const getAmountHandler = () => {
+    let payoutCalc = cardValue * rateValue
+    return payoutCalc
+}
+/** End of rate calculation functions */
+
     return (
         <>
             <div class="col-span-12 lg:col-span-8 2xl:col-span-8 flex lg:block flex-col-reverse">
@@ -75,32 +116,36 @@ const countryListHandler = () => {
                             <h2 style={{fontSize:'25px', fontWeight:'500'}}>{card.name}</h2>
                         </center><br />
                         <hr />
-                        <form encType="multpart/form-data"> 
+                        <div>
                             <div class="grid grid-cols-1 gap-6 mb-5">
                             <div className="mt-5">
                                 <label for="crud-form-2" className="form-label mt-5">Card Type</label>
-                                <select className="form-select form-select-lg sm:mr-2" aria-label=".form-select-lg example">
+                                <select className="form-select form-select-lg sm:mr-2" aria-label=".form-select-lg example" value={selectedCardType} onChange={selectCardTypeHandler}>
                                     <option value="">-- Choose card type -- </option>
                                     {cardTypesHandler()}
                                 </select>   
                             </div>
                             <div>
                                 <label for="crud-form-2" className="form-label ">Select Country/Currency</label>
-                                <select className="form-select form-select-lg sm:mr-2" aria-label=".form-select-lg example">
+                                <select className="form-select form-select-lg sm:mr-2" aria-label=".form-select-lg example" value={selectedCurrency} onChange={selectCurrencyHandler}>
+                                <option value="">-- Choose Currency -- </option>
                                     {countryListHandler()}
                                 </select>
                             </div>
                             <div>
                                 <label for="crud-form-2" className="form-label">What's the value of the card</label>
-                                <input type="number" className="form-control w-full" placeholder="Card Value"  />
+                                <input type="number" className="form-control w-full" placeholder="Card Value" value={cardValue} onChange={getRateHandler} />
                             </div>
-                            <div>
-                                  
-                            <span style={{fontSize:'21px', fontWeight:500}}> You Get: #123,0000</span>
-                                <button class="btn btn-primary large mr-1 mt-10" style={{float:'right'}}> Confirm & Proceed</button>
+                           
                             </div>
-                            </div>
-                        </form>
+                            <h3 style={{fontSize: "20px", fontWeight: "500"}}> Rate: <CurrencyFormatter value={rateValue} currencycode="NGN" /> </h3>
+                            <div class="flex justify-end">
+                                <div class="mr-auto flex items-center">
+                                    <h3 style={{fontSize: "20px", fontWeight: "500"}}> Payout: <CurrencyFormatter value={getAmountHandler()}  currencycode="NGN" /></h3>
+                                </div>
+                                <button type="submit" class="btn btn-primary large mr-1 flex "> Confirm & Proceed</button>
+                            </div>  
+                        </div>
                     </div>
                 </div>
             </div>  
