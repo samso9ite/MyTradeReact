@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 const GiftcardBox = () => {
     const assetCtx = useContext(AssetContext)
     const navigate = useNavigate()
-    console.log(assetCtx.asset);
     const cardsHandler = () => {
         return assetCtx.asset?.map((asset) => {
             if(asset.status === 'Available'){

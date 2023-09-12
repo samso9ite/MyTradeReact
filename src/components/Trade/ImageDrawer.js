@@ -8,33 +8,41 @@ import ImageUploading from 'react-images-uploading';
     const [state, setState] = useState({
         isPaneOpen: false,
         isPaneOpenLeft: false,
-      });
+    });
     
     const [images, setImages] = useState([]);
     const maxNumber = 69;
     const onChange = (imageList, addUpdateIndex) => {
-    // data for submit
-    console.log(imageList, addUpdateIndex);
     setImages(imageList);
   };
+  const [imageUrls, setImageUrls] = useState([])
 
-//   const handleUpload = async (imageFile, clientId) => {
-//     try {
-//       const formData = new FormData();
-//       formData.append('image', file);
-//       const response = await axios.post('https://api.imgur.com/3/upload', formData, {
-//         headers: {
-//           'Content-Type': 'multipart/form-data', // Set the Content-Type header
-//           Authorization: `Client-ID 4da84cdc83fab73`, // Replace with your actual client ID
-//         },
-//       });
-  
-//       // Handle the response here (e.g., extract image URL)
-//     } catch (error) {
-//       // Handle errors here
-//       console.error('Error uploading image to Imgur:', error);
-//     } 
-//   };
+  const handleUpload =  (imageFile, clientId) => {
+    images.forEach(image =>  {
+    try {
+      const formData = new FormData();
+      formData.append('image', image.file);
+      const response = axios.post('https://api.imgur.com/3/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data', // Set the Content-Type header
+          Authorization: `Client-ID 4da84cdc83fab73`, // Replace with your actual client ID
+        },
+      }).then((res) => {
+        let response = res.data.data
+        console.log(response.link);
+        setImageUrls(prevState => [...prevState, res.data.data.link])
+        console.log(res.data)
+    });
+    //   
+    //   console.log(data);
+      // Handle the response here (e.g., extract image URL)
+    } catch (error) {
+      // Handle errors here
+      console.error('Error uploading image to Imgur:', error);
+    } 
+    })
+  console.log(imageUrls);
+  };
   
     return(
         <SlidingPane 
@@ -90,12 +98,9 @@ import ImageUploading from 'react-images-uploading';
         )}
       </ImageUploading>
 
-      <textarea name="comment" className="form-control w-full mt-5">Note: If card digits aren't clear please enter them here.</textarea>
-      <center><button type="submit" class="btn btn-primary large mr-1 flex mt-5"> Complete Trade</button></center>
-   
-        {/* <input name="file" type="file" onChange={onFileChange} />
-        <button onClick={handleUpload}>Upload</button> */}
-        </SlidingPane>
+      <textarea className="form-control w-full mt-5">Note: If card digits aren't clear please enter them here.</textarea>
+      <center><button type="submit" class="btn btn-primary large mr-1 flex mt-5" onClick={handleUpload}> Complete Trade</button></center>
+    </SlidingPane>
     )
 }
 

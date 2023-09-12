@@ -4,6 +4,9 @@ import { useParams } from "react-router-dom";
 import rawCountries from '../../util/countries.json'
 import CurrencyFormatter  from "../CurrencyFormatter";
 import ImageDrawer from "./ImageDrawer";
+import { useDispatch } from "react-redux";
+import { tradeAction } from "../../store/trade-slice";
+
 
 const SetTradeAmount = () => {
 const assetCtx = useContext(AssetContext)
@@ -16,11 +19,14 @@ const [rateValue, setRateValue] = useState(0)
 const [cardTypes, setCardTypes] = useState([])
 const [countries, setCountries] = useState([])
 const [cardValue, setCardValue] = useState('')
+const [price, setPrice] = useState(0)
 
 const [state, setState] = useState({
     isPaneOpen: false,
     isPaneOpenLeft: false,
   });
+
+const dispatch = useDispatch()
 
 // Removing country duplicates
 const getUniqueCountries = (countryArr) => {
@@ -103,6 +109,7 @@ const getRateHandler = (event) => {
  // This calculates the payout amount
  const getAmountHandler = () => {
     let payoutCalc = cardValue * rateValue
+    // setPrice(cardValue * rateValue)
     return payoutCalc
 }
 /** End of rate calculation functions */
@@ -110,6 +117,19 @@ const getRateHandler = (event) => {
 const openDrawer = () => {
     setState({isPaneOpen:true})
   }
+
+const storeTradeDetails = () => {
+      // console.log(selectedCardType);
+      let tradeDetails = {
+        card_type: selectedCardType,
+        country: selectedCurrency,
+        card_value: cardValue,
+        price: cardValue * rateValue
+    }
+    console.log(tradeDetails);
+    dispatch(tradeAction.tradeDetails(tradeDetails))
+    setState({isPaneOpen:true})
+}
 
     return (
         <>
@@ -147,7 +167,7 @@ const openDrawer = () => {
                                 <div class="mr-auto flex items-center">
                                     <h3 style={{fontSize: "20px", fontWeight: "500"}}> Payout: <CurrencyFormatter value={getAmountHandler()}  currencycode="NGN" /></h3>
                                 </div>
-                                <button type="submit" class="btn btn-primary large mr-1 flex" onClick={() => setState({isPaneOpen:true})}> Confirm & Proceed</button>
+                                <button type="submit" class="btn btn-primary large mr-1 flex" onClick={storeTradeDetails}> Confirm & Proceed</button>
                             </div>  
                         </div>
                     </div>
