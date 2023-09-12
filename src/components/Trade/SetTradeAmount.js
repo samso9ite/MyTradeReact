@@ -3,6 +3,7 @@ import AssetContext from "../../store/context/asset-context";
 import { useParams } from "react-router-dom";
 import rawCountries from '../../util/countries.json'
 import CurrencyFormatter  from "../CurrencyFormatter";
+import ImageDrawer from "./ImageDrawer";
 
 const SetTradeAmount = () => {
 const assetCtx = useContext(AssetContext)
@@ -15,6 +16,11 @@ const [rateValue, setRateValue] = useState(0)
 const [cardTypes, setCardTypes] = useState([])
 const [countries, setCountries] = useState([])
 const [cardValue, setCardValue] = useState('')
+
+const [state, setState] = useState({
+    isPaneOpen: false,
+    isPaneOpenLeft: false,
+  });
 
 // Removing country duplicates
 const getUniqueCountries = (countryArr) => {
@@ -101,15 +107,14 @@ const getRateHandler = (event) => {
 }
 /** End of rate calculation functions */
 
+const openDrawer = () => {
+    setState({isPaneOpen:true})
+  }
+
     return (
         <>
             <div class="col-span-12 lg:col-span-8 2xl:col-span-8 flex lg:block flex-col-reverse">
                 <div class="intro-y box lg:mt-5">
-                    {/* <div class="flex items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400">
-                        <h2 class="font-medium text-base mr-auto">
-                            Set Trade Amount
-                        </h2>
-                    </div> */}
                     <div class="p-5">
                         <center> 
                             <img alt="Profile Image"  style={{width: '250px', marginBottom:'20px'}} src={card.image} />  
@@ -136,18 +141,20 @@ const getRateHandler = (event) => {
                                 <label for="crud-form-2" className="form-label">What's the value of the card</label>
                                 <input type="number" className="form-control w-full" placeholder="Card Value" value={cardValue} onChange={getRateHandler} />
                             </div>
-                           
                             </div>
                             <h3 style={{fontSize: "20px", fontWeight: "500"}}> Rate: <CurrencyFormatter value={rateValue} currencycode="NGN" /> </h3>
                             <div class="flex justify-end">
                                 <div class="mr-auto flex items-center">
                                     <h3 style={{fontSize: "20px", fontWeight: "500"}}> Payout: <CurrencyFormatter value={getAmountHandler()}  currencycode="NGN" /></h3>
                                 </div>
-                                <button type="submit" class="btn btn-primary large mr-1 flex "> Confirm & Proceed</button>
+                                <button type="submit" class="btn btn-primary large mr-1 flex" onClick={() => setState({isPaneOpen:true})}> Confirm & Proceed</button>
                             </div>  
                         </div>
                     </div>
                 </div>
+                <ImageDrawer isPaneOpen={state.isPaneOpen}  
+                    onRequestClose={() => {setState({ isPaneOpen: false });}}
+                />
             </div>  
         </>
     )
