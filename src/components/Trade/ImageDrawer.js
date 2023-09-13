@@ -17,31 +17,29 @@ import ImageUploading from 'react-images-uploading';
   };
   const [imageUrls, setImageUrls] = useState([])
 
-  const handleUpload =  (imageFile, clientId) => {
-    images.forEach(image =>  {
-    try {
-      const formData = new FormData();
-      formData.append('image', image.file);
-      const response = axios.post('https://api.imgur.com/3/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data', // Set the Content-Type header
-          Authorization: `Client-ID 4da84cdc83fab73`, // Replace with your actual client ID
-        },
-      }).then((res) => {
-        let response = res.data.data
-        console.log(response.link);
-        setImageUrls(prevState => [...prevState, res.data.data.link])
-        console.log(res.data)
-    });
-    //   
-    //   console.log(data);
-      // Handle the response here (e.g., extract image URL)
-    } catch (error) {
-      // Handle errors here
-      console.error('Error uploading image to Imgur:', error);
-    } 
-    })
-  console.log(imageUrls);
+  const handleUpload = async () => {
+    try{
+        const uploadedImageUrls = await Promise.all(
+            (images.map( async(image) => {
+                const formData = new FormData();
+                formData.append('image', image.file);
+                const response = await axios.post('https://api.imgur.com/3/upload', formData, {
+                    headers: {
+                      'Content-Type': 'multipart/form-data', // Set the Content-Type header
+                      Authorization: 'Client-ID YOUR_CLIENT_ID', // Replace with your actual client ID
+                    }
+                });
+                return response.data.data.link;
+            })
+            ))
+                // Add the uploaded image URLs to the state
+                setImageUrls((prevState) => [...prevState, ...uploadedImageUrls]);
+                console.log(uploadedImageUrls);
+            } catch (error) {
+            // Handle errors here
+            console.error('Error uploading image', error);
+            }
+
   };
   
     return(
