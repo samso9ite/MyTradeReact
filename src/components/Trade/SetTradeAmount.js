@@ -121,10 +121,12 @@ const openDrawer = () => {
 const storeTradeDetails = () => {
       // console.log(selectedCardType);
       let tradeDetails = {
+        card: card.name,
         card_type: selectedCardType,
         country: selectedCurrency,
         card_value: cardValue,
-        price: cardValue * rateValue
+        price: cardValue * rateValue,
+        rate: rateValue
     }
     console.log(tradeDetails);
     dispatch(tradeAction.tradeDetails(tradeDetails))

@@ -1,23 +1,33 @@
 import SlidingPane from "react-sliding-pane";
 import "react-sliding-pane/dist/react-sliding-pane.css";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import axios from 'axios';
 import ImageUploading from 'react-images-uploading';
+import Api from "../../Api";
 
-    const ImageDrawer = (props) => {
+  const ImageDrawer = (props) => {
     const [state, setState] = useState({
         isPaneOpen: false,
         isPaneOpenLeft: false,
     });
-    
+    const [submitting, setSubmitting] = useState(false)
+    const [digit, setDigit] = useState('')
     const [images, setImages] = useState([]);
     const maxNumber = 69;
+
+    const storeTradeDetails = useSelector(state => state.trade.trade)
     const onChange = (imageList, addUpdateIndex) => {
-    setImages(imageList);
-  };
+      setImages(imageList);
+    };
+    
   const [imageUrls, setImageUrls] = useState([])
+  const digitHandler = (event) => {
+    setDigit(event.target.value)
+  }
 
   const handleUpload = async () => {
+    setSubmitting(true)
     try{
         const uploadedImageUrls = await Promise.all(
             (images.map( async(image) => {
@@ -26,7 +36,7 @@ import ImageUploading from 'react-images-uploading';
                 const response = await axios.post('https://api.imgur.com/3/upload', formData, {
                     headers: {
                       'Content-Type': 'multipart/form-data', // Set the Content-Type header
-                      Authorization: 'Client-ID YOUR_CLIENT_ID', // Replace with your actual client ID
+                      Authorization: 'Client-ID c383bbc6a421d53', // Replace with your actual client ID
                     }
                 });
                 return response.data.data.link;
@@ -34,12 +44,28 @@ import ImageUploading from 'react-images-uploading';
             ))
                 // Add the uploaded image URLs to the state
                 setImageUrls((prevState) => [...prevState, ...uploadedImageUrls]);
-                console.log(uploadedImageUrls);
-            } catch (error) {
+                const tradeData = {
+                  card: storeTradeDetails.card,
+                  currency:storeTradeDetails.country,
+                  rate: storeTradeDetails.rate,
+                  card_type: storeTradeDetails.card_type,
+                  card_value: storeTradeDetails.card_value,
+                  amount: storeTradeDetails.price,
+                  card_image: imageUrls,
+                  card_receipt: '',
+                  card_digit: digit
+                }
+                Api.axios_instance.post(Api.baseUrl+'/user/card/sell', tradeData)
+                .then(res => {
+                  console.log(res);
+                })
+              
+            } 
+    catch (error) {
             // Handle errors here
             console.error('Error uploading image', error);
             }
-
+      setSubmitting(false)
   };
   
     return(
@@ -96,8 +122,8 @@ import ImageUploading from 'react-images-uploading';
         )}
       </ImageUploading>
 
-      <textarea className="form-control w-full mt-5">Note: If card digits aren't clear please enter them here.</textarea>
-      <center><button type="submit" class="btn btn-primary large mr-1 flex mt-5" onClick={handleUpload}> Complete Trade</button></center>
+      <textarea className="form-control w-full mt-5" onChange={digitHandler}>Note: If card digits aren't clear please enter them here.</textarea>
+      <center><button type="submit" class="btn btn-primary large mr-1 flex mt-5" onClick={handleUpload} disabled={submitting}>{submitting ? 'Submitting Trade' : 'Submit Trade'}</button></center>
     </SlidingPane>
     )
 }
