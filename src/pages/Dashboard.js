@@ -5,24 +5,26 @@ import Transaction from '../components/Transaction';
 import { useEffect, useState } from 'react';
 import { fetchDetails } from "../store/user-details";
 import Api from '../Api';
+import CurrencyFormatter from '../components/CurrencyFormatter';
+import { Link } from 'react-router-dom';
 
     const Dashboard = () => {
     // Get user details from the store 
-    const[transactions, setTransactions] = useState([])
-    let userDetails = useSelector(state => state.auth.userDetails.userDetails)
+    const[details, setDetails] = useState([])
     const dispatch = useDispatch()
     // Getting recent transactions 
     useEffect(() => {
         dispatch(fetchDetails())
-        Api.axios_instance.get(Api.baseUrl+'card_transaction/all')
+        Api.axios_instance.get(Api.baseUrl+'/user/get_info')
         .then(res => {
-            setTransactions(res.data.data)
+            setDetails(res.data.data)
         })
         .catch(err => {
             console.log(err);
         })  
         
     }, [])
+
         return ( 
             <>
             <MainLayout >
@@ -43,7 +45,7 @@ import Api from '../Api';
                                                     <div className="flex">
                                                         <i data-lucide="credit-card" className="report-box__icon text-pending"></i> 
                                                     </div>
-                                                    <div className="text-3xl font-medium leading-8 mt-6">₦{userDetails.availableAmount}</div>
+                                                    <div className="text-3xl font-medium leading-8 mt-6"><CurrencyFormatter value={details.availableAmount} currencycode="NGN" /></div>
                                                     <div className="text-base text-slate-500 mt-1">Available Balance</div>
                                                 </div>
                                             </div>
@@ -54,7 +56,7 @@ import Api from '../Api';
                                                     <div className="flex">
                                                         <i data-lucide="credit-card" className="report-box__icon text-pending"></i> 
                                                     </div>
-                                                    <div className="text-3xl font-medium leading-8 mt-6">₦{userDetails.pendingAmount}</div>
+                                                    <div className="text-3xl font-medium leading-8 mt-6"><CurrencyFormatter value={details.pendingAmount} currencycode="NGN" /></div>
                                                     <div className="text-base text-slate-500 mt-1">Pending Balance</div>
                                                 </div>
                                             </div>
@@ -65,7 +67,7 @@ import Api from '../Api';
                                                     <div className="flex">
                                                         <i data-lucide="credit-card" className="report-box__icon text-pending"></i> 
                                                      </div>
-                                                    <div className="text-3xl font-medium leading-8 mt-6">{userDetails.card_transactions.length}</div>
+                                                    <div className="text-3xl font-medium leading-8 mt-6">{details.card_transactions && details.card_transactions.length}</div>
                                                     <div className="text-base text-slate-500 mt-1">Total Transactions</div>
                                                 </div>
                                             </div>
@@ -95,12 +97,14 @@ import Api from '../Api';
 
                                 <div className="col-span-2 xl:col-span-2">
                                     <div className="intro-y">
-                                        <div className="box px-4 py-4 mb-3  items-center zoom-in">
-                                            <center>
-                                                <img alt="MyTrade" src="dist/images/coin/eth.svg" width="30%"/>
-                                                <div className="font-medium">Ethereum</div>
-                                            </center>
-                                        </div>
+                                        <Link to="/redeem/cards"> 
+                                            <div className="box px-4 py-4 mb-3  items-center zoom-in">
+                                                <center>
+                                                    <img alt="MyTrade" src="dist/images/coin/eth.svg" width="30%"/>
+                                                    <div className="font-medium">Ethereum</div>
+                                                </center>
+                                            </div>
+                                        </Link>
                                     </div>
                                 </div>
 
@@ -148,9 +152,7 @@ import Api from '../Api';
                                         </div>
                                     </div>
                                 </div>
-
-                             
-                               
+       
                                 <div className="col-span-12 mt-6">
                                     <div className="intro-y block sm:flex items-center h-10">
                                         <h2 className="text-lg font-medium truncate mr-5">
@@ -171,7 +173,7 @@ import Api from '../Api';
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                              <Transaction transactions={transactions} />
+                                              <Transaction transactions={details.card_transactions && details.card_transactions.slice(0,10)} />
                                             </tbody>
                                         </table>
                                     </div>

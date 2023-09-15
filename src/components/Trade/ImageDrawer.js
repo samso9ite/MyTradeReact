@@ -1,10 +1,12 @@
 import SlidingPane from "react-sliding-pane";
 import "react-sliding-pane/dist/react-sliding-pane.css";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from 'axios';
 import ImageUploading from 'react-images-uploading';
 import Api from "../../Api";
+import { Link } from "react-router-dom";
+import { tradeAction } from "../../store/trade-slice";
 
   const ImageDrawer = (props) => {
     const [state, setState] = useState({
@@ -20,11 +22,12 @@ import Api from "../../Api";
     const onChange = (imageList, addUpdateIndex) => {
       setImages(imageList);
     };
-    
-  const [imageUrls, setImageUrls] = useState([])
-  const digitHandler = (event) => {
-    setDigit(event.target.value)
-  }
+    const [isSuccess, setIsSuccess] = useState(false)
+    const [imageUrls, setImageUrls] = useState([])
+    const digitHandler = (event) => {
+      setDigit(event.target.value)
+    }
+    const dispatch = useDispatch()
 
   const handleUpload = async () => {
     setSubmitting(true)
@@ -44,20 +47,27 @@ import Api from "../../Api";
             ))
                 // Add the uploaded image URLs to the state
                 setImageUrls((prevState) => [...prevState, ...uploadedImageUrls]);
-                const tradeData = {
+                const tradeData = {transactions:{
                   card: storeTradeDetails.card,
-                  currency:storeTradeDetails.country,
+                  country:storeTradeDetails.country,
                   rate: storeTradeDetails.rate,
                   card_type: storeTradeDetails.card_type,
                   card_value: storeTradeDetails.card_value,
                   amount: storeTradeDetails.price,
-                  card_image: imageUrls,
+                  card_image: uploadedImageUrls,
                   card_receipt: '',
                   card_digit: digit
+                },
+                totalAmount:storeTradeDetails.price
                 }
                 Api.axios_instance.post(Api.baseUrl+'/user/card/sell', tradeData)
                 .then(res => {
                   console.log(res);
+                  setIsSuccess(true)
+                  // Clear State and Trade Store
+                  setImageUrls([])
+                  setDigit('')
+                  dispatch(tradeAction.tradeDetails({}))
                 })
               
             } 
@@ -71,60 +81,71 @@ import Api from "../../Api";
     return(
         <SlidingPane 
         isOpen={props.isPaneOpen}
-        title="Add Card Image"
+        title="Complete Trade"
         width='35%'
         onRequestClose={
             props.onRequestClose
         }> 
-        <ImageUploading
-        multiple
-        value={images}
-        onChange={onChange}
-        maxNumber={maxNumber}
-        dataURLKey="data_url"
-      >
-        {({
-          imageList,
-          onImageUpload,
-          onImageRemoveAll,
-          onImageUpdate,
-          onImageRemove,
-          isDragging,
-          dragProps,
-        }) => (
-          // write your building UI
-          <center>
-          <div className="upload__image-wrapper" class="dropzone">
-            <button
-              style={isDragging ? { color: 'red' } : undefined}
-              onClick={onImageUpload}
-              {...dragProps}
-            >
-               <div class="col-span-12 sm:col-span-12 lg:col-span-2 xl:col-span-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="cloud-rain" data-lucide="cloud-rain" class="lucide lucide-cloud-rain block mx-auto"><path d="M20 16.2A4.5 4.5 0 0017.5 8h-1.8A7 7 0 104 14.9"></path><path d="M16 14v6"></path><path d="M8 14v6"></path><path d="M12 16v6"></path></svg> 
-                    <div class="text-center text-l mt-2">Click or Drop Card Images Here</div>
-                </div>
-            </button>
-            
-            <br/><br />
-            <button class="btn btn-danger" onClick={onImageRemoveAll}>Remove all images</button><br /><br />
-            {imageList.map((image, index) => (
-              <div key={index} className="image-item">
-                <img src={image['data_url']} alt="" width="100" />
-                <div className="image-item__btn-wrapper">
-                  <button class="btn btn-default" onClick={() => onImageUpdate(index)}>Update</button>
-                  <button  onClick={() => onImageRemove(index)} style={{color:'red'}}>Remove</button>
-                </div>
+        {!isSuccess &&
+          <ImageUploading
+          multiple
+          value={images}
+          onChange={onChange}
+          maxNumber={maxNumber}
+          dataURLKey="data_url"
+          >
+          {({
+            imageList,
+            onImageUpload,
+            onImageRemoveAll,
+            onImageUpdate,
+            onImageRemove,
+            isDragging,
+            dragProps,
+          }) => (
+            // write your building UI
+            <center>
+              <div className="upload__image-wrapper" class="dropzone">
+                <button
+                  style={isDragging ? { color: 'red' } : undefined}
+                  onClick={onImageUpload}
+                  {...dragProps}
+                >
+                  <div class="col-span-12 sm:col-span-12 lg:col-span-2 xl:col-span-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="cloud-rain" data-lucide="cloud-rain" class="lucide lucide-cloud-rain block mx-auto"><path d="M20 16.2A4.5 4.5 0 0017.5 8h-1.8A7 7 0 104 14.9"></path><path d="M16 14v6"></path><path d="M8 14v6"></path><path d="M12 16v6"></path></svg> 
+                        <div class="text-center text-l mt-2">Click or Drop Card Images Here</div>
+                    </div>
+                </button>
+                
+                <br/><br />
+                <button class="btn btn-danger" onClick={onImageRemoveAll}>Remove all images</button><br /><br />
+                {imageList.map((image, index) => (
+                  <div key={index} className="image-item">
+                    <img src={image['data_url']} alt="" width="100" />
+                    <div className="image-item__btn-wrapper">
+                      <button class="btn btn-default" onClick={() => onImageUpdate(index)}>Update</button>
+                      <button  onClick={() => onImageRemove(index)} style={{color:'red'}}>Remove</button>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+              <textarea className="form-control w-full mt-5" onChange={digitHandler} placeholder="Note: If card digits aren't clear please enter them here."></textarea>
+              <button type="submit" class="btn btn-primary large mr-1 flex mt-5" onClick={handleUpload} disabled={submitting}>{submitting ? 'Submitting Trade' : 'Submit Trade'}</button>
+              
+            </center>
+          )}
+          </ImageUploading>
+        }
+      {isSuccess &&
+        <div class="mt-10">
+          <center>
+            <img src={process.env.PUBLIC_URL + '/dist/images/check.gif'} />
+            <h2 style={{fontSize:'17px', fontWeight:'500'}}>Your trade has been created succesfully and awaiting approval</h2> 
+            <Link to={'/'}> <button type="submit" class="btn btn-primary large mr-1 flex mt-5" >Go to Dashboard</button></Link>
           </center>
-        )}
-      </ImageUploading>
-
-      <textarea className="form-control w-full mt-5" onChange={digitHandler}>Note: If card digits aren't clear please enter them here.</textarea>
-      <center><button type="submit" class="btn btn-primary large mr-1 flex mt-5" onClick={handleUpload} disabled={submitting}>{submitting ? 'Submitting Trade' : 'Submit Trade'}</button></center>
-    </SlidingPane>
+        </div>
+      }
+      </SlidingPane>
     )
 }
 

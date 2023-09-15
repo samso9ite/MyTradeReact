@@ -8,8 +8,6 @@ import Settings from './pages/Settings';
 import ErrorPage from './pages/ErrorPage';
 import Transactions, {loader as transactionsLoader} from './pages/Transactions';
 
-
-
 const router =  createBrowserRouter([
   {
     path: '/',
