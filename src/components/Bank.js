@@ -1,4 +1,4 @@
-import {useSelector, useDispatch} from 'react-redux'
+import {useSelector, useDispatch, createSelectorHook} from 'react-redux'
 import { useEffect, useState } from 'react'
 import Api from '../Api'
 import axios, { Axios } from 'axios'
@@ -18,27 +18,34 @@ const Banks = (props) => {
     const [banks, setBanks] = useState([])
     const [bankCode, setBankCode] = useState('')
     const [loading, setLoading] = useState(false)
+    const [isVerifying, setIsVerifying] = useState(false)
+    const [error, setError] = useState('')
 
     const [state, setState] = useState({
         isPaneOpen: false,
         isPaneOpenLeft: false,
       });
 
+    const dispatch = useDispatch()
+    
     useEffect(() => {
+        dispatch(fetchDetails())
         Api.axios_instance.get('https://api.paystack.co/bank')
             .then(response => {
                 setBanks(response.data.data)
             })
             .catch(error => {
-                console.log(error.data);
+                setError('Check you internet connection')
         })
         setDetails(storeDetails)
-        console.log(details);
     }, [])
     const bankHandler = (event) => {
        setBankCode(event.target.value)
     }
     const accountNumberHandler =async (event) => {
+        setError('')
+        setIsVerifying(true)
+        setLoading(true)
         setAccountNumber(event.target.value)
         if(event.target.value.length === 10){
             let token = 'sk_live_8897fa0d728dd8a313165ba6c18c3b67c1bc0fca'
@@ -49,7 +56,11 @@ const Banks = (props) => {
                     setAccountName(response.data.data.account_name)
                     })
                 .catch((err) => {
-                    console.log(err);
+                    setError('Account details not correct')
+                })
+                .finally(() => {
+                    setIsVerifying(false)
+                    setLoading(false)
                 })
         }
     }
@@ -64,32 +75,41 @@ const Banks = (props) => {
         }
         Api.axios_instance.post(Api.baseUrl+('user/account/add'), formData)
         .then(res => {
-            toast.success(' Bank Added Successfully', {
+            setState({isPaneOpen:false})
+            // dispatch(fetchDetails())
+            setDetails([...details, formData])
+            setAccountNumber('')
+            setAccountName('')
+            toast.success('Bank Added Successfully', {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 theme: "light",
             });
-            setDetails([...details, formData])
+
         }).catch(err => {
-            console.log(err);
+            setError(error.response.data.message)
         }).finally(
             () => {setLoading(false)}
         )
     } 
     const deleteBankHandler = (id) => {
         Api.axios_instance.delete(Api.baseUrl+'/user/account/delete/'+id)
-        .then(
+        .then(res => {
+            let updatedDetails = details.filter((account) => account._id !== id)
+            setDetails(updatedDetails)
+            setState({isPaneOpen:false})
+            // dispatch(fetchDetails())
             toast.success('Bank Deleted Successfully', {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 theme: "light",
-                }
-            )
-        ).catch(err => {
+                })
+            })
+        .catch(err => {
             console.log(err);
         })
     }
@@ -104,8 +124,6 @@ const Banks = (props) => {
                     </h2>
                 </div>
                 <SlidingPane
-                    // className="some-custom-class"
-                    // overlayClassName="some-custom-overlay-class"
                     isOpen={state.isPaneOpen}
                     title="Create a new bank account"
                     width='35%'
@@ -113,6 +131,11 @@ const Banks = (props) => {
                     setState({ isPaneOpen: false });
                     }}
                 >
+                   {error && <div class="alert alert-danger-soft alert-dismissible show flex items-center mb-2" role="alert"> 
+                        <i data-lucide="alert-octagon" class="w-6 h-6 mr-2"></i> {error}
+                        <button type="button" class="btn-close" data-tw-dismiss="alert" aria-label="Close"> x </button>
+                    </div>
+                    } 
                     <div className='mb-8'>
                     <label for="crud-form-2" className="form-label">Select Bank</label>
                     <select className="form-select form-select-lg sm:mt-2 sm:mr-2" aria-label=".form-select-lg example"  onChange={bankHandler}>
@@ -129,14 +152,27 @@ const Banks = (props) => {
                     </div>
                     <div>
                         <label for="crud-form-2" className="form-label">Account Name</label>
-                        <input type="text" className="form-control w-full" placeholder="Account name" value={accountName}  />
+                        <input type="text" className="form-control w-full" placeholder="Account name" value={accountName} disabled />
                     </div>
-
-                    <center>
-                        <button type="button" class="btn btn-primary mr-1 mt-10"
-                            onClick={submitBankHandler} disabled={loading}>{loading ? 'Submitting Bank ...' : 'Submit Bank' }
-                        </button>
+                    { !isVerifying &&
+                      <center>
+                            <button type="button" class="btn btn-primary mr-1 mt-10"
+                                onClick={submitBankHandler} disabled={loading}> {loading ? 'Submitting Bank Details...' : 'Submit Bank Details'}
+                            </button>
+                        
                      </center>
+                    }
+                     { isVerifying &&
+                      <center>
+                            <button type="button" class="btn btn-primary mr-1 mt-10"
+                                onClick={submitBankHandler} disabled={loading}>  {
+                                   loading ? 'Verifying Bank Details...' : 'Verify Bank Details'
+                                }
+                            </button>
+                        
+                     </center>
+                    }
+                
                 </SlidingPane>
                 <div class="p-5">
                     <div class="grid grid-cols-12 gap-2" >
