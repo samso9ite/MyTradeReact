@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { json, redirect, useActionData, useNavigate } from "react-router-dom";
+import { json, redirect, useActionData, useNavigate, useSearchParams } from "react-router-dom";
 import Api from "../Api";
 import AuthForm from "../components/Forms/AuthForm";
 import { useDispatch } from "react-redux";
@@ -10,15 +10,22 @@ const Authentication = () => {
     const dispatch = useDispatch()
     const data = useActionData()
     const navigate = useNavigate()
+    let [searchParams] = useSearchParams()
+    let mode = searchParams = searchParams.get('mode')
+
     // Dispatch an action that stores user details and token in store
     useEffect(() => {
         if(data && data.status){
-            dispatch(authActions.storeUserDetails({
-                userDetails: data.data
-            }))
-            // Navigate to dashboard after storing retrieved userdetails in store
-            navigate('/')
-        }    
+                if (searchParams === 'login'){
+                dispatch(authActions.storeUserDetails({
+                    userDetails: data.data
+                }))
+                // Navigate to dashboard after storing retrieved userdetails in store
+                navigate('/')
+            } else if(searchParams === 'register'){
+                navigate(`?mode=${'activation'}`)
+            }   
+        } 
     }, [data])
 
     return ( 
@@ -34,9 +41,9 @@ const Authentication = () => {
                                 <br />
                                 sign up to your account.
                             </div>
-                            <div className="-intro-x mt-5 text-lg text-white text-opacity-70 dark:text-slate-400">
+                            {/* <div className="-intro-x mt-5 text-lg text-white text-opacity-70 dark:text-slate-400">
                                 Manage all your e-commerce accounts in one place
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                     <div className="h-screen xl:h-auto flex py-5 xl:py-0 my-10 xl:my-0" style={{marginTop:"20%"}}>
@@ -54,10 +61,11 @@ export default Authentication;
 export async function action({request}){
     let searchParams = new URL(request.url).searchParams;
     const mode = searchParams = searchParams.get('mode') || 'login';
+    console.log(mode);
     // Throw error if the mode matches neither login or register 
-    if(mode !== 'login' && mode !== 'register'){
-        throw json({message: "Unsupported Mode"}, {status: 422})
-    };
+    // if(mode !== 'activate' || mode !== 'register' || mode !== 'login'){
+    //     throw json({message: "Unsupported Mode"}, {status: 422})
+    // };
 
     // Get user data from form data
     const data = await request.formData()
@@ -68,7 +76,6 @@ export async function action({request}){
             password: data.get('password')
         }
     } else if(mode === 'register'){ 
-        console.log(authData);
         authData = {
             username: data.get('username'),
             fullname: data.get('fullname'),            

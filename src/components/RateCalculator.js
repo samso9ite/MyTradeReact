@@ -14,6 +14,7 @@ const RateCalculator = (props) => {
     const [countries, setCountries] = useState([])
     const [selectedCardType, setSelectedCardType] = useState([])
     const [cardValue, setCardValue] = useState('')
+    const [message, setMessage] = useState('')
    
     // Mapping through Asset for select option
     const getAssetHandler = () => {
@@ -29,6 +30,7 @@ const RateCalculator = (props) => {
         const countryCurrency = rawCountries.find(c => c.name === country)
         return countryCurrency.currency
     }
+    
     // Removing country duplicates
     const getDistinctCountries = (countryArr) => {
         const uniqueCountries = countryArr.filter((thing, index, self) => index ===
@@ -64,7 +66,7 @@ const RateCalculator = (props) => {
         setCardTypes(prevState => [...prevState, ...cardArray])
         setCountries([])        
         setCountries(prevState => [...prevState, ...countryArr])
-    }
+    } 
   
     // Map through a list of rates for a selected digital asset
     const cardTypesHandler = () => {
@@ -88,7 +90,7 @@ const RateCalculator = (props) => {
         setCountrySelected(event.target.value)
     }
 
-    /** The section calculates the rate of the value */     
+    /** This section calculates the rate of the value */     
     const between = (x, range) => {
         const [min, max] = range.split('-').map(val => parseInt(val))
         return x >= min && x <= max
@@ -96,10 +98,12 @@ const RateCalculator = (props) => {
 
     const isRateAvailable = (amount) => {
         cardRate.forEach(rate => {
+            setMessage('')
             const isBetween = between(amount, rate.denomination);
             if(isBetween){
                 setRateValue(rate.rate)
             }else{
+                setMessage("Value is between" + rate.denomination)
                 setRateValue(0)
             }
         })
@@ -149,8 +153,12 @@ const RateCalculator = (props) => {
                         <input id="crud-form-1" type="number" className="form-control w-full" placeholder="Card Value" value={cardValue} onChange={getRateHandler}/>
                     </div>
                     <br />
-                    <h3 style={{fontSize: "20px", fontWeight: "400"}}> Rate: <CurrencyFormatter value={rateValue} currencycode="NGN" /> </h3><br/>
+                {message && <h4 style={{color:'red', fontSize: "20px", fontWeight: "400"}}> {message} </h4>}
+                { !message &&
+                    <h3 style={{fontSize: "20px", fontWeight: "400"}}> Rate: <CurrencyFormatter value={rateValue} currencycode="NGN" /> </h3>}<br/>
+                { !message &&    
                     <h3 style={{fontSize: "20px", fontWeight: "400"}}> Payout: <CurrencyFormatter value={getAmountHandler()}  currencycode="NGN" /></h3>
+                }
                 </div>
             </div>
         </AssetContextProvider>     
