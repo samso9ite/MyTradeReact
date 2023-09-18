@@ -23,6 +23,8 @@ const Authentication = () => {
                 // Navigate to dashboard after storing retrieved userdetails in store
                 navigate('/')
             } else if(searchParams === 'register'){
+                console.log(data.data);
+                localStorage.setItem('email', data.data)
                 navigate(`?mode=${'activation'}`)
             }   
         } 

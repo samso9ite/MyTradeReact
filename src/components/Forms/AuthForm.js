@@ -21,10 +21,11 @@ const RegisterForm = () => {
                         {authSection === 'register' ? 'Register' : authSection === 'activation' ? 'Activate Account' : 'Sign In'}       
                     </h2>
                      {/* Adding error notification */}
-                     {data && data.status === false && <div class="alert alert-danger-soft alert-dismissible show flex items-center mb-2" role="alert"> 
-                                <i data-lucide="alert-octagon" class="w-6 h-6 mr-2"></i> {data.message}
-                                <button type="button" class="btn-close" data-tw-dismiss="alert" aria-label="Close"> x </button>
-                            </div>}
+                        {data && data.status === false && <div class="alert alert-danger-soft alert-dismissible show flex items-center mb-2" role="alert"> 
+                                    <i data-lucide="alert-octagon" class="w-6 h-6 mr-2"></i> {data.message}
+                                    <button type="button" class="btn-close" data-tw-dismiss="alert" aria-label="Close"> x </button>
+                                </div>
+                        }
                         {/* End of error notification */}
                    {/* {isRegister && <div className="intro-x mt-2 text-slate-400 dark:text-slate-400 xl:hidden text-center">A few more clicks to sign in to your account.</div> } */}
                     {authSection ==='register' &&
@@ -32,9 +33,9 @@ const RegisterForm = () => {
                             <input type="text" className="intro-x login__input form-control py-3 px-4 block" name="fullname" placeholder="Full name" /> 
                             <input type="text" className="intro-x login__input form-control py-3 px-4 block mt-4" name="username" placeholder="Username" /> 
                             <input type="number" className="intro-x login__input form-control py-3 px-4 block mt-4" name="phone_number" placeholder="Phone Number" /> 
-                            <input type="text" className="intro-x login__input form-control py-3 px-4 block mt-4" name="email" id="email" placeholder="Email" />
+                            <input type="email" className="intro-x login__input form-control py-3 px-4 block mt-4" name="email" id="email" placeholder="Email" />
                             <input type="password" className="intro-x login__input form-control py-3 px-4 block mt-4" name="password" id="password" placeholder="Password" />
-                            <input type="text" className="intro-x login__input form-control py-3 px-4 block mt-4" name="confirm_password" placeholder="Password Confirmation" /> 
+                            <input type="password" className="intro-x login__input form-control py-3 px-4 block mt-4" name="confirm_password" placeholder="Password Confirmation" /> 
                         </div>  
                     }
                     {!authSection && 
@@ -61,7 +62,7 @@ const RegisterForm = () => {
                     </div>}
 
                     {authSection === 'activation' &&
-                        <Activation/>
+                        <Activation />
                     }
 
                    {authSection !== 'activation' && <div className="intro-x mt-5 xl:mt-8 text-center xl:text-left">
