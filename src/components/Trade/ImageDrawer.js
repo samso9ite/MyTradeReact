@@ -38,8 +38,8 @@ import { tradeAction } from "../../store/trade-slice";
                 formData.append('image', image.file);
                 const response = await axios.post('https://api.imgur.com/3/upload', formData, {
                     headers: {
-                      'Content-Type': 'multipart/form-data', // Set the Content-Type header
-                      Authorization: 'Client-ID c383bbc6a421d53', // Replace with your actual client ID
+                      'Content-Type': 'multipart/form-data',
+                      Authorization: 'Client-ID c383bbc6a421d53',
                     }
                 });
                 return response.data.data.link;
@@ -62,7 +62,6 @@ import { tradeAction } from "../../store/trade-slice";
                 }
                 Api.axios_instance.post(Api.baseUrl+'/user/card/sell', tradeData)
                 .then(res => {
-                  console.log(res);
                   setIsSuccess(true)
                   // Clear State and Trade Store
                   setImageUrls([])
@@ -129,9 +128,9 @@ import { tradeAction } from "../../store/trade-slice";
                   </div>
                 ))}
               </div>
+
               <textarea className="form-control w-full mt-5" onChange={digitHandler} placeholder="Note: If card digits aren't clear please enter them here."></textarea>
               <button type="submit" class="btn btn-primary large mr-1 flex mt-5" onClick={handleUpload} disabled={submitting}>{submitting ? 'Submitting Trade' : 'Submit Trade'}</button>
-              
             </center>
           )}
           </ImageUploading>
