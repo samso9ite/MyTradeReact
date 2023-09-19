@@ -20,6 +20,7 @@ const [cardTypes, setCardTypes] = useState([])
 const [countries, setCountries] = useState([])
 const [cardValue, setCardValue] = useState('')
 const [price, setPrice] = useState(0)
+const [message, setMessage] = useState('')
 
 const [state, setState] = useState({
     isPaneOpen: false,
@@ -92,10 +93,12 @@ const between = (x, range) => {
 }
 const isRateAvailable = (amount) => {
     cardRate.forEach(rate => {
+        setMessage('')
         const isBetween = between(amount, rate.denomination);
         if(isBetween){
             setRateValue(rate.rate)
         }else{
+            setMessage("Value is between" +' '+  rate.denomination)
             setRateValue(0)
         }
     })
@@ -119,7 +122,6 @@ const openDrawer = () => {
   }
 
 const storeTradeDetails = () => {
-      // console.log(selectedCardType);
       let tradeDetails = {
         card: card.name,
         card_type: selectedCardType,
@@ -128,7 +130,6 @@ const storeTradeDetails = () => {
         price: cardValue * rateValue,
         rate: rateValue
     }
-    console.log(tradeDetails);
     dispatch(tradeAction.tradeDetails(tradeDetails))
     setState({isPaneOpen:true})
 }
@@ -164,15 +165,19 @@ const storeTradeDetails = () => {
                                 <input type="number" className="form-control w-full" placeholder="Card Value" value={cardValue} onChange={getRateHandler} />
                             </div>
                             </div>
-                            <h3 style={{fontSize: "20px", fontWeight: "500"}}> Rate: <CurrencyFormatter value={rateValue} currencycode="NGN" /> </h3>
-                            <div class="flex justify-end">
-                                <div class="mr-auto flex items-center">
-                                    <h3 style={{fontSize: "20px", fontWeight: "500"}}> Payout: <CurrencyFormatter value={getAmountHandler()}  currencycode="NGN" /></h3>
-                                </div>
-                                <button type="submit" class="btn btn-primary large mr-1 flex" onClick={storeTradeDetails}> Confirm & Proceed</button>
-                            </div>  
+                            {/* Print card range if an unavailable card value is inputted byt the user */}
+                            {message && <h4 style={{color:'red', fontSize: "20px", fontWeight: "400"}}> {message} </h4>}
+                            {!message && <h3 style={{fontSize: "20px", fontWeight: "500"}}> Rate: <CurrencyFormatter value={rateValue} currencycode="NGN" /> </h3> }
+                            {!message &&  <div class="flex justify-end">
+                                    <div class="mr-auto flex items-center">
+                                        <h3 style={{fontSize: "20px", fontWeight: "500"}}> Payout: <CurrencyFormatter value={getAmountHandler()}  currencycode="NGN" /></h3>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary large mr-1 flex" onClick={storeTradeDetails}> Confirm & Proceed</button>
+                                </div> 
+                            } 
                         </div>
                     </div>
+
                 </div>
                 <ImageDrawer isPaneOpen={state.isPaneOpen}  
                     onRequestClose={() => {setState({ isPaneOpen: false });}}

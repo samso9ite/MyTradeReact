@@ -11,19 +11,18 @@ const Authentication = () => {
     const data = useActionData()
     const navigate = useNavigate()
     let [searchParams] = useSearchParams()
-    let mode = searchParams = searchParams.get('mode')
+    let mode = searchParams = searchParams.get('mode') || 'login'
 
     // Dispatch an action that stores user details and token in store
     useEffect(() => {
         if(data && data.status){
-                if (searchParams === 'login'){
+            if (searchParams === 'login'){
                 dispatch(authActions.storeUserDetails({
                     userDetails: data.data
                 }))
                 // Navigate to dashboard after storing retrieved userdetails in store
                 navigate('/')
             } else if(searchParams === 'register'){
-                console.log(data.data);
                 localStorage.setItem('email', data.data)
                 navigate(`?mode=${'activation'}`)
             }   

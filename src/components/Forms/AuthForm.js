@@ -27,7 +27,7 @@ const RegisterForm = () => {
                                 </div>
                         }
                         {/* End of error notification */}
-                   {/* {isRegister && <div className="intro-x mt-2 text-slate-400 dark:text-slate-400 xl:hidden text-center">A few more clicks to sign in to your account.</div> } */}
+                {/* <div className="intro-x mt-2 text-slate-400 dark:text-slate-400 ">A few more clicks to sign in to your account.</div>  */}
                     {authSection ==='register' &&
                         <div className="intro-x mt-8">
                             <input type="text" className="intro-x login__input form-control py-3 px-4 block" name="fullname" placeholder="Full name" /> 
@@ -47,7 +47,7 @@ const RegisterForm = () => {
                     {/* Login Form Section */}
                     {authSection ==='register' &&
                         <div className="intro-x flex items-center text-slate-600 dark:text-slate-500 mt-4 text-xs sm:text-sm">
-                            <input id="remember-me" type="checkbox" className="form-check-input border mr-2" />
+                            <input id="remember-me" type="checkbox" className="form-check-input border mr-2" required/>
                             <label className="cursor-pointer select-none" for="remember-me">I agree to Mytrade</label>
                             <a className="text-primary dark:text-slate-200 ml-1" href="">Privacy Policy</a>. 
                         </div>
