@@ -12,7 +12,7 @@ let token = await sessionStorage.getItem('token')
 });
 
 
-const baseUrl = 'http://localhost:8080/api/v1/'
+const baseUrl = 'https://api.mytrade.ng/api/v1/'
 axios_instance.baseUrl = baseUrl
 export default {
   axios_instance,

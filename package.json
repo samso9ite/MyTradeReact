@@ -1,6 +1,7 @@
 {
   "name": "my-trade-react",
   "version": "0.1.0",
+  "homepage": "https://app.mytrade.ng/auth",
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",

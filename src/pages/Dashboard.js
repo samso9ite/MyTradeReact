@@ -97,14 +97,12 @@ import { Link } from 'react-router-dom';
 
                                 <div className="col-span-2 xl:col-span-2">
                                     <div className="intro-y">
-                                        <Link to="/redeem/cards"> 
-                                            <div className="box px-4 py-4 mb-3  items-center zoom-in">
-                                                <center>
-                                                    <img alt="MyTrade" src="dist/images/coin/eth.svg" width="30%"/>
-                                                    <div className="font-medium">Ethereum</div>
-                                                </center>
-                                            </div>
-                                        </Link>
+                                        <div className="box px-4 py-4 mb-3  items-center zoom-in">
+                                            <center>
+                                                <img alt="MyTrade" src="dist/images/coin/eth.svg" width="30%"/>
+                                                <div className="font-medium">Ethereum</div>
+                                            </center>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -122,17 +120,20 @@ import { Link } from 'react-router-dom';
 
                                 <div className="col-span-2 xl:col-span-2">
                                     <div className="intro-y">
+                                    <Link to="/redeem/cards"> 
                                         <div className="box px-4 py-4 mb-3  items-center zoom-in">
                                             <center>
                                                 <img alt="MyTrade" src="dist/images/coin/giftcard.svg" width="30%"/>
                                                 <div className="font-medium">Giftcards</div>
                                             </center>
                                         </div>
+                                        </Link>
                                     </div>
                                 </div>
 
                                 <div className="col-span-2 xl:col-span-2">
                                     <div className="intro-y">
+                                   
                                         <div className="box px-4 py-4 mb-3  items-center zoom-in">
                                             <center>
                                                 <img alt="MyTrade" src="dist/images/coin/airtime.svg" width="30%"/>
