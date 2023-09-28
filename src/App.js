@@ -8,6 +8,7 @@ import Settings from './pages/Settings';
 import ErrorPage from './pages/ErrorPage';
 import Transactions, {loader as transactionsLoader} from './pages/Transactions';
 import AdminDashboard from './pages/admin/Dashboard';
+import AdminTransactions from './pages/admin/Transactions';
 
 const router =  createBrowserRouter([
   {
@@ -33,6 +34,10 @@ const router =  createBrowserRouter([
   {
     path:'/admin',
     element: <AdminDashboard />
+  },
+  {
+    path:'/all-transactions',
+    element: <AdminTransactions />
   }
 ])
 function App() {

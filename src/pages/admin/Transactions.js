@@ -1,19 +1,23 @@
+import { useSelector } from "react-redux"
+import MainLayout from "../../components/layout/admin/MainLayout"
+import Transaction from "../../components/Transaction"
+import { useState } from "react"
+
 const AdminTransactions = () => {
+    const pendingTransactions = useSelector(state => state.allTransactions.pending)
+    const [transactions, setTransactions] = useState(pendingTransactions)
+    const paidTransactions = useSelector(state => state.allTransactions.paid)
+    const approvedTransactions = useSelector(state => state.allTransactions.approved)
+
     return(
+        <MainLayout>
         <div class="content">
         <h2 class="intro-y text-lg font-medium mt-10">
             All Transactions
         </h2>
+        <button class="btn btn-outline-primary  inline-block mr-1 mb-2 mt-10" >Pending Transactions </button>  <button class="btn btn-outline-primary  inline-block mr-1 mb-2 mt-10" >Approved Transactions </button>  <button class="btn btn-outline-primary  inline-block mr-1 mb-2 mt-10" >Completed Transactions </button>
         <div class="grid grid-cols-12 gap-6 mt-5">
-            <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
-                <div class="hidden md:block mx-auto text-slate-500">Showing 1 to 10 of 150 entries</div>
-                <div class="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
-                    <div class="w-56 relative text-slate-500">
-                        <input type="text" class="form-control w-56 box pr-10" placeholder="Search..." />
-                        <i class="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0" data-lucide="search"></i> 
-                    </div>
-                </div>
-            </div>
+          
             <div class="intro-y col-span-12 overflow-auto lg:overflow-visible">
                 <table class="table table-report -mt-2">
                     <thead>
@@ -27,42 +31,7 @@ const AdminTransactions = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="intro-x">
-                            <td class="w-40">
-                               <p>Bitoin</p>
-                            </td>
-                            <td>
-                                <p>4000</p>
-                            </td>
-                            <td class="text-center">₦4000</td>
-                            <td class="w-40">
-                                <div class="flex items-center justify-center text-danger"> <i data-lucide="check-square" class="w-4 h-4 mr-2"></i> Failed </div>
-                            </td>
-                            <td class="table-report__action w-56">
-                               <p>June 2 2023 1:50pm</p>
-                            </td>
-                            <td class="table-report__action w-56">
-                                <p>June 2 2023 1:50pm</p>
-                             </td>      
-                        </tr>
-                        <tr class="intro-x">
-                            <td class="w-40">
-                               <p>Bitoin</p>
-                            </td>
-                            <td>
-                                <p>4000</p>
-                            </td>
-                            <td class="text-center">₦4000</td>
-                            <td class="w-40">
-                                <div class="flex items-center justify-center text-danger"> <i data-lucide="check-square" class="w-4 h-4 mr-2"></i> Failed </div>
-                            </td>
-                            <td class="table-report__action w-56">
-                               <p>June 2 2023 1:50pm</p>
-                            </td>
-                            <td class="table-report__action w-56">
-                                <p>June 2 2023 1:50pm</p>
-                             </td>      
-                        </tr>
+                    <Transaction transactions={transactions && transactions.slice(0,30)} />
                     </tbody>
                 </table>
             </div>
@@ -119,6 +88,7 @@ const AdminTransactions = () => {
             </div>
         </div>
     </div>
+    </MainLayout>
     )
 }
 

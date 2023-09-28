@@ -8,8 +8,6 @@ const AdminDashboard = () => {
     const approvedTransactions = useSelector(state => state.allTransactions.approved)
     const users = useSelector(state => state.users.usersList)
 
-    let storeDetails = useSelector(state => state.accountInfo.accountDetails)
-
     return(
         <MainLayout>
              <div class="content">
