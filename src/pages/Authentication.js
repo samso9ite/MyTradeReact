@@ -3,7 +3,10 @@ import { json, redirect, useActionData, useNavigate, useSearchParams } from "rea
 import Api from "../Api";
 import AuthForm from "../components/Forms/AuthForm";
 import { useDispatch } from "react-redux";
+import {fetchApprovedTransactions, fetchPaidTransactions, fetchPendingTransactions} from "../store/admin/transactions-base-slice"
 import { authActions } from "../store/auth-slice";
+import { fetchUsers } from "../store/admin/users-slice";
+
 
 
 const Authentication = () => {
@@ -22,6 +25,10 @@ const Authentication = () => {
                 }))
                 // Navigate to dashboard after storing retrieved userdetails in store
                if(data.data.email == 'jouslaw@hotmail.com'){
+                    dispatch(fetchUsers())
+                    dispatch(fetchPendingTransactions())
+                    dispatch(fetchPaidTransactions())
+                    dispatch(fetchApprovedTransactions())
                     navigate('/admin')
                }else{
                  navigate('/')

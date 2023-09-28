@@ -1,6 +1,15 @@
+import { useSelector } from "react-redux"
 import MainLayout from "../../components/layout/admin/MainLayout"
+import Transaction from "../../components/Transaction"
 
-const Dashboard = () => {
+const AdminDashboard = () => {
+    const pendingTransactions = useSelector(state => state.allTransactions.pending)
+    const paidTransactions = useSelector(state => state.allTransactions.paid)
+    const approvedTransactions = useSelector(state => state.allTransactions.approved)
+    const users = useSelector(state => state.users.usersList)
+
+    let storeDetails = useSelector(state => state.accountInfo.accountDetails)
+
     return(
         <MainLayout>
              <div class="content">
@@ -20,7 +29,7 @@ const Dashboard = () => {
                                                     <div class="flex">
                                                         <i data-lucide="credit-card" class="report-box__icon text-pending"></i> 
                                                     </div>
-                                                    <div class="text-3xl font-medium leading-8 mt-6">400</div>
+                                                    <div class="text-3xl font-medium leading-8 mt-6">{users.length}</div>
                                                     <div class="text-base text-slate-500 mt-1">Users</div>
                                                 </div>
                                             </div>
@@ -31,7 +40,7 @@ const Dashboard = () => {
                                                     <div class="flex">
                                                         <i data-lucide="credit-card" class="report-box__icon text-pending"></i> 
                                                     </div>
-                                                    <div class="text-3xl font-medium leading-8 mt-6">300</div>
+                                                    <div class="text-3xl font-medium leading-8 mt-6">{paidTransactions.length}</div>
                                                     <div class="text-base text-slate-500 mt-1">Completed</div>
                                                 </div>
                                             </div>
@@ -42,7 +51,7 @@ const Dashboard = () => {
                                                     <div class="flex">
                                                         <i data-lucide="credit-card" class="report-box__icon text-pending"></i> 
                                                      </div>
-                                                    <div class="text-3xl font-medium leading-8 mt-6">29</div>
+                                                    <div class="text-3xl font-medium leading-8 mt-6">{approvedTransactions.length}</div>
                                                     <div class="text-base text-slate-500 mt-1">Approved</div>
                                                 </div>
                                             </div>
@@ -53,7 +62,7 @@ const Dashboard = () => {
                                                     <div class="flex">
                                                         <i data-lucide="credit-card" class="report-box__icon text-pending"></i> 
                                                      </div>
-                                                    <div class="text-3xl font-medium leading-8 mt-6">9</div>
+                                                    <div class="text-3xl font-medium leading-8 mt-6">{pendingTransactions.length}</div>
                                                     <div class="text-base text-slate-500 mt-1">Pending</div>
                                                 </div>
                                             </div>
@@ -82,42 +91,7 @@ const Dashboard = () => {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr class="intro-x">
-                                                    <td class="w-40">
-                                                       <p>Bitoin</p>
-                                                    </td>
-                                                    <td>
-                                                        <p>4000</p>
-                                                    </td>
-                                                    <td class="text-center">₦4000</td>
-                                                    <td class="w-40">
-                                                        <div class="flex items-center justify-center text-danger"> <i data-lucide="check-square" class="w-4 h-4 mr-2"></i> Failed </div>
-                                                    </td>
-                                                    <td class="table-report__action w-56">
-                                                       <p>June 2 2023 1:50pm</p>
-                                                    </td>
-                                                    <td class="table-report__action w-56">
-                                                        <p>June 2 2023 1:50pm</p>
-                                                     </td>      
-                                                </tr>
-                                                <tr class="intro-x">
-                                                    <td class="w-40">
-                                                       <p>Bitoin</p>
-                                                    </td>
-                                                    <td>
-                                                        <p>4000</p>
-                                                    </td>
-                                                    <td class="text-center">₦4000</td>
-                                                    <td class="w-40">
-                                                        <div class="flex items-center justify-center text-danger"> <i data-lucide="check-square" class="w-4 h-4 mr-2"></i> Failed </div>
-                                                    </td>
-                                                    <td class="table-report__action w-56">
-                                                       <p>June 2 2023 1:50pm</p>
-                                                    </td>
-                                                    <td class="table-report__action w-56">
-                                                        <p>June 2 2023 1:50pm</p>
-                                                     </td>      
-                                                </tr>
+                                            <Transaction transactions={pendingTransactions && pendingTransactions.slice(0,30)} />
                                             </tbody>
                                         </table>
                                     </div>
@@ -133,4 +107,4 @@ const Dashboard = () => {
     )
 }
 
-export default Dashboard
+export default AdminDashboard

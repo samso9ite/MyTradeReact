@@ -8,13 +8,18 @@ import {persistReducer, persistStore} from 'redux-persist';
 import thunk from 'redux-thunk';
 import { combineReducers } from 'redux';
 import tradeSlice from './trade-slice';
+import usersSlice from './admin/users-slice';
+import allTransactionSlice from './admin/transactions-base-slice';
+
 
 const reducers = combineReducers({
     auth: authSlice.reducer, 
     transactions: transactionsSlice.reducer,
     countries: countriesSlice.reducer,
     accountInfo: userDetailSlice.reducer,
-    trade: tradeSlice.reducer
+    trade: tradeSlice.reducer,
+    users:usersSlice.reducer,
+    allTransactions:allTransactionSlice.reducer,
 })
 
 const persistConfig = {
