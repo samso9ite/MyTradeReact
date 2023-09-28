@@ -27,7 +27,6 @@ const Banks = (props) => {
       });
 
     const dispatch = useDispatch()
-    
     useEffect(() => {
         dispatch(fetchDetails())
         Api.axios_instance.get('https://api.paystack.co/bank')

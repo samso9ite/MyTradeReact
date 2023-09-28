@@ -143,8 +143,8 @@ const RateCalculator = (props) => {
                     </div>
                     <div className="mt-5">
                         <label for="crud-form-1" className="form-label">Select Country</label>
-                          <select className="form-select form-select-lg sm:mt-2 sm:mr-2" aria-label=".form-select-lg example" value={countrySelected} onChange={countryChangeHandler}>
-                        <option value="">-- Select Country -- </option>
+                        <select className="form-select form-select-lg sm:mt-2 sm:mr-2" aria-label=".form-select-lg example" value={countrySelected} onChange={countryChangeHandler}>
+                            <option value="">-- Select Country -- </option>
                             {countryListHandler()}
                         </select>
                     </div>      
@@ -165,7 +165,4 @@ const RateCalculator = (props) => {
      );
 }
  
-export default RateCalculator
-
-   
-                          
+export default RateCalculator                   

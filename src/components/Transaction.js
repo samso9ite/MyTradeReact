@@ -20,7 +20,7 @@ function Transaction({transactions}){
                     </td>
                     <td className="table-report__action w-56">
                         <p>{transaction.updated_at}</p>
-                        </td>      
+                    </td>      
                 </tr>
             ))
             }

@@ -138,7 +138,7 @@ const storeTradeDetails = () => {
         <>
             <div class="col-span-12 lg:col-span-8 2xl:col-span-8 flex lg:block flex-col-reverse">
                 <div class="intro-y box lg:mt-5">
-                    <div class="p-5">
+                    <div class="p-5">   
                         <center> 
                             <img alt="Profile Image"  style={{width: '250px', marginBottom:'20px'}} src={card.image} />  
                             <h2 style={{fontSize:'25px', fontWeight:'500'}}>{card.name}</h2>

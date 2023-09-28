@@ -95,7 +95,7 @@ async function loadTransactions(){
     return await Api.axios_instance.get(Api.baseUrl+'card_transaction/all')
      .then(res => {
         return res.data.data
-     })
+     }) 
      .catch(err => {
          console.log(err);
      })

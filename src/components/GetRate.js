@@ -23,7 +23,7 @@
         const getAssetHandler = () => {
             return assetCtx.asset?.map((asset) => {
                 if(asset.status === 'Available'){
-                return  <option key={asset._id} value={asset._id}>{asset.name}</option>}
+                    return  <option key={asset._id} value={asset._id}>{asset.name}</option>}
                 }
             )
         } 

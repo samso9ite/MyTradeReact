@@ -6,13 +6,12 @@ axios_instance.defaults.headers.post['Content-Type'] = 'application/json; charse
 axios_instance.defaults.headers.post['Accept'] = 'application/json;';
 axios_instance.interceptors.request.use(async function (config) {
 let token = await sessionStorage.getItem('token')
-// console.log(token);
- config.headers.Authorization = `Bearer ${token}`
+config.headers.Authorization = `Bearer ${token}`
   return config;
 });
 
 
-const baseUrl = 'https://api.mytrade.ng/api/v1/'
+const baseUrl = 'http://localhost:8080/api/v1/'
 axios_instance.baseUrl = baseUrl
 export default {
   axios_instance,

@@ -7,6 +7,7 @@ import RootLayout from './pages/RootLayout';
 import Settings from './pages/Settings';
 import ErrorPage from './pages/ErrorPage';
 import Transactions, {loader as transactionsLoader} from './pages/Transactions';
+import AdminDashboard from './pages/admin/Dashboard';
 
 const router =  createBrowserRouter([
   {
@@ -26,6 +27,12 @@ const router =  createBrowserRouter([
     path: 'auth/',
     element: <AuthenticationPage />,
     action: authAction
+  },
+
+  // Admin Routers
+  {
+    path:'/admin',
+    element: <AdminDashboard />
   }
 ])
 function App() {

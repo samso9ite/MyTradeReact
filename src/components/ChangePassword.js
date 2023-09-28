@@ -36,6 +36,9 @@ const confirmPwdHandler = (event) => {
 
 const submitPwdHandler = () => {
     if(newPwd === confirmPwd){
+        const formData = {
+            // new_pwd
+        }
 
     }else{
         setPwdValidation(true)

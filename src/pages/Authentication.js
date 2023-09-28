@@ -12,7 +12,7 @@ const Authentication = () => {
     const navigate = useNavigate()
     let [searchParams] = useSearchParams()
     let mode = searchParams = searchParams.get('mode') || 'login'
-
+    
     // Dispatch an action that stores user details and token in store
     useEffect(() => {
         if(data && data.status){
@@ -21,7 +21,11 @@ const Authentication = () => {
                     userDetails: data.data
                 }))
                 // Navigate to dashboard after storing retrieved userdetails in store
-                navigate('/')
+               if(data.data.email == 'jouslaw@hotmail.com'){
+                    navigate('/admin')
+               }else{
+                 navigate('/')
+               }
             } else if(searchParams === 'register'){
                 localStorage.setItem('email', data.data)
                 navigate(`?mode=${'activation'}`)
@@ -42,9 +46,7 @@ const Authentication = () => {
                                 <br />
                                 sign up to your account.
                             </div>
-                            {/* <div className="-intro-x mt-5 text-lg text-white text-opacity-70 dark:text-slate-400">
-                                Manage all your e-commerce accounts in one place
-                            </div> */}
+                           
                         </div>
                     </div>
                     <div className="h-screen xl:h-auto flex py-5 xl:py-0 my-10 xl:my-0" style={{marginTop:"20%"}}>
@@ -71,7 +73,13 @@ export async function action({request}){
     // Get user data from form data
     const data = await request.formData()
     let authData = {}
+    let userType = 'user'
     if (mode === 'login'){
+        if(data.get('email') === 'jouslaw@hotmail.com'){
+            userType = 'admin'
+        }else{
+            userType = 'user'
+        }
         authData = {
             email: data.get('email'),
             password: data.get('password')
@@ -85,9 +93,8 @@ export async function action({request}){
             phone: data.get('phone_number')
         }
     }
-    
     // Sending request and returning response
-    return Api.axios_instance.post(Api.baseUrl+'user/'+mode, authData)
+    return Api.axios_instance.post(Api.baseUrl+userType+'/'+mode, authData)
     .then(res => {
         sessionStorage.setItem('token', res.data.token)
         return res.data

@@ -22,3 +22,9 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+rent: 1125:
+Agreement & Commision: 150
+Agency: 150
+refundable: 70
+service charge: 105
