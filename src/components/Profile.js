@@ -30,7 +30,7 @@ const Profile = () => {
 
     const submitHandler = async () => {
         setIsLoading(true)
-        const response = await Promise.all(  (images.map( async(image) => {
+        const response = await Promise.all((images.map( async(image) => {
             const formData = new FormData();
             formData.append('image', image.file);
             const response = await axios.post('https://api.imgur.com/3/upload', formData, {
@@ -113,7 +113,7 @@ const Profile = () => {
                                     </div>
                                     </center>
                                 )}
-                                </ImageUploading>
+                            </ImageUploading>
                             <div class="grid grid-cols-2 gap-6 mt-10">
                                 <input type="text" className="form-control w-full" placeholder="Full name" value={name} disabled />
                                 <input type="text" className="form-control w-full" placeholder="Username" value={username} disabled />

@@ -4,7 +4,16 @@ import Transaction from "../../components/Transaction"
 import { useState } from "react"
 
 const AdminTransactions = () => {
+    
+    const btnOutline = {
+        backgroundColor: 'transparent'
+    }
+    const btnFill = {
+        backgroundColor: "#1a3175",
+        color: "white"
+    }
     const pendingTransactions = useSelector(state => state.allTransactions.pending)
+    const [activeBtn, setActiveBtn] = useState('pending')
     const [transactions, setTransactions] = useState(pendingTransactions)
     const paidTransactions = useSelector(state => state.allTransactions.paid)
     const approvedTransactions = useSelector(state => state.allTransactions.approved)
@@ -15,7 +24,7 @@ const AdminTransactions = () => {
         <h2 class="intro-y text-lg font-medium mt-10">
             All Transactions
         </h2>
-        <button class="btn btn-outline-primary  inline-block mr-1 mb-2 mt-10" >Pending Transactions </button>  <button class="btn btn-outline-primary  inline-block mr-1 mb-2 mt-10" >Approved Transactions </button>  <button class="btn btn-outline-primary  inline-block mr-1 mb-2 mt-10" >Completed Transactions </button>
+        <button class="btn  inline-block mr-1 mb-2 mt-10" style={activeBtn === 'pending' ? btnFill : btnOutline} onClick={() => {setTransactions(pendingTransactions); setActiveBtn('pending')}}>Pending Transactions </button>  <button class="btn btn-outline-primary  inline-block mr-1 mb-2 mt-10" style={activeBtn === 'approved' ? btnFill : btnOutline} onClick={() => {setTransactions(approvedTransactions); setActiveBtn('approved')}}>Approved Transactions </button>  <button class="btn btn-outline-primary  inline-block mr-1 mb-2 mt-10" style={activeBtn === 'completed' ? btnFill : btnOutline} onClick={() => {setTransactions(paidTransactions); setActiveBtn('completed')}}>Completed Transactions </button>
         <div class="grid grid-cols-12 gap-6 mt-5">
           
             <div class="intro-y col-span-12 overflow-auto lg:overflow-visible">
