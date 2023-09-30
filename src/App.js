@@ -10,6 +10,7 @@ import Transactions, {loader as transactionsLoader} from './pages/Transactions';
 import AdminDashboard from './pages/admin/Dashboard';
 import AdminTransactions from './pages/admin/Transactions';
 import Users from './pages/admin/Users';
+import Cards from './pages/admin/Cards';
 
 const router =  createBrowserRouter([
   {
@@ -43,6 +44,10 @@ const router =  createBrowserRouter([
   {
     path: '/users',
     element: <Users />
+  },
+  {
+    path: '/cards',
+    element: <Cards />
   }
 ])
 function App() {

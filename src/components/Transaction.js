@@ -173,8 +173,6 @@ function Transaction({transactions}){
                                 <p className="mb-2 mt-2">Email: {transaction.user.email}</p><hr />
                             </span>  : <center className="mt-3"><p>No saved bank details for this user</p> </center>}
 
-
-
                             <center> <h3 className="mt-5" style={{fontSize: "17px"}}>Customer Details</h3> </center>
                             <p className="mb-2 mt-2">Name: {transaction.user.fullname}</p> <hr />
                             <p className="mb-2 mt-2">Phone: {transaction.user.phone}</p> <hr />
@@ -234,6 +232,7 @@ function Transaction({transactions}){
                     <button className="btn btn-danger" onClick={() => declineHandler(transaction._id)} disabled={isLoading}>{isLoading ? 'Declining Transaction ...': 'Decline Transaction'}</button>
                 </div>} 
             </Modal>
+            <ToastContainer />
         </>
      );
 }
