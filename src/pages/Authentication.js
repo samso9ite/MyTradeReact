@@ -25,6 +25,7 @@ const Authentication = () => {
                 }))
                 // Navigate to dashboard after storing retrieved userdetails in store
                if(data.data.email == 'jouslaw@hotmail.com'){
+                    localStorage.setItem('isAdmin', true)
                     dispatch(fetchUsers())
                     dispatch(fetchPendingTransactions())
                     dispatch(fetchPaidTransactions())

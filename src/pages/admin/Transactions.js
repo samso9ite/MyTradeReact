@@ -1,7 +1,8 @@
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import MainLayout from "../../components/layout/admin/MainLayout"
 import Transaction from "../../components/Transaction"
 import { useState } from "react"
+import { fetchPendingTransactions, fetchPaidTransactions, fetchApprovedTransactions } from "../../store/admin/transactions-base-slice"
 
 const AdminTransactions = () => {
     
@@ -12,6 +13,10 @@ const AdminTransactions = () => {
         backgroundColor: "#1a3175",
         color: "white"
     }
+    const dispatch = useDispatch()
+    dispatch(fetchPendingTransactions())
+    dispatch(fetchPaidTransactions())
+    dispatch(fetchApprovedTransactions())
     const pendingTransactions = useSelector(state => state.allTransactions.pending)
     const [activeBtn, setActiveBtn] = useState('pending')
     const [transactions, setTransactions] = useState(pendingTransactions)
@@ -37,6 +42,7 @@ const AdminTransactions = () => {
                             <th class="text-center whitespace-nowrap">Status</th>
                             <th class="text-center whitespace-nowrap">Date Performed</th>
                             <th class="text-center whitespace-nowrap">Date Completed</th>
+                            <th class="text-center whitespace-nowrap">View Details</th>
                         </tr>
                     </thead>
                     <tbody>

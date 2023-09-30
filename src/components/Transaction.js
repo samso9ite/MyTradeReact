@@ -15,6 +15,8 @@ function Transaction({transactions}){
     const [modalSection, setModalSection] = useState('default')
     const [transactionId, setTransactionId] = useState('')
     const [receipts, setReceipts] = useState([])
+    const [userFetched, setUserFetched] = useState(false)
+    const [comment, setComment] = useState('')
 
     const customStyles = {
         content: {
@@ -31,15 +33,16 @@ function Transaction({transactions}){
     }
     const closeModal = () => {
         setIsOpen(false);
+        setUserFetched(false)
     }
-
+    const isAdmin = localStorage.getItem('isAdmin')
     const fetchTransaction = (id) => {
         setIsOpen(true)
         setIsLoading(true)
         Api.axios_instance.get(Api.baseUrl+'/card_transaction/fetch/'+id)
         .then(res => {
-            console.log(res);
             setTransaction(res.data.data)
+            setUserFetched(true)
         })
         .finally(() => {
             setIsLoading(false)
@@ -60,7 +63,7 @@ function Transaction({transactions}){
         })
         ))
         const data = {
-            paymentReceipt: response,
+            paymentReceipt: response[0],
             transaction_id: id
         }
         Api.axios_instance.post(Api.baseUrl+'/admin/card/transaction/payout', data)
@@ -72,12 +75,43 @@ function Transaction({transactions}){
                 closeOnClick: true,
                 theme: "light",
             });
-            console.log(res.data);
-        }).finally(() => {
+        })
+        .catch(err => {
+            console.log(err);
+        })
+        .finally(() => {
+            setIsOpen(false)
             setIsLoading(false)
+            setReceipts([])
         })
     }
 
+    const commentHandler = (event) => {
+        setComment(event.target.value)
+    }
+    const declineHandler = (id) => {
+        setIsLoading(true)
+        const data = {
+            reasonForDeclination: comment,
+            transaction_id: id
+        }
+        Api.axios_instance.post(Api.baseUrl+'/admin/card/transaction/decline', data)
+        .then(res => {
+            console.log(res);
+            toast.success('Transaction Updated Successfully', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                theme: "light",
+            });
+        }).catch(err => {
+            console.log(err);
+        }).finally(() => {
+            setIsLoading(false)
+            setIsOpen(false)
+        })
+    }
    
     const onReceiptUpload = (imageList) => {
         setReceipts(imageList);
@@ -104,7 +138,7 @@ function Transaction({transactions}){
                         <p>{transaction.updated_at}</p>
                     </td>  
                     <td>
-                        <button className="btn btn-outline-primary" onClick={() => fetchTransaction(transaction._id)}>Action</button>
+                        <button className="btn btn-outline-primary" onClick={() => fetchTransaction(transaction._id)}>View</button>
                     </td>    
                 </tr>
             ))
@@ -128,21 +162,28 @@ function Transaction({transactions}){
                     <p className="mb-2 mt-2">Rate: {transaction.rate}</p> <hr />
                     <p className="mb-2 mt-2">Transaction Date: {transaction.created_at}</p>
                     <br />
-                    <center> <button className="btn btn-success" onClick={() => {setModalSection('payout')}}>Payout</button> <button className="btn btn-danger" onClick={() => {setModalSection('decline')}}>Decline</button> </center>
-                   <center> <h3 style={{fontSize: "17px"}}>Customer Details</h3> </center>
-                    {/* <p className="mb-2 mt-2">Name: {transaction.user.fullname}</p> <hr />
-                    <p className="mb-2 mt-2">Phone: {transaction.user.phone}</p> <hr />
-                    <p className="mb-2 mt-2">Email: {transaction.user.email}</p> <hr /> <br /> */}
-                    <center> <h3 style={{fontSize: "17px"}}> Bank Details </h3> </center>
+                    {isAdmin && userFetched &&  <span>
+                            <center> <button className="btn btn-success" onClick={() => {setModalSection('payout')}}>Payout</button> <button className="btn btn-danger" onClick={() => {setModalSection('decline')}}>Decline</button> </center>
+                           
+                            <center> <h3 className="mt-5" style={{fontSize: "17px"}}> Bank Details </h3> </center>
 
-                    {/* { transaction.user.accountInfo.length > 0 && <span> */}
-                        {/* <p className="mb-2 mt-2">Name: {transaction.user.fullname}</p><hr />
-                        <p className="mb-2 mt-2">Phone: {transaction.user.phone}</p><hr />
-                        <p className="mb-2 mt-2">Email: {transaction.user.email}</p><hr /> */}
-                    {/* </span> } */}
+                            { transaction.user.accountInfo.length > 0 ? <span>
+                                <p className="mb-2 mt-2">Name: {transaction.user.fullname}</p><hr />
+                                <p className="mb-2 mt-2">Phone: {transaction.user.phone}</p><hr />
+                                <p className="mb-2 mt-2">Email: {transaction.user.email}</p><hr />
+                            </span>  : <center className="mt-3"><p>No saved bank details for this user</p> </center>}
+
+
+
+                            <center> <h3 className="mt-5" style={{fontSize: "17px"}}>Customer Details</h3> </center>
+                            <p className="mb-2 mt-2">Name: {transaction.user.fullname}</p> <hr />
+                            <p className="mb-2 mt-2">Phone: {transaction.user.phone}</p> <hr />
+                            <p className="mb-2 mt-2">Email: {transaction.user.email}</p> <hr /> <br />
+                        </span>
+                    }
                 </div>
                 } 
-                {modalSection == 'payout' && <div className="p-5" style={{fontSize:'15.5px', fontWeight:"500", padding: "15px"}}>
+                {modalSection === 'payout' && <div className="p-5" style={{fontSize:'15.5px', fontWeight:"500", padding: "15px"}}>
                     <ImageUploading
                             multiple
                             value={receipts}
@@ -184,9 +225,14 @@ function Transaction({transactions}){
                         )}
                     </ImageUploading>
 
-                    <button className="btn btn-success" onClick={() => payOutHandler(transaction._id)}>Confirm Payout </button>
+                    <center><button className="btn btn-success mt-4" onClick={() => payOutHandler(transaction._id)} disabled={isLoading}> {isLoading ? 'Confirming Payout ...' : 'Confirm Payout'} </button></center>
                 </div>
                 }
+                {modalSection === 'decline' && <div className="p-5" style={{fontSize:'15.5px', fontWeight:"500", padding: "15px"}}>
+                    <label>Reason for declining trade</label>
+                    <textarea className="form-control" onChange={commentHandler}/> 
+                    <button className="btn btn-danger" onClick={() => declineHandler(transaction._id)} disabled={isLoading}>{isLoading ? 'Declining Transaction ...': 'Decline Transaction'}</button>
+                </div>} 
             </Modal>
         </>
      );
