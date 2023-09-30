@@ -1,9 +1,15 @@
+import { useSelector } from "react-redux"
+import MainLayout from "../../components/layout/admin/MainLayout"
+
 const Users = () => {
+    const users = useSelector(state => state.users.usersList)
+    console.log(users);
+
     return(
-        <>
+        <MainLayout>
             <div class="content">
                     <h2 class="intro-y text-lg font-medium mt-10">
-                        All Transactions
+                        All Users
                     </h2>
                     <div class="grid grid-cols-12 gap-6 mt-5">
                         <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
@@ -22,48 +28,34 @@ const Users = () => {
                                         <th class="whitespace-nowrap">Name</th>
                                         <th class="whitespace-nowrap">Email</th>
                                         <th class="text-center whitespace-nowrap">Phone</th>
-                                        <th class="text-center whitespace-nowrap">Picture</th>
-                                        {/* <th class="text-center whitespace-nowrap">Date Performed</th>
-                                        <th class="text-center whitespace-nowrap">Date Completed</th> */}
+                                        <th class="text-center whitespace-nowrap">Transactions</th>
+                                        <th class="text-center whitespace-nowrap">Pending Amount</th>
+                                        <th class="text-center whitespace-nowrap">Available Amount</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr class="intro-x">
-                                        <td class="w-40">
-                                           <p>Ajayi</p>
-                                        </td>
-                                        <td>
-                                            <p>4000</p>
-                                        </td>
-                                        <td class="text-center">₦4000</td>
-                                        <td class="w-40">
-                                            <div class="flex items-center justify-center text-danger"> <i data-lucide="check-square" class="w-4 h-4 mr-2"></i> Failed </div>
-                                        </td>
-                                        <td class="table-report__action w-56">
-                                           <p>June 2 2023 1:50pm</p>
-                                        </td>
-                                        <td class="table-report__action w-56">
-                                            <p>June 2 2023 1:50pm</p>
-                                         </td>      
-                                    </tr>
-                                    <tr class="intro-x">
-                                        <td class="w-40">
-                                           <p>Bitoin</p>
-                                        </td>
-                                        <td>
-                                            <p>4000</p>
-                                        </td>
-                                        <td class="text-center">₦4000</td>
-                                        <td class="w-40">
-                                            <div class="flex items-center justify-center text-danger"> <i data-lucide="check-square" class="w-4 h-4 mr-2"></i> Failed </div>
-                                        </td>
-                                        <td class="table-report__action w-56">
-                                           <p>June 2 2023 1:50pm</p>
-                                        </td>
-                                        <td class="table-report__action w-56">
-                                            <p>June 2 2023 1:50pm</p>
-                                         </td>      
-                                    </tr>
+                                    {users?.map((user) => (
+                                             <tr class="intro-x">
+                                             <td class="w-40">
+                                                <p>{user.fullname}</p>
+                                             </td>
+                                             <td>
+                                                 <p>{user.email}</p>
+                                             </td>
+                                             <td class="text-center">{user.phone}</td>
+                                             <td class="w-40">
+                                                 <p>{user.card_transactions.length}</p>
+                                             </td>
+                                             <td class="table-report__action w-56">
+                                                <p>{user.pendingAmount}</p>
+                                             </td>
+                                             <td class="table-report__action w-56">
+                                                 <p>{user.availableAmount}</p>
+                                              </td>      
+                                         </tr>
+                                    ))
+                                }
+                                    
                                 </tbody>
                             </table>
                         </div>
@@ -121,7 +113,7 @@ const Users = () => {
                         </div>
                     </div>
             </div>
-        </>
+        </MainLayout>
     )
 }
 

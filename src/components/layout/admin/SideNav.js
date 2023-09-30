@@ -32,7 +32,7 @@ const SideNav = (props) => {
                         </NavLink>
                     </li>
                     <li className="mt-3">
-                        <NavLink to="/transactions" className={({isActive}) => isActive ? "side-menu side-menu--active" : "side-menu"}>
+                        <NavLink to="/users" className={({isActive}) => isActive ? "side-menu side-menu--active" : "side-menu"}>
                             <div className="side-menu__icon"> <i data-lucide="home"></i> </div>
                             <div className="side-menu__title">
                                Users
@@ -50,7 +50,7 @@ const SideNav = (props) => {
                         </NavLink>
                     </li>
                     <li className="mt-3">
-                        <NavLink to="/transactions" className={({isActive}) => isActive ? "side-menu side-menu--active" : "side-menu"}>
+                        <NavLink to="/trations" className={({isActive}) => isActive ? "side-menu side-menu--active" : "side-menu"}>
                             <div className="side-menu__icon"> <i data-lucide="home"></i> </div>
                             <div className="side-menu__title">
                                 Crypto Currency 
@@ -59,7 +59,7 @@ const SideNav = (props) => {
                         </NavLink>
                     </li>
                     <li className="mt-3">
-                        <NavLink to="/transactions" className={({isActive}) => isActive ? "side-menu side-menu--active" : "side-menu"}>
+                        <NavLink to="/transaions" className={({isActive}) => isActive ? "side-menu side-menu--active" : "side-menu"}>
                             <div className="side-menu__icon"> <i data-lucide="home"></i> </div>
                             <div className="side-menu__title">
                                 Bills Services 
@@ -80,7 +80,7 @@ const SideNav = (props) => {
                    
 
                     <li className="mt-3">
-                        <NavLink to="/settings/profile" className={({isActive}) => isActive ? "side-menu side-menu--active" : "side-menu"}>
+                        <NavLink to="/settin" className={({isActive}) => isActive ? "side-menu side-menu--active" : "side-menu"}>
                             <div className="side-menu__icon"> <i data-lucide="home"></i> </div>
                             <div className="side-menu__title">
                                 Feedbacks
