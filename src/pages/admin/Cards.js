@@ -3,26 +3,19 @@ import MainLayout from "../../components/layout/admin/MainLayout"
 import { useEffect, useState } from "react"
 import Api from "../../Api"
 import { ToastContainer, toast } from 'react-toastify'
-import { cardsAction } from "../../store/admin/card-slice"
+import { cardsAction, fetchCards } from "../../store/admin/card-slice"
 import { Link } from "react-router-dom"
 
 const Cards = () => {
-    const [allCards, setCards] = useState([])
+    // const [allCards, setCards] = useState([])
+    
     const dispatch = useDispatch()
 
-    const fetchCards = () => {
-        Api.axios_instance.get(Api.baseUrl+'/card/all')
-        .then(res => {
-            setCards(res.data.data)
-            dispatch((cardsAction.storeCards({cards:res.data.data})))
-        }).catch(err => {
-            console.log(err);
-        })
-    }
     useEffect(() => {
-       fetchCards()
-    }, [])
+      dispatch(fetchCards())
 
+    }, [])
+    const allCards = useSelector(state => state.cards.cards)
     const onDeleteCard = (id) => {
         Api.axios_instance.post(Api.baseUrl+'/admin/card/'+id)
         .then(res => {
@@ -33,7 +26,7 @@ const Cards = () => {
                 closeOnClick: true,
                 theme: "light",
             });
-            fetchCards()
+            dispatch(fetchCards())
         })
         .catch(err => {
             console.log(err);
@@ -51,7 +44,7 @@ const Cards = () => {
                 closeOnClick: true,
                 theme: "light",
             });
-            fetchCards()
+            dispatch(fetchCards())
         })
         .catch(err => {
             console.log(err);
@@ -63,13 +56,13 @@ const Cards = () => {
         Api.axios_instance.post(Api.baseUrl+'/admin/card/sell', {card_id:id})
         .then(res => {
             toast.success('Approved Card Sales', {
-                position: "top-right",
+                position: "top-right",  
                 autoClose: 5000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 theme: "light",
             });
-            fetchCards()
+            dispatch(fetchCards())
         })
         .catch(err => {
             console.log(err);

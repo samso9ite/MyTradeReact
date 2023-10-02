@@ -1,4 +1,3 @@
-import ModalComponent from "../util/Modal";
 import Modal from 'react-modal';
 import { useState } from 'react';
 import Api from "../Api";
@@ -13,7 +12,6 @@ function Transaction({transactions}){
     const [isLoading, setIsLoading] = useState(true)
     const [transaction, setTransaction] = useState(true)
     const [modalSection, setModalSection] = useState('default')
-    const [transactionId, setTransactionId] = useState('')
     const [receipts, setReceipts] = useState([])
     const [userFetched, setUserFetched] = useState(false)
     const [comment, setComment] = useState('')

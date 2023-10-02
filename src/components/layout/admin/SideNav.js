@@ -17,7 +17,7 @@ const SideNav = (props) => {
             <nav className="side-nav">
                 <ul>
                     <li className="text-center mb-10" style={{color:"white", fontSize:"15px"}}>
-                        <center>  <img alt="MyTrade" className="rounded-full mb-3 text-center" src={process.env.PUBLIC_URL+'/dist/images/avatar.png'} width="30%" /></center>
+                        <center>  <img alt="MyTrade" className="rounded-full mb-3 text-center" src={process.env.PUBLIC_URL+'/dist/images/logo.png'} width="30%" /></center>
                         <p className="mb-2">{userDetails.username}</p>
                         <p>{userDetails.email}</p>
                     </li> 
