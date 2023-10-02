@@ -10,6 +10,7 @@ import { combineReducers } from 'redux';
 import tradeSlice from './trade-slice';
 import usersSlice from './admin/users-slice';
 import allTransactionSlice from './admin/transactions-base-slice';
+import cardSlice from './admin/card-slice';
 
 
 const reducers = combineReducers({
@@ -20,6 +21,7 @@ const reducers = combineReducers({
     trade: tradeSlice.reducer,
     users:usersSlice.reducer,
     allTransactions:allTransactionSlice.reducer,
+    cards: cardSlice.reducer
 })
 
 const persistConfig = {

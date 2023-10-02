@@ -1,17 +1,20 @@
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch} from "react-redux"
 import MainLayout from "../../components/layout/admin/MainLayout"
 import { useEffect, useState } from "react"
 import Api from "../../Api"
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify'
+import { cardsAction } from "../../store/admin/card-slice"
+import { Link } from "react-router-dom"
 
 const Cards = () => {
     const [allCards, setCards] = useState([])
+    const dispatch = useDispatch()
 
     const fetchCards = () => {
         Api.axios_instance.get(Api.baseUrl+'/card/all')
         .then(res => {
             setCards(res.data.data)
-            console.log(res);
+            dispatch((cardsAction.storeCards({cards:res.data.data})))
         }).catch(err => {
             console.log(err);
         })
@@ -23,7 +26,6 @@ const Cards = () => {
     const onDeleteCard = (id) => {
         Api.axios_instance.post(Api.baseUrl+'/admin/card/'+id)
         .then(res => {
-            console.log(res);
             toast.success('Card Deleted Successfully', {
                 position: "top-right",
                 autoClose: 5000,
@@ -37,12 +39,30 @@ const Cards = () => {
             console.log(err);
         })
     }
-
+   
+    // Freeze Card Sales
     const onFreeze = (id) => {
         Api.axios_instance.post(Api.baseUrl+'/admin/card/freeze', {card_id:id})
         .then(res => {
-            console.log(res);
             toast.success('Card Paused Successfully', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                theme: "light",
+            });
+            fetchCards()
+        })
+        .catch(err => {
+            console.log(err);
+        })
+    }
+
+    // Approve Card Sales
+    const sellCard = (id) => {
+        Api.axios_instance.post(Api.baseUrl+'/admin/card/sell', {card_id:id})
+        .then(res => {
+            toast.success('Approved Card Sales', {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -84,7 +104,7 @@ const Cards = () => {
                                                 <p>{card.status}</p>
                                             </td>
                                             <td class="text-center" style={{fontSize:'18px'}}>
-                                                <i class="fa fa-pencil-square-o" aria-hidden="true" style={{paddingRight:"10px"}} ></i> {card.status == 'Paused' ? <i class="fa fa-play-circle-o" aria-hidden="true"  style={{paddingRight:"10px"}}></i>  : <i class="fa fa-pause-circle-o" aria-hidden="true" style={{paddingRight:"10px"}} onClick={() => onFreeze(card._id)}></i> } <i class="fa fa-trash-o" aria-hidden="true" style={{paddingRight:"10px", color:"red"}} onClick={() => onDeleteCard(card._id)}></i> 
+                                             <Link to={'/cards/'+card._id}>  <i class="fa fa-pencil-square-o" aria-hidden="true" style={{paddingRight:"10px"}} ></i>  </Link> {card.status == 'Paused' ? <i class="fa fa-play-circle-o" aria-hidden="true"  style={{paddingRight:"10px"}} onClick={() => sellCard(card._id)}></i>  : <i class="fa fa-pause-circle-o" aria-hidden="true" style={{paddingRight:"10px"}} onClick={() => onFreeze(card._id)}></i> } <i class="fa fa-trash-o" aria-hidden="true" style={{paddingRight:"10px", color:"red"}} onClick={() => onDeleteCard(card._id)}></i> 
                                             </td>
                                         </tr>
                                     ))

@@ -11,6 +11,7 @@ import AdminDashboard from './pages/admin/Dashboard';
 import AdminTransactions from './pages/admin/Transactions';
 import Users from './pages/admin/Users';
 import Cards from './pages/admin/Cards';
+import Rates from './pages/admin/Rates';
 
 const router =  createBrowserRouter([
   {
@@ -24,6 +25,25 @@ const router =  createBrowserRouter([
       {path:'redeem/:component_name', element: <RedeemPage />},
       {path:'redeem/:component_name/:id', element: <RedeemPage />},
       {path:'settings/:component_name', element: <Settings />},
+      {
+        path:'admin',
+        element: <AdminDashboard />
+      },
+      {
+        path:'all-transactions',
+        element: <AdminTransactions />
+      },
+      {
+        path: 'users',
+        element: <Users />
+      },
+      {
+        path: 'cards/',
+        element: <Cards />,
+      },
+
+     
+      
     ]
   },
   {
@@ -31,25 +51,17 @@ const router =  createBrowserRouter([
     element: <AuthenticationPage />,
     action: authAction
   },
+  {
+    path:'/cards/:id',
+    element: <Rates />
+  },
 
   // Admin Routers
-  {
-    path:'/admin',
-    element: <AdminDashboard />
-  },
-  {
-    path:'/all-transactions',
-    element: <AdminTransactions />
-  },
-  {
-    path: '/users',
-    element: <Users />
-  },
-  {
-    path: '/cards',
-    element: <Cards />
-  }
+
+  
+ 
 ])
+
 function App() {
   return (  
     <RouterProvider router={router} />
