@@ -5,16 +5,37 @@ import Api from "../../Api"
 import { ToastContainer, toast } from 'react-toastify'
 import { cardsAction, fetchCards } from "../../store/admin/card-slice"
 import { Link } from "react-router-dom"
+import Modal from 'react-modal';
+import ImageUploading from 'react-images-uploading';
 
 const Cards = () => {
-    // const [allCards, setCards] = useState([])
-    
+    const [modalIsOpen, setIsOpen] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
+    const [images, setImages] = useState([]);
+    const maxNumber = 1;
+
     const dispatch = useDispatch()
 
     useEffect(() => {
       dispatch(fetchCards())
-
     }, [])
+
+    const customStyles = {
+        content: {
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        width: '30%',
+        marginRight: '-50%',
+        transform: 'translate(-50%, -50%)',
+        },
+    };
+
+    const closeModal = () => {
+        setIsOpen(false);
+    }
+
     const allCards = useSelector(state => state.cards.cards)
     const onDeleteCard = (id) => {
         Api.axios_instance.post(Api.baseUrl+'/admin/card/'+id)
@@ -68,6 +89,11 @@ const Cards = () => {
             console.log(err);
         })
     }
+
+    // Update Image 
+    const onImageChange = () => {
+
+    }
     
     return(
         <MainLayout>
@@ -75,8 +101,8 @@ const Cards = () => {
                     <h2 class="intro-y text-lg font-medium mt-10">
                         All Cards
                     </h2>
+                    <button className="btn btn-primary" style={{float:'right'}} onClick={() => {setIsOpen(true)}}>Add New Card</button>
                     <div class="grid grid-cols-12 gap-6 mt-5">
-                       
                         <div class="intro-y col-span-12 overflow-auto lg:overflow-visible">
                             <table class="table table-report -mt-2">
                                 <thead>
@@ -108,6 +134,58 @@ const Cards = () => {
                         </div>
                     </div>
                 </div>
+                <Modal
+                isOpen={modalIsOpen}
+                onRequestClose={closeModal}
+                style={customStyles}
+                contentLabel="Example Modal"
+                >
+                <button onClick={closeModal}>close</button><br /> <br />
+                    <label ><strong>Card Name</strong></label><br />
+                    <input type="text" className="form-control" placeholder="Name of Card" /> <br /> <br />
+                    <ImageUploading
+                                    multiple
+                                    value={images}
+                                    onChange={onImageChange}
+                                    maxNumber={maxNumber}
+                                    dataURLKey="data_url"
+                                >
+                                {({
+                                    imageList,
+                                    onImageUpload,
+                                    onImageUpdate,
+                                    onImageRemove,
+                                    isDragging,
+                                    dragProps,
+                                }) => (
+                                    // write your building UI
+                                    <center>
+                                    <div className="upload__image-wrapper" class="dropzone">
+                                        <button
+                                        style={isDragging ? { color: 'red' } : undefined}
+                                        onClick={onImageUpload}
+                                        {...dragProps}
+                                        >
+                                        <div class="col-span-12 sm:col-span-12 lg:col-span-2 xl:col-span-1">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="cloud-rain" data-lucide="cloud-rain" class="lucide lucide-cloud-rain block mx-auto"><path d="M20 16.2A4.5 4.5 0 0017.5 8h-1.8A7 7 0 104 14.9"></path><path d="M16 14v6"></path><path d="M8 14v6"></path><path d="M12 16v6"></path></svg> 
+                                                <div class="text-center text-l mt-2">Click or Drop Card Image Here</div>
+                                            </div>
+                                        </button>
+                                        {imageList.map((image, index) => (
+                                        <div key={index} className="image-item">
+                                            <img src={image['data_url']} alt="" width="100" />
+                                            <div className="image-item__btn-wrapper">
+                                            <button class="btn btn-default" onClick={() => onImageUpdate(index)}>Update</button>
+                                            <button  onClick={() => onImageRemove(index)} style={{color:'red'}}>Remove</button>
+                                            </div>
+                                        </div>
+                                        ))}
+                                    </div>
+                                    </center>
+                                )}
+                    </ImageUploading>
+                   <center> <button className="btn btn-primary mt-5" disabled={isLoading}> {isLoading ? 'Submitting' : 'Add Card' } </button> </center>
+                </Modal>
             <ToastContainer />
         </MainLayout>
     )

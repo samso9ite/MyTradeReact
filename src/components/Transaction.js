@@ -9,7 +9,7 @@ import { ToastContainer, toast } from 'react-toastify';
 
 function Transaction({transactions}){
     const [modalIsOpen, setIsOpen] = useState(false)
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
     const [transaction, setTransaction] = useState(true)
     const [modalSection, setModalSection] = useState('default')
     const [receipts, setReceipts] = useState([])
@@ -24,11 +24,10 @@ function Transaction({transactions}){
         bottom: 'auto',
         marginRight: '-50%',
         transform: 'translate(-50%, -50%)',
+        height: '80%'
         },
     };
-    const openModal = () => {
-        setIsOpen(true);
-    }
+
     const closeModal = () => {
         setIsOpen(false);
         setUserFetched(false)
@@ -95,7 +94,6 @@ function Transaction({transactions}){
         }
         Api.axios_instance.post(Api.baseUrl+'/admin/card/transaction/decline', data)
         .then(res => {
-            console.log(res);
             toast.success('Transaction Updated Successfully', {
                 position: "top-right",
                 autoClose: 5000,
@@ -127,7 +125,7 @@ function Transaction({transactions}){
                     </td>
                     <td className="text-center">₦{transaction.amount}</td>
                     <td className="w-40">
-                        <div className="flex items-center justify-center text-danger"> {transaction.status} </div>
+                        <div className={`flex items-center justify-center ${transaction.status == 'pending' ? 'text-danger' : transaction.status == 'completed' ? 'text-success' : 'text-primary'}`} > {transaction.status} </div>
                     </td>
                     <td className="table-report__action w-56">
                         <p>{transaction.created_at}</p>
@@ -151,7 +149,7 @@ function Transaction({transactions}){
                 <button onClick={closeModal}>close</button>
                 {modalSection == 'default' && 
                 <div className="p-5" style={{fontSize:'15.5px', fontWeight:"500", padding: "15px"}}>
-                    <img src={transaction.card_image} /><br />
+                    <img src={transaction.card_image}  width={'500px'} /><br />
                     <p className="mb-2 mt-2">Transaction Reference: {transaction.transaction_reference}</p> <hr />
                     <p className="mb-2 mt-2">Name: {transaction.card}</p><hr />
                     <p className="mb-2 mt-2">Amount: <CurrencyFormatter value={transaction.amount} currencycode="NGN" /> </p><hr />
@@ -175,6 +173,7 @@ function Transaction({transactions}){
                             <p className="mb-2 mt-2">Name: {transaction.user.fullname}</p> <hr />
                             <p className="mb-2 mt-2">Phone: {transaction.user.phone}</p> <hr />
                             <p className="mb-2 mt-2">Email: {transaction.user.email}</p> <hr /> <br />
+               
                         </span>
                     }
                 </div>
