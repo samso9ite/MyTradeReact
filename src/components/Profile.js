@@ -24,7 +24,7 @@ const Profile = () => {
         setUsername(details.username)
     }, [])
 
-    const onChange = (imageList, addUpdateIndex) => {
+    const onChange = (imageList) => {
         setImages(imageList);
       };
 

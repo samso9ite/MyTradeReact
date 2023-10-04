@@ -4,7 +4,7 @@ const TopBar = () => {
         <div className="top-bar-boxed h-[70px] z-[51] relative border-b border-white/[0.08] mt-12 md:-mt-5 -mx-3 sm:-mx-8 px-3 sm:px-8 md:pt-0 mb-12">
             <div className="h-full flex items-center">
                 <a href="" className="-intro-x hidden md:flex">
-                    <img alt="MyTrade" className="w-6" src={process.env.PUBLIC_URL+'/dist/images/logo.png'} />
+                    <img alt="MyTrade" className="w-6" src={process.env.PUBLIC_URL+'/dist/images/myTradeFav.png'} />
                     <span className="text-white text-lg ml-3"> MyTrade </span> 
                 </a>
                 <nav aria-label="breadcrumb" className="-intro-x h-full mr-auto">

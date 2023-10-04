@@ -6,7 +6,7 @@ const SideNav = (props) => {
     // Get user details from the store 
     let userDetails = useSelector(state => state.auth.userDetails.userDetails)
 
-    const logoutHandler = () => {
+    const logOutHandler = () => {
         sessionStorage.clear()
         localStorage.clear()
         window.location.replace('/auth')
@@ -17,7 +17,7 @@ const SideNav = (props) => {
             <nav className="side-nav">
                 <ul>
                     <li className="text-center mb-10" style={{color:"white", fontSize:"15px"}}>
-                        <center>  <img alt="MyTrade" className="rounded-full mb-3 text-center" src={process.env.PUBLIC_URL+'/dist/images/logo.png'} width="30%" /></center>
+                        <center>  <img alt="MyTrade" className="rounded-full mb-3 text-center" src={process.env.PUBLIC_URL+'/dist/images/myTradeFav.png'} width="30%" /></center>
                         <p className="mb-2">{userDetails.username}</p>
                         <p>{userDetails.email}</p>
                     </li> 
@@ -90,7 +90,7 @@ const SideNav = (props) => {
                     </li>
 
                     <li className="mt-3">
-                        <a className="side-menu" onClick={logoutHandler} style={{cursor:'pointer'}}>
+                        <a className="side-menu" onClick={logOutHandler} style={{cursor:'pointer'}}>
                             <div className="side-menu__icon"> <i data-lucide="home"></i> </div>
                             <div className="side-menu__title">
                                 Logout

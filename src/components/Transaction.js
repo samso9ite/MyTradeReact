@@ -8,6 +8,7 @@ import { ToastContainer, toast } from 'react-toastify';
 
 
 function Transaction({transactions}){
+    console.log(transactions);
     const [modalIsOpen, setIsOpen] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [transaction, setTransaction] = useState(true)
@@ -31,6 +32,7 @@ function Transaction({transactions}){
     const closeModal = () => {
         setIsOpen(false);
         setUserFetched(false)
+        setModalSection('default')
     }
     const isAdmin = localStorage.getItem('isAdmin')
     const fetchTransaction = (id) => {
@@ -116,6 +118,7 @@ function Transaction({transactions}){
     return ( 
         <>
             {transactions?.map((transaction) => (
+                
                 <tr className="intro-x" >
                     <td className="w-40">
                         <p>{transaction.card}</p>
@@ -135,7 +138,7 @@ function Transaction({transactions}){
                     </td>  
                     <td>
                         <button className="btn btn-outline-primary" onClick={() => fetchTransaction(transaction._id)}>View</button>
-                    </td>    
+                    </td>   
                 </tr>
             ))
             }
@@ -163,11 +166,19 @@ function Transaction({transactions}){
                            
                             <center> <h3 className="mt-5" style={{fontSize: "17px"}}> Bank Details </h3> </center>
 
-                            { transaction.user.accountInfo.length > 0 ? <span>
-                                <p className="mb-2 mt-2">Name: {transaction.user.fullname}</p><hr />
-                                <p className="mb-2 mt-2">Phone: {transaction.user.phone}</p><hr />
-                                <p className="mb-2 mt-2">Email: {transaction.user.email}</p><hr />
-                            </span>  : <center className="mt-3"><p>No saved bank details for this user</p> </center>}
+                            {transaction.user && transaction.user.accountInfo.length > 0 ? (
+                                transaction.user.accountInfo.map((account) => (
+                                    account.active === true && (
+                                    <span key={account.id}>
+                                        <p className="mb-2 mt-2">Account Name: {account.name}</p><hr />
+                                        <p className="mb-2 mt-2">Account Number: {account.number}</p><hr />
+                                        <p className="mb-2 mt-2">Bank: {account.bank_name}</p><hr />
+                                    </span>
+                                    )
+                                ))
+                                ) : (
+                                <center className="mt-3"><p>No saved bank details for this user</p></center>
+                            )}
 
                             <center> <h3 className="mt-5" style={{fontSize: "17px"}}>Customer Details</h3> </center>
                             <p className="mb-2 mt-2">Name: {transaction.user.fullname}</p> <hr />
@@ -180,11 +191,11 @@ function Transaction({transactions}){
                 } 
                 {modalSection === 'payout' && <div className="p-5" style={{fontSize:'15.5px', fontWeight:"500", padding: "15px"}}>
                     <ImageUploading
-                            multiple
-                            value={receipts}
-                            onChange={onReceiptUpload}
-                            dataURLKey="data_url"
-                        >
+                        multiple
+                        value={receipts}
+                        onChange={onReceiptUpload}
+                        dataURLKey="data_url"
+                    >
                         {({
                             imageList,
                             onImageUpload,
@@ -193,7 +204,7 @@ function Transaction({transactions}){
                             isDragging,
                             dragProps,
                         }) => (
-                            // write your building UI
+                            // Write your building UI
                             <center>
                             <div className="upload__image-wrapper" class="dropzone">
                                 <button

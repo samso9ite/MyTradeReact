@@ -7,11 +7,13 @@ import { cardsAction, fetchCards } from "../../store/admin/card-slice"
 import { Link } from "react-router-dom"
 import Modal from 'react-modal';
 import ImageUploading from 'react-images-uploading';
+import axios from "axios"
 
 const Cards = () => {
     const [modalIsOpen, setIsOpen] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [images, setImages] = useState([]);
+    const [cardName, setCardName] = useState('')
     const maxNumber = 1;
 
     const dispatch = useDispatch()
@@ -91,10 +93,47 @@ const Cards = () => {
     }
 
     // Update Image 
-    const onImageChange = () => {
-
+    const onImageChange = (imageList) => {
+        setImages(imageList);
     }
-    
+
+      const onCreateCard = async () => {
+        setIsLoading(true)
+        const response = await Promise.all((images.map( async(image) => {
+            const formData = new FormData();
+            formData.append('image', image.file);
+            const response = await axios.post('https://api.imgur.com/3/upload', formData, {
+                headers: {
+                  'Content-Type': 'multipart/form-data',
+                  Authorization: 'Client-ID c383bbc6a421d53',
+                }
+            });
+            return response.data.data.link;
+        })
+        ))
+        const data = {
+            image: response,
+            name: cardName
+        }
+        Api.axios_instance.post(Api.baseUrl+'/admin/add_card', data)
+        .then(res => {
+            toast.success('Card Created Successfully', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                theme: "light",
+            });
+        }).finally(() => {
+            setIsLoading(false)
+            setIsOpen(false)
+        })
+    }
+
+    const cardNameHandler = (event) => {
+        setCardName(event.target.value)
+    }
+
     return(
         <MainLayout>
             <div class="content">
@@ -142,7 +181,7 @@ const Cards = () => {
                 >
                 <button onClick={closeModal}>close</button><br /> <br />
                     <label ><strong>Card Name</strong></label><br />
-                    <input type="text" className="form-control" placeholder="Name of Card" /> <br /> <br />
+                    <input type="text" className="form-control" placeholder="Name of Card" onChange={cardNameHandler}/> <br /> <br />
                     <ImageUploading
                                     multiple
                                     value={images}
@@ -184,7 +223,7 @@ const Cards = () => {
                                     </center>
                                 )}
                     </ImageUploading>
-                   <center> <button className="btn btn-primary mt-5" disabled={isLoading}> {isLoading ? 'Submitting' : 'Add Card' } </button> </center>
+                   <center> <button className="btn btn-primary mt-5" disabled={isLoading} onClick={onCreateCard}> {isLoading ? 'Submitting' : 'Add Card' }  </button> </center>
                 </Modal>
             <ToastContainer />
         </MainLayout>

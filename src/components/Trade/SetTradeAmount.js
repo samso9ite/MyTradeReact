@@ -14,13 +14,8 @@ const [card, setCard] = useState('')
 const {id} = useParams()
 const [cardRate, setCardRate] = useState([])
 const [selectedCardType, setSelectedCardType] = useState([])
-const [selectedCurrency, setSelectedCurrency] = useState([])
-const [rateValue, setRateValue] = useState(0)
-const [cardTypes, setCardTypes] = useState([])
-const [countries, setCountries] = useState([])
+const [selectedRate, setSelectedRate] = useState(0)
 const [cardValue, setCardValue] = useState('')
-const [price, setPrice] = useState(0)
-const [message, setMessage] = useState('')
 
 const [state, setState] = useState({
     isPaneOpen: false,
@@ -37,98 +32,48 @@ const getUniqueCountries = (countryArr) => {
     return uniqueCountries
 } 
 
-
 useEffect(() => {
     let assetDetail = assetCtx.asset.find((asset) => asset._id === id)
     setCard(assetDetail)
     setCardRate(assetDetail.rates)
-    let cardArr = []
-    let countryArr = []
-    setCardTypes([])
-    setCardValue('')
-    assetDetail.rates.forEach(rate => {
-        const currency = findCountryCurrency(rate.country)
-        rate.currency = currency;
-        if(!cardArr.includes(rate.cardType)){
-            cardArr.push(rate.cardType)
-        }
-        countryArr.push({country:rate.country, currency})
-    });
-    countryArr = getUniqueCountries(countryArr)
-    setCardTypes(prevState => [...prevState, ...cardArr])
-    setCountries([])        
-    setCountries(prevState => [...prevState, ...countryArr])
-}, [])
 
-// Find Country Currency Handler
-const findCountryCurrency = (country) => {
-    const countryCurrency = rawCountries.find(c => c.name === country)
-    return countryCurrency.currency
-}
+}, [])
 
 // Map through a list of rates for a selected digital asset
 const cardTypesHandler = () => {
-    return cardTypes?.map((cardType) => {
-        return <option  value={cardType}>{cardType}</option>
-    })
-} 
-
-// Map through a list of rates for a selected digital asset
-const countryListHandler = () => {
-    return countries?.map((country) => {
-        return <option value={country.country}>{country.country}-{country.currency}</option>
+    return cardRate?.map((cardType) => {
+        return <option  value={cardType._id}>{cardType.country} - {cardType.cardType} - {cardType.denomination} </option>
     })
 } 
 
 const selectCardTypeHandler = (event) => {
-    setSelectedCardType(event.target.value)
+    const selected = event.target.value
+    setSelectedCardType(selected)
+    const selectedObject = cardRate.find((option) => option._id === selected)
+    setSelectedRate(selectedObject)
 }
-const selectCurrencyHandler = (event) => {
-    setSelectedCurrency(event.target.value)
-}
-/** The section calculates the rate of the value */     
-const between = (x, range) => {
-    const [min, max] = range.split('-').map(val => parseInt(val))
-    return x >= min && x <= max
-}
-const isRateAvailable = (amount) => {
-    cardRate.forEach(rate => {
-        setMessage('')
-        const isBetween = between(amount, rate.denomination);
-        if(isBetween){
-            setRateValue(rate.rate)
-        }else{
-            setMessage("Value is between" +' '+  rate.denomination)
-            setRateValue(0)
-        }
-    })
-}
+
 
 const getRateHandler = (event) => {
     setCardValue(event.target.value)
-    isRateAvailable(event.target.value)
+    // isRateAvailable(event.target.value)
 }
 
  // This calculates the payout amount
  const getAmountHandler = () => {
-    let payoutCalc = cardValue * rateValue
-    // setPrice(cardValue * rateValue)
+    let payoutCalc = selectedRate.rate * cardValue
     return payoutCalc
 }
 /** End of rate calculation functions */
 
-const openDrawer = () => {
-    setState({isPaneOpen:true})
-  }
-
 const storeTradeDetails = () => {
       let tradeDetails = {
         card: card.name,
-        card_type: selectedCardType,
-        country: selectedCurrency,
+        card_type: selectedRate.card_type,
+        country: selectedRate.country,
         card_value: cardValue,
-        price: cardValue * rateValue,
-        rate: rateValue
+        price: cardValue * selectedRate.rate,
+        rate: selectedRate.rate
     }
     dispatch(tradeAction.tradeDetails(tradeDetails))
     setState({isPaneOpen:true})
@@ -153,28 +98,21 @@ const storeTradeDetails = () => {
                                     {cardTypesHandler()}
                                 </select>   
                             </div>
-                            <div>
-                                <label for="crud-form-2" className="form-label ">Select Country/Currency</label>
-                                <select className="form-select form-select-lg sm:mr-2" aria-label=".form-select-lg example" value={selectedCurrency} onChange={selectCurrencyHandler}>
-                                <option value="">-- Choose Currency -- </option>
-                                    {countryListHandler()}
-                                </select>
-                            </div>
+                          
                             <div>
                                 <label for="crud-form-2" className="form-label">What's the value of the card</label>
                                 <input type="number" className="form-control w-full" placeholder="Card Value" value={cardValue} onChange={getRateHandler} />
                             </div>
                             </div>
-                            {/* Print card range if an unavailable card value is inputted byt the user */}
-                            {message && <h4 style={{color:'red', fontSize: "20px", fontWeight: "400"}}> {message} </h4>}
-                            {!message && <h3 style={{fontSize: "20px", fontWeight: "500"}}> Rate: <CurrencyFormatter value={rateValue} currencycode="NGN" /> </h3> }
-                            {!message &&  <div class="flex justify-end">
-                                    <div class="mr-auto flex items-center">
-                                        <h3 style={{fontSize: "20px", fontWeight: "500"}}> Payout: <CurrencyFormatter value={getAmountHandler()}  currencycode="NGN" /></h3>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary large mr-1 flex" onClick={storeTradeDetails}> Confirm & Proceed</button>
-                                </div> 
-                            } 
+                            
+                            <h3 style={{fontSize: "20px", fontWeight: "500", paddingTop:'3%'}}> Rate: <CurrencyFormatter value={selectedRate.rate} currencycode="NGN" /> </h3> 
+                            <div class="flex justify-end mt-5">
+                                <div class="mr-auto flex items-center">
+                                    <h3 style={{fontSize: "20px", fontWeight: "500"}}> Payout: <CurrencyFormatter value={getAmountHandler()}  currencycode="NGN" /></h3>
+                                </div>
+                                <button type="submit" class="btn btn-primary large mr-1 flex" onClick={storeTradeDetails}> Confirm & Proceed</button>
+                            </div> 
+                            
                         </div>
                     </div>
 

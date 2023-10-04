@@ -1,8 +1,18 @@
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import MainLayout from "../../components/layout/admin/MainLayout"
 import Transaction from "../../components/Transaction"
+import { useEffect } from "react"
+import {fetchApprovedTransactions, fetchPaidTransactions, fetchPendingTransactions} from "../../store/admin/transactions-base-slice"
 
 const AdminDashboard = () => {
+
+    const dispatch = useDispatch()
+    useEffect(() => {
+        dispatch(fetchPendingTransactions())
+        dispatch(fetchPaidTransactions())
+        dispatch(fetchApprovedTransactions())
+    }, [])
+
     const pendingTransactions = useSelector(state => state.allTransactions.pending)
     const paidTransactions = useSelector(state => state.allTransactions.paid)
     const approvedTransactions = useSelector(state => state.allTransactions.approved)

@@ -21,6 +21,7 @@ const Rates = (props) => {
     const [cardType, setCardType] = useState('')
     const [denomination, setDenomination] = useState('')
     const [card, setCard] = useState('')
+    const [modalSection, setModalSection] = useState('')
     
     const closeModal = () => {
         setIsOpen(false);
@@ -48,6 +49,7 @@ const Rates = (props) => {
 
     const setRateDetails = (id) => {
         setIsOpen(true)
+        setModalSection('edit')
         const selectedRate = rates.find(rate => rate._id === id)
         setRateId(id)
         setRate(selectedRate.rate)
@@ -69,6 +71,37 @@ const Rates = (props) => {
     }
     const denominationHandler = (event) => {
         setDenomination(event.target.value)
+    }
+
+    const addRateHandler = () => {
+        setIsLoading(true)
+        const formData = {
+            country: country,
+            rate: rate,
+            denomination: denomination,
+            processingTime: '00:00-23:59',
+            cardType: cardType,
+            card_id: id
+        }
+        Api.axios_instance.put(Api.baseUrl+'/admin/card/ratings/add', formData)
+        .then(() => {
+            toast.success('Rate Created Successfully', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                theme: "light",
+            });
+            
+        }).catch(err => {
+            console.log(err);
+        }).finally(() => {
+            dispatch(fetchCards())
+            setIsOpen(false)
+            setIsLoading(false)
+        }
+        )
+
     }
 
     const editRateHandler = () => {
@@ -137,9 +170,6 @@ const Rates = (props) => {
                 closeOnClick: true,
                 theme: "light",
             });
-
-
-            // dispatch(fetchCards())
         })
         .catch(err => {
             console.log(err);
@@ -173,12 +203,15 @@ const Rates = (props) => {
         })
     }
     
+    console.log(rateId);
+
     return(
         <MainLayout>
               <div class="content">
                     <h2 class="intro-y text-lg font-medium mt-10">
                         {cardName}
                     </h2>
+                    <button className="btn btn-primary" style={{float:'right'}} onClick={() => {setIsOpen(true); setModalSection('add')}}>Add New Rate</button>
                     <div class="grid grid-cols-12 gap-6 mt-5">
                        
                         <div class="intro-y col-span-12 overflow-auto lg:overflow-visible">
@@ -212,7 +245,7 @@ const Rates = (props) => {
                                                 {rate.isDisabled ? 'Rate Active' : 'Rate Disabled'}
                                             </td>
                                             <td style={{fontSize:'17px'}}>
-                                            <i class="fa fa-pencil-square-o" aria-hidden="true" style={{paddingRight:"10px"}} onClick={() => setRateDetails(rate._id)}></i> {rate.isDisabled == true ? <i class="fa fa-play-circle-o" aria-hidden="true"  style={{paddingRight:"10px"}} onClick={() => activateRate(rate._id)}></i>  : <i class="fa fa-pause-circle-o" aria-hidden="true" style={{paddingRight:"10px"}} onClick={() => onFreeze(rate._id)}></i> } <i class="fa fa-trash-o" aria-hidden="true" style={{paddingRight:"10px", color:"red"}} onClick={() => onDeleteRate(card._id)}></i> 
+                                            <i class="fa fa-pencil-square-o" aria-hidden="true" style={{paddingRight:"10px"}} onClick={() => setRateDetails(rate._id)}></i> {rate.isDisabled === true ? <i class="fa fa-play-circle-o" aria-hidden="true"  style={{paddingRight:"10px"}} onClick={() => activateRate(rate._id)}></i>  : <i class="fa fa-pause-circle-o" aria-hidden="true" style={{paddingRight:"10px"}} onClick={() => onFreeze(rate._id)}></i> } <i class="fa fa-trash-o" aria-hidden="true" style={{paddingRight:"10px", color:"red"}} onClick={() => onDeleteRate(card._id)}></i> 
                                             </td>
                                         </tr>
                                     ))
@@ -243,7 +276,9 @@ const Rates = (props) => {
                             <label style={{margin: "15px"}}>Denomination</label>
                             <input style={{margin: "15px"}} type="text" placeholder="Denomination" className="form-control" value={denomination} onChange={denominationHandler} />
 
+                            {modalSection === 'add' ? <center> <button className="btn btn-primary" onClick={addRateHandler} disabled={isLoading}>{isLoading ? 'Submitting ...' : 'Add New Rate' }</button> </center> :
                             <center> <button className="btn btn-primary" onClick={editRateHandler} disabled={isLoading}>{isLoading ? 'Submitting ...' : 'Edit Rate' }</button> </center>
+                            }
                             </div>
 
                         </Modal>

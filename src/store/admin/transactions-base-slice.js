@@ -3,7 +3,6 @@ import Api from "../../Api";
 
 export const fetchPendingTransactions = createAsyncThunk('pending/fetchPendingTransactions', async () => {
     const response = await Api.axios_instance.get(Api.baseUrl+'/admin/transactions/pending')
-    console.log(response.data.data);
     return response?.data.data
 })
 

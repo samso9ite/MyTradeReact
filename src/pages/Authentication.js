@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import { json, redirect, useActionData, useNavigate, useSearchParams } from "react-router-dom";
+import {useActionData, useNavigate, useSearchParams } from "react-router-dom";
 import Api from "../Api";
 import AuthForm from "../components/Forms/AuthForm";
 import { useDispatch } from "react-redux";
-import {fetchApprovedTransactions, fetchPaidTransactions, fetchPendingTransactions} from "../store/admin/transactions-base-slice"
 import { authActions } from "../store/auth-slice";
 import { fetchUsers } from "../store/admin/users-slice";
 
@@ -27,9 +26,6 @@ const Authentication = () => {
                if(data.data.email == 'jouslaw@hotmail.com'){
                     localStorage.setItem('isAdmin', true)
                     dispatch(fetchUsers())
-                    dispatch(fetchPendingTransactions())
-                    dispatch(fetchPaidTransactions())
-                    dispatch(fetchApprovedTransactions())
                     navigate('/admin')
                }else{
                  navigate('/')
