@@ -18,7 +18,7 @@ const MobileNav = () => {
         <div className={istoggledNav == true ? "mobile-menu--active mobile-menu md:hidden" : 'mobile-menu md:hidden'} >
             <div class="mobile-menu-bar">
                 <a href="" class="flex mr-auto">
-                    <img alt="MyTrade" src={process.env.PUBLIC_URL+'/dist/images/MyTradeLogo.png'} width="60%"/>
+                    <img alt="MyTrade" src={process.env.PUBLIC_URL+'/dist/images/myTradeLogo.png'} width="60%"/>
                 </a>
                 <span className="mobile-menu-toggler"> <i className="fa fa-bars text-white transform" style={{fontSize:"20px"}}  onClick={() => {setNavToggle(!istoggledNav)}}></i> </span>
             </div>

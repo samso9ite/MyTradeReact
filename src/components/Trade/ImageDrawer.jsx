@@ -9,10 +9,10 @@ import { Link } from "react-router-dom";
 import { tradeAction } from "../../store/trade-slice";
 
   const ImageDrawer = (props) => {
-    const [state, setState] = useState({
-        isPaneOpen: false,
-        isPaneOpenLeft: false,
-    });
+    // const [state, setState] = useState({
+    //     isPaneOpen: false,
+    //     isPaneOpenLeft: false,
+    // });
     const [submitting, setSubmitting] = useState(false)
     const [digit, setDigit] = useState('')
     const [images, setImages] = useState([]);
@@ -82,10 +82,9 @@ import { tradeAction } from "../../store/trade-slice";
         isOpen={props.isPaneOpen}
         title="Complete Trade"
         width='25rem'
-        onRequestClose={
-          <i className="fa fa-times-circle-o transform" style={{fontSize:"22px", float:'right'}}  onClick={() => { setState({ isPaneOpen: false })}}></i> 
-        }> 
-        <i className="fa fa-times-circle-o transform" style={{fontSize:"22px", float:'right'}}  onClick={() => { setState({ isPaneOpen: false })}}></i> 
+        onRequestClose={props.onRequestClose}
+        > 
+        <i className="fa fa-times-circle-o transform" style={{fontSize:"22px", float:'right'}}  onClick={props.onRequestClose}></i> 
         {!isSuccess &&
           <ImageUploading
           multiple
