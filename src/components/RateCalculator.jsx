@@ -55,6 +55,8 @@ const RateCalculator = (props) => {
         setSelectedCardType([])
         setselectedDenomination([])
         setCardValue('')
+        setMessage('')
+        setDenominations([])
         let cardArray = []
         let countryArr = []
         selectedObject.rates.forEach(rate => {
@@ -90,6 +92,7 @@ const RateCalculator = (props) => {
     } 
     // Set country on selected country
     const countryChangeHandler = (event) => {
+
         setCountrySelected(event.target.value)
         let denominationArr = []
         cardRate.map?.((rate) => {
@@ -97,8 +100,8 @@ const RateCalculator = (props) => {
             denominationArr.push({denomination:rate.denomination, rate:rate.rate})
            }
         } )
+        setDenominations([])
         setDenominations(prevState => [...prevState, ...denominationArr])
-        console.log(denominations);
     }
 
     // Denomination options handler
@@ -111,9 +114,13 @@ const RateCalculator = (props) => {
     // Denomination Change Handler
     const denominationChangeHandler = (event) => {
         setselectedDenomination(event.target.value)
-        console.log(event.target.value);
-        setRateValue(selectedDenomination.rate)
-}
+        denominations?.map(denomination => {
+            if (denomination.denomination === event.target.value){
+                setRateValue(denomination.rate)
+                console.log(denomination.rate);
+            }
+        })
+    }
     /** This section calculates the rate of the value */     
     const between = (x, range) => {
         const [min, max] = range.split('-').map(val => parseInt(val))
@@ -121,13 +128,17 @@ const RateCalculator = (props) => {
     }
 
     const isRateAvailable = (amount) => {
+        console.log(amount);
+        setMessage('')
         const isBetween = between(amount, selectedDenomination);
-        // if(isBetween == true){
-        //     setRateValue(rate.rate)
-        // }else{
-        //     setMessage("Value is between" + rate.denomination)
-        //     setRateValue(0)
-        // }
+        console.log(isBetween);
+        if(isBetween == true){
+            console.log("Active");
+            // setRateValue(rate.rate)
+        }else{
+            setMessage("Value is between" + selectedDenomination)
+            
+        }
         // cardRate.forEach(rate => {
         //     setRateValue(0)
         //     setMessage('')
