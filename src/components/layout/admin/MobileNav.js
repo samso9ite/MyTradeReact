@@ -6,7 +6,7 @@ const MobileNav = () => {
                 <a href="" className="flex mr-auto">
                     <img alt="MyTrade" className="w-6"  src={process.env.PUBLIC_URL+'/dist/images/logo.svg'} />
                 </a>
-                <a href="" className="mobile-menu-toggler"> <i data-lucide="bar-chart-2" className="w-8 h-8 text-white transform -rotate-90"></i> </a>
+                <a href="" className="mobile-menu-toggler"> <i className=" fa fa-caret-down">Navigate</i> </a>
             </div>
             <div className="scrollable">
                 <a href="" className="mobile-menu-toggler"> <i data-lucide="x-circle" className="w-8 h-8 text-white transform -rotate-90"></i> </a>

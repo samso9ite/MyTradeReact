@@ -1,6 +1,6 @@
-import MobileNav from "../layout/MobileNav";
-import SideNav from "../layout/SideNav";
-import TopBar from "../layout/TopBar";
+import MobileNav from "./MobileNav";
+import SideNav from "./SideNav";
+import TopBar from "./TopBar";
 
 import React from 'react'
 
