@@ -7,6 +7,8 @@ import { fetchDetails } from "../store/user-details";
 import Api from '../Api';
 import CurrencyFormatter from '../components/CurrencyFormatter';
 import { Link } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
     const Dashboard = () => {
     // Get user details from the store 
@@ -24,6 +26,16 @@ import { Link } from 'react-router-dom';
         })  
         
     }, [])
+
+    const comingSoonMessage = () => {
+        toast.warning('This functionality will be available soon', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            theme: "light",
+        })
+    }
 
         return ( 
             <>
@@ -75,6 +87,8 @@ import { Link } from 'react-router-dom';
                                         
                                     </div>
                                 </div>
+                                </div>
+                                <div className="grid grid-cols-12 gap-2 mt-5">
                               
                                 <div className="col-span-12 xl:col-span-12 mt-6">
                                     <div className="intro-y flex items-center h-10">
@@ -84,7 +98,7 @@ import { Link } from 'react-router-dom';
                                     </div>
                                 </div>
 
-                                <div className="col-span-2 xl:col-span-2">
+                                <div className="col-span-4 sm:col-span-6 md-col-span-6 l:col-span-6 xl:col-span-2" onClick={comingSoonMessage}>
                                     <div className="intro-y">
                                         <div className="box px-4 py-4 mb-3  items-center zoom-in">
                                             <center>
@@ -95,7 +109,7 @@ import { Link } from 'react-router-dom';
                                     </div>
                                 </div>
 
-                                <div className="col-span-2 xl:col-span-2">
+                                <div className="col-span-4 sm:col-span-6 md-col-span-6 l:col-span-6 xl:col-span-2" onClick={comingSoonMessage}>
                                     <div className="intro-y">
                                         <div className="box px-4 py-4 mb-3  items-center zoom-in">
                                             <center>
@@ -106,7 +120,7 @@ import { Link } from 'react-router-dom';
                                     </div>
                                 </div>
 
-                                <div className="col-span-2 xl:col-span-2">
+                                <div className="col-span-4 sm:col-span-6 md-col-span-6 l:col-span-6 xl:col-span-2" onClick={comingSoonMessage}>
                                     <div className="intro-y">
                                         <div className="box px-4 py-4 mb-3  items-center zoom-in">
                                             <center>
@@ -118,7 +132,7 @@ import { Link } from 'react-router-dom';
                                 </div>
 
 
-                                <div className="col-span-2 xl:col-span-2">
+                                <div className="col-span-4 sm:col-span-6 md-col-span-6 l:col-span-6 xl:col-span-2" >
                                     <div className="intro-y">
                                     <Link to="/redeem/cards"> 
                                         <div className="box px-4 py-4 mb-3  items-center zoom-in">
@@ -131,9 +145,8 @@ import { Link } from 'react-router-dom';
                                     </div>
                                 </div>
 
-                                <div className="col-span-2 xl:col-span-2">
+                                <div className="col-span-4 sm:col-span-6 md-col-span-6 l:col-span-6 xl:col-span-2" onClick={comingSoonMessage}>
                                     <div className="intro-y">
-                                   
                                         <div className="box px-4 py-4 mb-3  items-center zoom-in">
                                             <center>
                                                 <img alt="MyTrade" src="dist/images/coin/airtime.svg" width="30%"/>
@@ -143,7 +156,7 @@ import { Link } from 'react-router-dom';
                                     </div>
                                 </div>
 
-                                <div className="col-span-2 xl:col-span-2">
+                                <div className="col-span-4 sm:col-span-6 md-col-span-6 l:col-span-6 xl:col-span-2" onClick={comingSoonMessage}>
                                     <div className="intro-y">
                                         <div className="box px-4 py-4 mb-3  items-center zoom-in">
                                             <center>
@@ -185,6 +198,7 @@ import { Link } from 'react-router-dom';
                       
                     </div>
                 </div>
+                {/* <ToastContainer /> */}
             </MainLayout>
             </>
          );

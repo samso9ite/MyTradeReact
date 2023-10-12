@@ -81,10 +81,11 @@ import { tradeAction } from "../../store/trade-slice";
         <SlidingPane 
         isOpen={props.isPaneOpen}
         title="Complete Trade"
-        width='35%'
+        width='25rem'
         onRequestClose={
-            props.onRequestClose
+          <i className="fa fa-times-circle-o transform" style={{fontSize:"22px", float:'right'}}  onClick={() => { setState({ isPaneOpen: false })}}></i> 
         }> 
+        <i className="fa fa-times-circle-o transform" style={{fontSize:"22px", float:'right'}}  onClick={() => { setState({ isPaneOpen: false })}}></i> 
         {!isSuccess &&
           <ImageUploading
           multiple
@@ -103,6 +104,7 @@ import { tradeAction } from "../../store/trade-slice";
             dragProps,
           }) => (
             // write your building UI
+            
             <center>
               <div className="upload__image-wrapper" class="dropzone">
                 <button

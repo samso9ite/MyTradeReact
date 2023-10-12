@@ -7,7 +7,7 @@ import CurrencyFormatter from './CurrencyFormatter'
 const RateCalculator = (props) => {
     const assetCtx = useContext(AssetContext)
     const [cardRate, setCardRate] = useState([])
-    const [countrySelected, setCountrySelected] = useState({})
+    const [countrySelected, setCountrySelected] = useState('')
     const [assetSelected, setAssetSelected] = useState({})
     const [rateValue, setRateValue] = useState(0)
     const [cardTypes, setCardTypes] = useState([])
@@ -117,7 +117,6 @@ const RateCalculator = (props) => {
         denominations?.map(denomination => {
             if (denomination.denomination === event.target.value){
                 setRateValue(denomination.rate)
-                console.log(denomination.rate);
             }
         })
     }
@@ -128,29 +127,11 @@ const RateCalculator = (props) => {
     }
 
     const isRateAvailable = (amount) => {
-        console.log(amount);
         setMessage('')
         const isBetween = between(amount, selectedDenomination);
-        console.log(isBetween);
-        if(isBetween == true){
-            console.log("Active");
-            // setRateValue(rate.rate)
-        }else{
+        if(isBetween == false){
             setMessage("Value is between" + selectedDenomination)
-            
         }
-        // cardRate.forEach(rate => {
-        //     setRateValue(0)
-        //     setMessage('')
-            
-        //     const isBetween = between(amount, rate.denomination);
-        //     if(isBetween == true){
-        //         setRateValue(rate.rate)
-        //     }else{
-        //         setMessage("Value is between" + rate.denomination)
-        //         setRateValue(0)
-        //     }
-        // })
     }
 
     const getRateHandler = (event) => {

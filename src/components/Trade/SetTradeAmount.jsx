@@ -67,8 +67,6 @@ const getRateHandler = (event) => {
 /** End of rate calculation functions */
 
 const storeTradeDetails = () => {
-    console.log(selectedRate);
-    console.log(selectedRate.cardType);
       let tradeDetails = {
         card: card.name,
         card_type: selectedRate.cardType,

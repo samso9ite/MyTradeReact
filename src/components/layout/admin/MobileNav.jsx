@@ -18,7 +18,7 @@ const MobileNav = () => {
         <div className={istoggledNav == true ? "mobile-menu--active mobile-menu md:hidden" : 'mobile-menu md:hidden'} >
             <div class="mobile-menu-bar">
                 <a href="" class="flex mr-auto">
-                    <img alt="MyTrade" src={process.env.PUBLIC_URL+'./dist/images/MyTradeLogo.png'} width="60%"/>
+                    <img alt="MyTrade" src={process.env.PUBLIC_URL+'/dist/images/MyTradeLogo.png'} width="60%"/>
                 </a>
                 <span className="mobile-menu-toggler"> <i className="fa fa-bars text-white transform" style={{fontSize:"20px"}}  onClick={() => {setNavToggle(!istoggledNav)}}></i> </span>
             </div>
@@ -26,37 +26,49 @@ const MobileNav = () => {
                 <span class="mobile-menu-toggler"> <i className="fa fa-times-circle-o text-white transform" style={{fontSize:"25px", cursor:'pointer'}} onClick={() => {setNavToggle(!istoggledNav)}}></i> </span>
                 <ul class="scrollable__content py-2">
                     <li className="text-center mb-10" style={{color:"white", fontSize:"15px"}}>
-                        <center>  <img alt="MyTrade" className="rounded-full mb-3 text-center" src={process.env.PUBLIC_URL+'./dist/images/avatar.png'} width="30%" /></center>
+                        <center>  <img alt="MyTrade" className="rounded-full mb-3 text-center" src={process.env.PUBLIC_URL+'/dist/images/myTradeFav.png'} width="30%" /></center>
                         <p className="mb-2">{userDetails.username}</p>
                         <p>{userDetails.email}</p>
                     </li> 
                     <li>
-                        <NavLink to="/" className={({isActive}) => isActive ?  "menu menu--active" : "menu"} end>
+                        <NavLink to="/admin" className={({isActive}) => isActive ?  "menu menu--active" : "menu"} end>
                             <div class="menu__icon"> Dashboard<i data-lucide="home"></i> </div>
                             <div class="menu__title">  <i data-lucide="chevron-down" class="menu__sub-icon transform rotate-180"></i> </div>
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="/transactions" className={({isActive}) => isActive ?  "menu menu--active" : "menu"} end>
-                            <div class="menu__icon">   Transactions <i data-lucide="home"></i> </div>
+                        <NavLink to="/users" className={({isActive}) => isActive ?  "menu menu--active" : "menu"} end>
+                            <div class="menu__icon">   Users <i data-lucide="home"></i> </div>
                             <div class="menu__title">  <i data-lucide="chevron-down" class="menu__sub-icon transform rotate-180"></i> </div>
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="/rate" className={({isActive}) => isActive ?  "menu menu--active" : "menu"} end>
-                            <div class="menu__icon"> Rates<i data-lucide="home"></i> </div>
+                        <NavLink to="/cards" className={({isActive}) => isActive ?  "menu menu--active" : "menu"} end>
+                            <div class="menu__icon"> Cards<i data-lucide="home"></i> </div>
                             <div class="menu__title">  <i data-lucide="chevron-down" class="menu__sub-icon transform rotate-180"></i> </div>
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="/redeem/cards" className={({isActive}) => isActive ?  "menu menu--active" : "menu"} end>
-                            <div class="menu__icon"> Redeem <i data-lucide="home"></i> </div>
+                        <NavLink to="/r" className={({isActive}) => isActive ?  "menu menu--active" : "menu"} end>
+                            <div class="menu__icon"> Crypto Currency <i data-lucide="home"></i> </div>
                             <div class="menu__title">  <i data-lucide="chevron-down" class="menu__sub-icon transform rotate-180"></i> </div>
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="/settings/profile" className={({isActive}) => isActive ?  "menu menu--active" : "menu"} end>
-                            <div class="menu__icon"> Settings<i data-lucide="home"></i> </div>
+                        <NavLink to="/set" className={({isActive}) => isActive ?  "menu menu--active" : "menu"} end>
+                            <div class="menu__icon"> Bills Services<i data-lucide="home"></i> </div>
+                            <div class="menu__title">  <i data-lucide="chevron-down" class="menu__sub-icon transform rotate-180"></i> </div>
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="/all-transactions" className={({isActive}) => isActive ?  "menu menu--active" : "menu"} end>
+                            <div class="menu__icon">  All Transactions   <i data-lucide="home"></i> </div>
+                            <div class="menu__title">  <i data-lucide="chevron-down" class="menu__sub-icon transform rotate-180"></i> </div>
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="/st" className={({isActive}) => isActive ?  "menu menu--active" : "menu"} end>
+                            <div class="menu__icon"> Feedbacks<i data-lucide="home"></i> </div>
                             <div class="menu__title">  <i data-lucide="chevron-down" class="menu__sub-icon transform rotate-180"></i> </div>
                         </NavLink>
                     </li>

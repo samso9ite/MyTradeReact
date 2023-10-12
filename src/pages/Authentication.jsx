@@ -45,15 +45,15 @@ const Authentication = () => {
                     <div className="hidden xl:flex flex-col min-h-screen">
                         <div className="mt-5">
                             <div className="-intro-x text-white font-medium text-4xl leading-tight mt-10" style={{marginTop: "30%"}}>
-                                <img src="./dist/images/coin/logo.svg" width="50%"/>
+                                <img src="./dist/images/myTradeLogo.png" width="50%"/>
                                 A few more clicks to 
                                 <br />
-                                sign up to your account.
+                               access your account.
                             </div>
                            
                         </div>
                     </div>
-                    <div className="h-screen xl:h-auto flex py-5 xl:py-0 my-10 xl:my-0" style={{marginTop:"20%"}}>
+                    <div className="h-screen xl:h-auto py-5 xl:py-0 my-10 xl:my-0" style={{marginTop:"20%"}}>
                         <AuthForm />   
                    </div>      
                 </div>
@@ -68,7 +68,6 @@ export default Authentication;
 export async function action({request}){
     let searchParams = new URL(request.url).searchParams;
     const mode = searchParams = searchParams.get('mode') || 'login';
-    console.log(mode);
     // Throw error if the mode matches neither login or register 
     // if(mode !== 'activate' || mode !== 'register' || mode !== 'login'){
     //     throw json({message: "Unsupported Mode"}, {status: 422})

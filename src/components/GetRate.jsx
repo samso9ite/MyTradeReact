@@ -2,7 +2,8 @@
     import AssetContext from "../store/context/asset-context";
     import CurrencyFormatter from './CurrencyFormatter'
     import SlidingPane from "react-sliding-pane";
-    import "react-sliding-pane/dist/react-sliding-pane.css";
+    import { ToastContainer, toast } from 'react-toastify';
+    import 'react-toastify/dist/ReactToastify.css';
 
     const GetRate = () => {
         const assetCtx = useContext(AssetContext)
@@ -17,7 +18,7 @@
         const [state, setState] = useState({
             isPaneOpen: false,
             isPaneOpenLeft: false,
-          });
+        });
     
         // Mapping through Asset for select option
         const getAssetHandler = () => {
@@ -70,6 +71,20 @@
         }
         /** End of rate calculation functions */
 
+        const openPane = () => {
+            if(selectedRate !== ''){
+                setState({ isPaneOpen: true })
+            }else{
+                toast.error('Select a giftcard category to proceed', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    theme: "light",
+                })
+            }
+        }
+
         return ( 
             <>
                 <div className="intro-y col-span-12 lg:col-span-6">   
@@ -92,19 +107,21 @@
                             </select>
                         </div>
                         <div className="text-center mt-5">
-                        <center> <button class="btn btn-outline-primary  inline-block mr-1 mb-2 mt-10"  onClick={() => setState({ isPaneOpen: true })}>View Details <i data-lucide="plus-circle" class="w-5 h-5"></i></button></center>
+                        <center> <button class="btn btn-outline-primary  inline-block mr-1 mb-2 mt-10"  onClick={openPane}>View Details <i data-lucide="plus-circle" class="w-5 h-5"></i></button></center>
                         </div>  
                     </div>
                 </div>
                 <SlidingPane 
                   isOpen={state.isPaneOpen}
                   title="Rate Details"
-                  width='35%'
+                  width='25rem'
                   onRequestClose={() => {
                   setState({ isPaneOpen: false });
                   }}> 
                     <div style={{paddingBottom:"30px"}}>
+                    <i className="fa fa-times-circle-o transform" style={{fontSize:"22px", float:'right'}}  onClick={() => { setState({ isPaneOpen: false })}}></i> 
                         <center> <img src={assetSelected.image} width={"200px"} /></center>
+                      
                     </div>
                     <h2 className="mb-2" style={{fontSize:'20px'}}><strong>Details</strong></h2>
                     <hr />
@@ -128,7 +145,7 @@
                         </div>
                     </div>
                 </SlidingPane>        
-                 
+                  <ToastContainer />
             </>
         );
     }
