@@ -15,6 +15,8 @@ const RateCalculator = (props) => {
     const [selectedCardType, setSelectedCardType] = useState([])
     const [cardValue, setCardValue] = useState('')
     const [message, setMessage] = useState('')
+    const [denominations, setDenominations] = useState([])
+    const [selectedDenomination, setselectedDenomination] = useState('')
    
     // Mapping through Asset for select option
     const getAssetHandler = () => {
@@ -51,6 +53,7 @@ const RateCalculator = (props) => {
         setCardTypes([])
         setCountrySelected([])
         setSelectedCardType([])
+        setselectedDenomination([])
         setCardValue('')
         let cardArray = []
         let countryArr = []
@@ -88,8 +91,29 @@ const RateCalculator = (props) => {
     // Set country on selected country
     const countryChangeHandler = (event) => {
         setCountrySelected(event.target.value)
+        let denominationArr = []
+        cardRate.map?.((rate) => {
+           if (rate.cardType === selectedCardType && rate.country === event.target.value){
+            denominationArr.push({denomination:rate.denomination, rate:rate.rate})
+           }
+        } )
+        setDenominations(prevState => [...prevState, ...denominationArr])
+        console.log(denominations);
     }
 
+    // Denomination options handler
+    const denominationListHandler = () => {
+        return denominations?.map((denomination) => {
+            return <option value={denomination.denomination}>{denomination.denomination}</option>
+        })
+    }
+
+    // Denomination Change Handler
+    const denominationChangeHandler = (event) => {
+        setselectedDenomination(event.target.value)
+        console.log(event.target.value);
+        setRateValue(selectedDenomination.rate)
+}
     /** This section calculates the rate of the value */     
     const between = (x, range) => {
         const [min, max] = range.split('-').map(val => parseInt(val))
@@ -97,16 +121,25 @@ const RateCalculator = (props) => {
     }
 
     const isRateAvailable = (amount) => {
-        cardRate.forEach(rate => {
-            setMessage('')
-            const isBetween = between(amount, rate.denomination);
-            if(isBetween){
-                setRateValue(rate.rate)
-            }else{
-                setMessage("Value is between" + rate.denomination)
-                setRateValue(0)
-            }
-        })
+        const isBetween = between(amount, selectedDenomination);
+        // if(isBetween == true){
+        //     setRateValue(rate.rate)
+        // }else{
+        //     setMessage("Value is between" + rate.denomination)
+        //     setRateValue(0)
+        // }
+        // cardRate.forEach(rate => {
+        //     setRateValue(0)
+        //     setMessage('')
+            
+        //     const isBetween = between(amount, rate.denomination);
+        //     if(isBetween == true){
+        //         setRateValue(rate.rate)
+        //     }else{
+        //         setMessage("Value is between" + rate.denomination)
+        //         setRateValue(0)
+        //     }
+        // })
     }
 
     const getRateHandler = (event) => {
@@ -137,15 +170,22 @@ const RateCalculator = (props) => {
                     <div className="mt-5">
                         <label for="crud-form-2" className="form-label">Card Type</label>
                         <select className="form-select form-select-lg sm:mt-2 sm:mr-2" aria-label=".form-select-lg example" value={selectedCardType} onChange={selectCardTypeHandler}>
-                            <option value="">-- Choose card type -- </option>
+                            <option value="" disabled>-- Choose card type -- </option>
                             {cardTypesHandler()}
                         </select>
                     </div>
                     <div className="mt-5">
                         <label for="crud-form-1" className="form-label">Select Country</label>
                         <select className="form-select form-select-lg sm:mt-2 sm:mr-2" aria-label=".form-select-lg example" value={countrySelected} onChange={countryChangeHandler}>
-                            <option value="">-- Select Country -- </option>
+                            <option value="" disabled>-- Select Country -- </option>
                             {countryListHandler()}
+                        </select>
+                    </div>
+                    <div className="mt-5">
+                        <label for="crud-form-1" className="form-label">Select Denomination</label>
+                        <select className="form-select form-select-lg sm:mt-2 sm:mr-2" aria-label=".form-select-lg example" value={selectedDenomination} onChange={denominationChangeHandler}>
+                            <option value="" disabled>-- Select Denomination -- </option>
+                            {denominationListHandler()}
                         </select>
                     </div>      
                     <div className="mt-5">
@@ -165,4 +205,4 @@ const RateCalculator = (props) => {
      );
 }
  
-export default RateCalculator                   
+export default RateCalculator        
