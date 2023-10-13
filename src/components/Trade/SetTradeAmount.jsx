@@ -1,12 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import AssetContext from "../../store/context/asset-context"; 
 import { useParams } from "react-router-dom";
-import rawCountries from '../../util/countries.json'
 import CurrencyFormatter  from "../CurrencyFormatter";
 import ImageDrawer from "./ImageDrawer";
 import { useDispatch } from "react-redux";
 import { tradeAction } from "../../store/trade-slice";
-
+import { Link } from 'react-router-dom';
 
 const SetTradeAmount = () => {
 const assetCtx = useContext(AssetContext)
@@ -42,7 +41,9 @@ useEffect(() => {
 // Map through a list of rates for a selected digital asset
 const cardTypesHandler = () => {
     return cardRate?.map((cardType) => {
-        return <option  value={cardType._id}>{cardType.country} - {cardType.cardType} - {cardType.denomination} </option>
+        if(cardType.isDisabled === true){
+            return <option  value={cardType._id}>{cardType.country} - {cardType.cardType} - {cardType.denomination} </option>
+        }
     })
 } 
 
@@ -56,7 +57,6 @@ const selectCardTypeHandler = (event) => {
 
 const getRateHandler = (event) => {
     setCardValue(event.target.value)
-    // isRateAvailable(event.target.value)
 }
 
  // This calculates the payout amount
@@ -81,7 +81,9 @@ const storeTradeDetails = () => {
 
     return (
         <>
+            
             <div class="col-span-12 lg:col-span-8 2xl:col-span-8 flex lg:block flex-col-reverse">
+            <Link to="/redeem/cards"> <h4 className="mt-5" style={{fontSize:"15px"}}><i className="fa fa-arrow-left"></i> Back To All Cards</h4></Link>
                 <div class="intro-y box lg:mt-5">
                     <div class="p-5">   
                         <center> 

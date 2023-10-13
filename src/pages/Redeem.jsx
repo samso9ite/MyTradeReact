@@ -6,7 +6,6 @@ import { useParams } from "react-router-dom";
 
 const RedeemPage = () => {
     const {component_name} = useParams()
-    console.log(component_name);
     return ( 
         <>
             <MainLayout >
