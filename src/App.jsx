@@ -12,6 +12,7 @@ import AdminTransactions from './pages/admin/Transactions';
 import Users from './pages/admin/Users';
 import Cards from './pages/admin/Cards';
 import Rates from './pages/admin/Rates';
+import UtilityPayment from './pages/UtilityPayment';
 
 const router =  createBrowserRouter([
   {
@@ -41,7 +42,10 @@ const router =  createBrowserRouter([
         path: 'cards/',
         element: <Cards />,
       },
-
+      {
+        path: 'utility-payment/',
+        element: <UtilityPayment />,
+      },
      
       
     ]

@@ -9,6 +9,7 @@ import CurrencyFormatter from '../components/CurrencyFormatter';
 import { Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { fetchAllBills } from '../store/utitlity-slice';
 
     const Dashboard = () => {
     // Get user details from the store 
@@ -17,6 +18,7 @@ import 'react-toastify/dist/ReactToastify.css';
     // Getting recent transactions 
     useEffect(() => {
         dispatch(fetchDetails())
+        dispatch(fetchAllBills())
         Api.axios_instance.get(Api.baseUrl+'/user/get_info')
         .then(res => {
             setDetails(res.data.data)

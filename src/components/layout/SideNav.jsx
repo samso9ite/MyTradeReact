@@ -61,6 +61,16 @@ const SideNav = (props) => {
                     </li>
 
                     <li className="mt-3">
+                        <NavLink to="/utility-payment" className={({isActive}) => isActive ? "side-menu side-menu--active" : "side-menu"}>
+                            <div className="side-menu__icon"> <i data-lucide="home"></i> </div>
+                            <div className="side-menu__title">
+                                Utility Payment
+                                <div className="side-menu__sub-icon transform rotate-180">  </div>
+                            </div>
+                        </NavLink>
+                    </li>
+
+                    <li className="mt-3">
                         <NavLink to="/settings/profile" className={({isActive}) => isActive ? "side-menu side-menu--active" : "side-menu"}>
                             <div className="side-menu__icon"> <i data-lucide="home"></i> </div>
                             <div className="side-menu__title">
