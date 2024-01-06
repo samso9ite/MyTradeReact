@@ -4,11 +4,8 @@ import Api from "../../Api"
 
 const UtilityTransactions = () => {
 useEffect(() => {
-    Api.axios_instance.get(Api.baseUrl+'bills/transaction_list').then(
-        res => {
-            console.log(res);
-        }
-    )
+    Api.axios_instance.get(Api.baseUrl+'/user/all')
+    Api.axios_instance.get(Api.baseUrl+'bills/transaction_list')
 }, [])
 
     return(

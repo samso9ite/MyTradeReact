@@ -3,7 +3,6 @@ import Api from "../Api";
 
 export const fetchAllBills = createAsyncThunk("utiltityBills/fetchUtilityBills", async () => {
     const response = await Api.axios_instance.get(Api.baseUrl+'bills/payable_bills')
-    console.log(response);
     return response?.data
 }) 
 

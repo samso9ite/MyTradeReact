@@ -20,7 +20,7 @@ const Transactions = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {/* <Transaction transactions={details.card_transactions && details.card_transactions.slice(0,10)} /> */}
+                          
                         </tbody>
                     </table>
                 </div>

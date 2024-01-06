@@ -70,7 +70,7 @@ const UtilityBills = () => {
                   }}
                 > 
                     <Subscription subscriptionType = {subscriptionType} />
-                  </SlidingPane>
+                </SlidingPane>
                 {/* End of transaction pane */}
                 <Transactions />
             </div>
