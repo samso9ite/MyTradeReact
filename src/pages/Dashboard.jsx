@@ -90,7 +90,7 @@ import { fetchAllBills } from '../store/utitlity-slice';
                                     </div>
                                 </div>
                                 </div>
-                                <div className="grid grid-cols-12 gap-2 mt-5">
+                            <div className="grid grid-cols-12 gap-2 mt-5">
                               
                                 <div className="col-span-12 xl:col-span-12 mt-6">
                                     <div className="intro-y flex items-center h-10">
@@ -147,27 +147,31 @@ import { fetchAllBills } from '../store/utitlity-slice';
                                     </div>
                                 </div>
 
-                                <div className="col-span-4 sm:col-span-6 md-col-span-6 l:col-span-6 xl:col-span-2" onClick={comingSoonMessage}>
+                                <div className="col-span-4 sm:col-span-6 md-col-span-6 l:col-span-6 xl:col-span-2">
                                     <div className="intro-y">
                                         <div className="box px-4 py-4 mb-3  items-center zoom-in">
+                                        <Link to={'/utility-payment'}>
                                             <center>
                                                 <img alt="MyTrade" src="dist/images/coin/airtime.svg" width="30%"/>
                                                 <div className="font-medium">Airtime</div>
                                             </center>
+                                        </Link>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div className="col-span-4 sm:col-span-6 md-col-span-6 l:col-span-6 xl:col-span-2" onClick={comingSoonMessage}>
+                               <div className="col-span-4 sm:col-span-6 md-col-span-6 l:col-span-6 xl:col-span-2" >
                                     <div className="intro-y">
                                         <div className="box px-4 py-4 mb-3  items-center zoom-in">
-                                            <center>
+                                        <Link to={'/utility-payment'}> <center>
                                                 <img alt="MyTrade" src="dist/images/coin/data.svg" width="30%"/>
                                                 <div className="font-medium">Data</div>
                                             </center>
+                                            </Link>
                                         </div>
                                     </div>
                                 </div>
+                                
        
                                 <div className="col-span-12 mt-6">
                                     <div className="intro-y block sm:flex items-center h-10">
