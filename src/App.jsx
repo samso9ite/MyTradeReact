@@ -13,6 +13,7 @@ import Users from './pages/admin/Users';
 import Cards from './pages/admin/Cards';
 import Rates from './pages/admin/Rates';
 import UtilityPayment from './pages/UtilityPayment';
+import UtilityTransactions from './pages/admin/UtilityTransactions'
 
 const router =  createBrowserRouter([
   {
@@ -26,6 +27,7 @@ const router =  createBrowserRouter([
       {path:'redeem/:component_name', element: <RedeemPage />},
       {path:'redeem/:component_name/:id', element: <RedeemPage />},
       {path:'settings/:component_name', element: <Settings />},
+      {path:'utility-payment', element: <UtilityPayment />},
       {
         path:'admin',
         element: <AdminDashboard />
@@ -43,8 +45,8 @@ const router =  createBrowserRouter([
         element: <Cards />,
       },
       {
-        path: 'utility-payment/',
-        element: <UtilityPayment />,
+        path: 'utility-transactions/',
+        element: <UtilityTransactions />,
       },
      
       
