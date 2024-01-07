@@ -7,7 +7,6 @@ const UtilityTransactions = () => {
     useEffect(() => {
         Api.axios_instance.get(Api.baseUrl+'bills/transaction_list').then(
             res => {
-                console.log(res.data.data.data);
                 setUtilityTransactions(res.data.data.data)
             }
         )

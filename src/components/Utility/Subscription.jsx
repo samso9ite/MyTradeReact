@@ -79,13 +79,11 @@ const Subscription = ({subscriptionType}) => {
             'biller_name': parsedNetwork.biller
         }
 
-        console.log(formData);
         Api.axios_instance.post(Api.baseUrl+'bills/initiate', formData).then((res) => {
             if(res.data.status = true) {
                 window.location.href = res.data.message
             }
         }).catch(err => {
-            console.log(err);
             toast.error('It seems your number details isn\'t correct', {
                 position: "top-right",
                 autoClose: 5000,
