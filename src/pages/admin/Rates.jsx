@@ -9,9 +9,13 @@ import { ToastContainer, toast } from 'react-toastify';
 import { fetchCards } from "../../store/admin/card-slice"
 
 const Rates = (props) => {
+        useEffect(() => {
+            dispatch(fetchCards())
+        }, [])
+
     const [rates, setRates] = useState([])
     const [cardName, setCardName] = useState('')
-    const cards = useSelector(state => state.cards.cards)
+    let cards = useSelector(state => state.cards.cards)
     const {id} = useParams()
     const [modalIsOpen, setIsOpen] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
@@ -83,7 +87,7 @@ const Rates = (props) => {
             cardType: cardType,
             card_id: id
         }
-        Api.axios_instance.put(Api.baseUrl+'/admin/card/ratings/add', formData)
+        Api.axios_instance.post(Api.baseUrl+'admin/card/ratings/add', formData)
         .then(() => {
             toast.success('Rate Created Successfully', {
                 position: "top-right",
@@ -99,6 +103,9 @@ const Rates = (props) => {
             dispatch(fetchCards())
             setIsOpen(false)
             setIsLoading(false)
+            setTimeout(() => {
+                window.location.reload()
+            }, 300);
         }
         )
 
@@ -122,13 +129,16 @@ const Rates = (props) => {
                 closeOnClick: true,
                 theme: "light",
             });
-            
+            // window.location.reload()
         }).catch(err => {
             console.log(err);
         }).finally(() => {
             dispatch(fetchCards())
             setIsOpen(false)
             setIsLoading(false)
+            setTimeout(() => {
+                window.location.reload()
+            }, 300);
         }
         )
 
@@ -144,13 +154,17 @@ const Rates = (props) => {
                 closeOnClick: true,
                 theme: "light",
             });
+           
+        }).finally(() => {
             dispatch(fetchCards())
+            setTimeout(() => {
+                window.location.reload()
+            }, 300);
         })
     }
 
      // Freeze Card Sales
      const onFreeze = (id) => {
-        console.log(rates);
         Api.axios_instance.post(Api.baseUrl+'/admin/rate/disable/'+id, { reasonForDisabling: ''})
         .then(res => {
             rates.map((rate) => {
@@ -173,6 +187,11 @@ const Rates = (props) => {
         })
         .catch(err => {
             console.log(err);
+        }).finally(() => {
+            dispatch(fetchCards())
+            setTimeout(() => {
+                window.location.reload()
+            }, 300);
         })
     }
 
@@ -200,11 +219,14 @@ const Rates = (props) => {
         })
         .catch(err => {
             console.log(err);
+        }).finally(() => {
+            dispatch(fetchCards())
+            setTimeout(() => {
+                window.location.reload()
+            }, 300);
         })
     }
-    
-    console.log(rateId);
-
+   
     return(
         <MainLayout>
               <div class="content">
